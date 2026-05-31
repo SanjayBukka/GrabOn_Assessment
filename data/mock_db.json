@@ -1,0 +1,24 @@
+{
+  "version": "2024-01-15",
+  "deals": [
+    {"merchant_id": "amazon", "code": "AMZNEW10", "discount": "10%", "description": "10% off on electronics", "expiry": "2025-12-31", "min_order": 500, "status": "active"},
+    {"merchant_id": "amazon", "code": "PRIMESAVE", "discount": "15%", "description": "15% off for Prime members", "expiry": "2025-06-30", "min_order": 0, "status": "active"},
+    {"merchant_id": "myntra", "code": "MYNTRA30", "discount": "30%", "description": "30% off on fashion", "expiry": "2024-05-15", "min_order": 799, "status": "active"},
+    {"merchant_id": "myntra", "code": "STYLE20", "discount": "20%", "description": "20% off sitewide", "expiry": "2025-12-31", "min_order": 999, "status": "active"},
+    {"merchant_id": "zomato", "code": "ZOM100", "discount": "₹100 off", "description": "Flat Rs 100 off on orders above 299", "expiry": "2025-12-31", "min_order": 299, "status": "active"},
+    {"merchant_id": "zomato", "code": "ZOMGOLD", "discount": "40%", "description": "40% off for Gold members", "expiry": "2025-03-31", "min_order": 0, "status": "active"},
+    {"merchant_id": "swiggy", "code": "SWIGGY40", "discount": "40%", "description": "40% off up to Rs 80", "expiry": "2025-12-31", "min_order": 199, "status": "active"},
+    {"merchant_id": "flipkart", "code": "FLIPNEW", "discount": "25%", "description": "25% off for new users", "expiry": "2025-12-31", "min_order": 0, "status": "active"},
+    {"merchant_id": "nykaa", "code": "NYKAA20", "discount": "20%", "description": "20% off on beauty", "expiry": "2025-09-30", "min_order": 699, "status": "active"},
+    {"merchant_id": "ajio", "code": "AJIO30", "discount": "30%", "description": "30% off on brands", "expiry": "2025-12-31", "min_order": 1299, "status": "active"},
+    {"merchant_id": "makemytrip", "code": "MMTFLIGHT", "discount": "₹500 off", "description": "Rs 500 off on domestic flights", "expiry": "2025-12-31", "min_order": 3000, "status": "active"},
+    {"merchant_id": "puma", "code": "PUMA25", "discount": "25%", "description": "25% off on shoes", "expiry": "2025-06-30", "min_order": 2999, "status": "active"},
+    {"merchant_id": "boat", "code": "BOATSAVE", "discount": "15%", "description": "15% off on earbuds", "expiry": "2025-12-31", "min_order": 999, "status": "active"},
+    {"merchant_id": "cred", "code": "CREDCASH", "discount": "₹200 off", "description": "Rs 200 cashback on bill payments", "expiry": "2025-12-31", "min_order": 1000, "status": "active"},
+    {"merchant_id": "meesho", "code": "MEESHO99", "discount": "₹99 off", "description": "Rs 99 off on first order", "expiry": "2024-12-31", "min_order": 0, "status": "active"},
+    {"merchant_id": "blinkit", "code": "BLINK50", "discount": "₹50 off", "description": "Rs 50 off on groceries", "expiry": "2025-12-31", "min_order": 299, "status": "active"},
+    {"merchant_id": "tatacliq", "code": "TATA15", "discount": "15%", "description": "15% off on Tata products", "expiry": "2025-12-31", "min_order": 1499, "status": "active"},
+    {"merchant_id": "dominos", "code": "DOM50", "discount": "₹50 off", "description": "Rs 50 off on pizza orders", "expiry": "2025-12-31", "min_order": 299, "status": "active"},
+    {"merchant_id": "netmeds", "code": "MED20", "discount": "20%", "description": "20% off on medicines", "expiry": "2025-12-31", "min_order": 599, "status": "active"}
+  ]
+}

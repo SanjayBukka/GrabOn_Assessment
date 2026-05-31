@@ -1,0 +1,22 @@
+[
+  {"id": "amazon", "name": "Amazon", "url": "https://www.grabon.in/amazon-coupons/", "category": "ecommerce"},
+  {"id": "myntra", "name": "Myntra", "url": "https://www.grabon.in/myntra-coupons/", "category": "fashion"},
+  {"id": "zomato", "name": "Zomato", "url": "https://www.grabon.in/zomato-coupons/", "category": "food"},
+  {"id": "swiggy", "name": "Swiggy", "url": "https://www.grabon.in/swiggy-coupons/", "category": "food"},
+  {"id": "flipkart", "name": "Flipkart", "url": "https://www.grabon.in/flipkart-coupons/", "category": "ecommerce"},
+  {"id": "nykaa", "name": "Nykaa", "url": "https://www.grabon.in/nykaa-coupons/", "category": "beauty"},
+  {"id": "ajio", "name": "Ajio", "url": "https://www.grabon.in/ajio-coupons/", "category": "fashion"},
+  {"id": "makemytrip", "name": "MakeMyTrip", "url": "https://www.grabon.in/makemytrip-coupons/", "category": "travel"},
+  {"id": "puma", "name": "Puma", "url": "https://www.grabon.in/puma-coupons/", "category": "sports"},
+  {"id": "boat", "name": "boAt", "url": "https://www.grabon.in/boat-coupons/", "category": "electronics"},
+  {"id": "cred", "name": "CRED", "url": "https://www.grabon.in/cred-coupons/", "category": "fintech"},
+  {"id": "meesho", "name": "Meesho", "url": "https://www.grabon.in/meesho-coupons/", "category": "ecommerce"},
+  {"id": "blinkit", "name": "Blinkit", "url": "https://www.grabon.in/blinkit-coupons/", "category": "grocery"},
+  {"id": "tatacliq", "name": "Tata CLiQ", "url": "https://www.grabon.in/tatacliq-coupons/", "category": "ecommerce"},
+  {"id": "shopsy", "name": "Shopsy", "url": "https://www.grabon.in/shopsy-coupons/", "category": "ecommerce"},
+  {"id": "zepto", "name": "Zepto", "url": "https://www.grabon.in/zepto-coupons/", "category": "grocery"},
+  {"id": "bigbasket", "name": "BigBasket", "url": "https://www.grabon.in/bigbasket-coupons/", "category": "grocery"},
+  {"id": "dominos", "name": "Domino's", "url": "https://www.grabon.in/dominos-coupons/", "category": "food"},
+  {"id": "mcdonald", "name": "McDonald's", "url": "https://www.grabon.in/mcdonalds-coupons/", "category": "food"},
+  {"id": "netmeds", "name": "Netmeds", "url": "https://www.grabon.in/netmeds-coupons/", "category": "pharma"}
+]
