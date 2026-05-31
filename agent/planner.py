@@ -43,6 +43,9 @@ class AgentPlanner:
     def __init__(self):
         """Initialize planner with LLM router."""
         self.router = LLMRouter()
+        self.last_tokens_used = 0
+        self.last_cost_usd = 0.0
+        self.last_provider = "unknown"
     
     async def create_plan(
         self,
@@ -70,6 +73,7 @@ class AgentPlanner:
             Plan object with steps and strategy
         """
         logger.info(f"Creating plan for {merchant_name}")
+        self._reset_last_usage()
         
         # Get available tools
         registry = get_registry()
@@ -117,6 +121,7 @@ Return ONLY the JSON, no other text."""
                 prompt=prompt,
                 max_tokens=1024,
             )
+            self._record_last_usage(tokens_used_call, cost_usd, provider)
             
             logger.info(f"Plan response received from {provider}")
             
@@ -166,6 +171,7 @@ Return ONLY the JSON, no other text."""
             Alternative Plan
         """
         logger.info(f"Re-planning for {merchant_name} after {failed_tool} failure ({error_type})")
+        self._reset_last_usage()
         
         # Get available tools
         registry = get_registry()
@@ -216,6 +222,7 @@ Return ONLY the JSON, no other text."""
                 prompt=prompt,
                 max_tokens=1024,
             )
+            self._record_last_usage(tokens_used_call, cost_usd, provider)
             
             plan = self._parse_plan_response(response_text)
             
@@ -226,6 +233,18 @@ Return ONLY the JSON, no other text."""
         except Exception as e:
             logger.error(f"Re-planning failed for {merchant_name}: {e}")
             return self._default_plan()
+
+    def _reset_last_usage(self) -> None:
+        """Clear metadata for the next planner LLM call."""
+        self.last_tokens_used = 0
+        self.last_cost_usd = 0.0
+        self.last_provider = "unknown"
+
+    def _record_last_usage(self, tokens_used: int, cost_usd: float, provider: str) -> None:
+        """Store metadata for the most recent planner LLM call."""
+        self.last_tokens_used = tokens_used
+        self.last_cost_usd = cost_usd
+        self.last_provider = provider
     
     def _parse_plan_response(self, response_text: str) -> Plan:
         """

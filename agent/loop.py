@@ -109,7 +109,7 @@ class AgentLoop:
         for merchant in merchants:
             try:
                 # Check budget before processing merchant
-                budget_status = self.budget_enforcer.check_limits()
+                budget_status = self.budget_enforcer.check_limits(raise_on_exceeded=False)
                 if not budget_status.ok:
                     logger.error(f"Budget limit breached before merchant: {budget_status.reason}")
                     self.state.budget_exceeded = True
@@ -261,8 +261,17 @@ class AgentLoop:
                     error_type = tool_result.error_type or "UNKNOWN"
                     logger.info(f"Replanning after {tool_name} failed with {error_type}")
                     current_plan = await self.planner.replan(
-                        merchant_id, tool_name, error_type
+                        merchant_id=merchant_id,
+                        merchant_name=merchant_name,
+                        merchant_url=merchant_url,
+                        failed_tool=tool_name,
+                        error_type=error_type,
+                        tokens_used=self.budget_enforcer.tokens_used,
+                        max_tokens=self.budget_enforcer.max_tokens,
+                        tool_calls_used=self.budget_enforcer.tool_calls_used,
+                        max_tool_calls=self.budget_enforcer.max_tool_calls,
                     )
+                    self._record_planner_usage()
                     step_in_plan = 0
                     retry_count = 0
                     logger.debug(f"Replanned: {[s.tool for s in current_plan.steps]}")
@@ -277,7 +286,7 @@ class AgentLoop:
                     break
                 
                 # Check budget after EVERY iteration
-                budget_status = self.budget_enforcer.check_limits()
+                budget_status = self.budget_enforcer.check_limits(raise_on_exceeded=False)
                 if not budget_status.ok:
                     logger.error(f"Budget limit exceeded: {budget_status.reason}")
                     self.state.budget_exceeded = True
@@ -297,6 +306,8 @@ class AgentLoop:
             # Finalize result
             result.time_taken = time.time() - merchant_start
             result.tool_calls_used = self.state.total_tool_calls
+            if result not in self.state.merchant_results:
+                self.state.merchant_results.append(result)
             
             if self.ui:
                 self.ui.update(self.state)
@@ -340,6 +351,7 @@ class AgentLoop:
             tool_calls_used=tool_calls_used,
             max_tool_calls=max_tool_calls,
         )
+        self._record_planner_usage()
         
         # Record iteration
         iteration = AgentIteration(
@@ -349,10 +361,10 @@ class AgentLoop:
             tool_called=None,
             observation=f"Steps: {[s.tool for s in plan.steps]}",
             decision="Execute plan steps sequentially",
-            tokens_consumed=0,
+            tokens_consumed=self.planner.last_tokens_used,
             wall_clock_time=time.time() - phase_start,
-            llm_provider="groq",
-            cost_usd=0.0,
+            llm_provider=self.planner.last_provider,
+            cost_usd=self.planner.last_cost_usd,
         )
         self.state.iterations.append(iteration)
         
@@ -425,18 +437,27 @@ class AgentLoop:
         
         # Update global tracking
         self.state.total_tool_calls += 1
+        self.budget_enforcer.record_tool_call(tool_name, tool_result.success)
         result.tool_calls_used = self.state.total_tool_calls
         
         # Update result tracking based on tool outcome
         if tool_result.success:
             if tool_name == "extract_deals":
                 result.live_deals = tool_result.data.get("deals", [])
+                tokens_used = tool_result.data.get("tokens_used", 0)
+                provider = tool_result.data.get("llm_provider_used", "unknown")
+                cost_usd = tool_result.data.get("cost_usd", 0.0)
+                if tokens_used:
+                    self.budget_enforcer.record_tokens(tokens_used, provider)
+                    self.state.total_tokens = self.budget_enforcer.tokens_used
+                    self.state.total_cost_usd += cost_usd
                 logger.info(f"Extracted {len(result.live_deals)} live deals")
             elif tool_name == "db_lookup":
                 result.db_deals = tool_result.data.get("deals", [])
                 logger.info(f"Retrieved {len(result.db_deals)} DB deals")
             elif tool_name == "classify_deals":
                 result.classified_deals = tool_result.data.get("classified_deals", [])
+                result.health_score = tool_result.data.get("merchant_health_score", 0.0)
                 logger.info(f"Classified {len(result.classified_deals)} deals")
         
         # Record iteration
@@ -540,14 +561,28 @@ class AgentLoop:
         phase_start = time.time()
         
         if tool_result.success:
-            # Tool succeeded - proceed
-            is_last_step = step_in_plan >= len(current_plan.steps) - 1
-            if is_last_step:
-                decision = "CONTINUE"
-                reasoning = "Tool succeeded, plan complete"
+            if tool_name in ["scrape_html", "google_cache"]:
+                html = tool_result.data.get("html", "") if tool_result.data else ""
+                if not html or len(html.strip()) < 100:
+                    decision = "SWITCH_TOOL:scrape_js"
+                    reasoning = "HTML too short/empty, switching to JS scraper"
+                else:
+                    is_last_step = step_in_plan >= len(current_plan.steps) - 1
+                    if is_last_step:
+                        decision = "CONTINUE"
+                        reasoning = "Tool succeeded, plan complete"
+                    else:
+                        decision = "CONTINUE"
+                        reasoning = "Tool succeeded, proceeding to next step"
             else:
-                decision = "CONTINUE"
-                reasoning = "Tool succeeded, proceeding to next step"
+                # Tool succeeded - proceed
+                is_last_step = step_in_plan >= len(current_plan.steps) - 1
+                if is_last_step:
+                    decision = "CONTINUE"
+                    reasoning = "Tool succeeded, plan complete"
+                else:
+                    decision = "CONTINUE"
+                    reasoning = "Tool succeeded, proceeding to next step"
         
         elif tool_result.error_type == "TRANSIENT":
             # Transient errors (network hiccups, timeouts) - retry with backoff
@@ -682,8 +717,46 @@ class AgentLoop:
                 if i.phase == Phase.DECIDE and i.decision != "CONTINUE"
             ],
         }
+
+        for merchant_result in self.state.merchant_results:
+            for deal in merchant_result.classified_deals:
+                status = deal.status.value.lower()
+                if status in report["summary"]:
+                    report["summary"][status] += 1
+                else:
+                    report["summary"]["unknown"] += 1
+                report["summary"]["total_deals_audited"] += 1
+
+            report["merchants"].append({
+                "merchant_id": merchant_result.merchant_id,
+                "name": merchant_result.name,
+                "url": merchant_result.url,
+                "status": merchant_result.status,
+                "error_message": merchant_result.error_message,
+                "health_score": merchant_result.health_score,
+                "db_deals_count": len(merchant_result.db_deals),
+                "live_deals_count": len(merchant_result.live_deals),
+                "deals": [deal.model_dump(mode="json") for deal in merchant_result.classified_deals],
+                "tool_calls_used": merchant_result.tool_calls_used,
+                "time_taken_seconds": merchant_result.time_taken,
+                "fallback_used": merchant_result.fallback_used,
+                "recovery_events": merchant_result.recovery_events,
+            })
         
         return report
+
+    def _record_planner_usage(self) -> None:
+        """Record token and cost usage from the most recent planner call."""
+        tokens_used = self.planner.last_tokens_used
+        cost_usd = self.planner.last_cost_usd
+        provider = self.planner.last_provider
+
+        if tokens_used <= 0:
+            return
+
+        self.budget_enforcer.record_tokens(tokens_used, provider)
+        self.state.total_tokens = self.budget_enforcer.tokens_used
+        self.state.total_cost_usd += cost_usd
     
     def _calculate_cost_breakdown(self) -> dict:
         """

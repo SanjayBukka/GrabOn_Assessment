@@ -58,7 +58,7 @@ class LLMRouter:
         groq_key = os.getenv("GROQ_API_KEY")
         self.groq_large = (
             ChatGroq(
-                model="llama-3.1-70b-versatile",
+                model="llama-3.3-70b-versatile",
                 api_key=groq_key,
                 temperature=0.7,
                 timeout=30,
@@ -82,7 +82,7 @@ class LLMRouter:
         gemini_key = os.getenv("GOOGLE_API_KEY")
         self.gemini_flash = (
             ChatGoogleGenerativeAI(
-                model="gemini-1.5-flash",
+                model="gemini-2.0-flash",
                 api_key=gemini_key,
                 temperature=0.7,
                 timeout=30,
@@ -91,9 +91,19 @@ class LLMRouter:
             else None
         )
         
-        # Note: OpenRouter would need additional SDK setup
-        # For now, we'll document the fallback chain but use available providers
-        self.openrouter = None  # Implement with openrouter SDK
+        openrouter_key = os.getenv("OPENROUTER_API_KEY")
+        if openrouter_key and not openrouter_key.startswith("your_"):
+            from langchain_openai import ChatOpenAI
+
+            self.openrouter = ChatOpenAI(
+                model="meta-llama/llama-3.2-3b-instruct:free",
+                openai_api_key=openrouter_key,
+                openai_api_base="https://openrouter.ai/api/v1",
+                temperature=0.3,
+                timeout=30,
+            )
+        else:
+            self.openrouter = None
     
     def get_llm(self, task_type: str) -> Any:
         """
@@ -184,8 +194,9 @@ class LLMRouter:
             output_tokens = int(output_tokens)
             
             # Track cost
+            cost_provider = self._get_cost_provider_name(provider_name)
             call_cost = self.cost_tracker.record_call(
-                provider=provider_name.lower(),
+                provider=cost_provider,
                 input_tokens=input_tokens,
                 output_tokens=output_tokens,
             )
@@ -243,16 +254,52 @@ class LLMRouter:
         max_tokens: int,
     ) -> tuple[str, int, float, str]:
         """Fallback for planning when primary fails."""
-        logger.info("Attempting fallback planning with Groq small")
-        try:
-            if self.groq_small:
+        logger.info("Attempting fallback planning with alternate provider")
+        if self.gemini_flash:
+            try:
+                response = self.gemini_flash.invoke([HumanMessage(content=prompt)])
+                response_text = response.content
+
+                input_tokens = int(len(prompt.split()) * 1.3)
+                output_tokens = int(len(response_text.split()) * 1.3)
+
+                call_cost = self.cost_tracker.record_call(
+                    provider="gemini_flash",
+                    input_tokens=input_tokens,
+                    output_tokens=output_tokens,
+                )
+
+                logger.info("Fallback planning succeeded with Gemini Flash")
+                return response_text, input_tokens + output_tokens, call_cost.cost_usd, "Gemini-Flash"
+            except Exception as e:
+                logger.warning(f"Gemini planning fallback failed: {e}")
+
+        if self.openrouter:
+            try:
+                response = self.openrouter.invoke([HumanMessage(content=prompt)])
+                response_text = response.content
+
+                input_tokens = int(len(prompt.split()) * 1.3)
+                output_tokens = int(len(response_text.split()) * 1.3)
+
+                call_cost = self.cost_tracker.record_call(
+                    provider="openrouter",
+                    input_tokens=input_tokens,
+                    output_tokens=output_tokens,
+                )
+
+                logger.info("Fallback planning succeeded with OpenRouter")
+                return response_text, input_tokens + output_tokens, call_cost.cost_usd, "OpenRouter"
+            except Exception as e:
+                logger.warning(f"OpenRouter planning fallback failed: {e}")
+
+        if self.groq_small:
+            try:
                 response = self.groq_small.invoke([HumanMessage(content=prompt)])
                 response_text = response.content
                 
-                input_tokens = len(prompt.split()) * 1.3
-                output_tokens = len(response_text.split()) * 1.3
-                input_tokens = int(input_tokens)
-                output_tokens = int(output_tokens)
+                input_tokens = int(len(prompt.split()) * 1.3)
+                output_tokens = int(len(response_text.split()) * 1.3)
                 
                 call_cost = self.cost_tracker.record_call(
                     provider="groq",
@@ -262,9 +309,10 @@ class LLMRouter:
                 
                 logger.info(f"Fallback planning succeeded with Groq")
                 return response_text, input_tokens + output_tokens, call_cost.cost_usd, "Groq"
-        except Exception as e:
-            logger.error(f"Fallback planning failed: {e}")
-            raise
+            except Exception as e:
+                logger.error(f"Groq planning fallback failed: {e}")
+
+        raise ValueError("No planning fallback provider available")
     
     def _get_provider_name(self, llm: Any, task: TaskType) -> str:
         """Determine provider name from LLM instance."""
@@ -277,6 +325,17 @@ class LLMRouter:
         elif llm == self.openrouter:
             return "OpenRouter"
         return "Unknown"
+
+    def _get_cost_provider_name(self, provider_name: str) -> str:
+        """Map routed provider names to cost tracker keys."""
+        provider = provider_name.lower()
+        if provider.startswith("groq"):
+            return "groq"
+        if provider.startswith("gemini"):
+            return "gemini_flash"
+        if provider.startswith("openrouter"):
+            return "openrouter"
+        return provider
     
     def get_cost_summary(self) -> dict:
         """Get cost summary from tracker."""

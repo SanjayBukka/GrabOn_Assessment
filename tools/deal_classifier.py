@@ -87,8 +87,12 @@ def classify_deals(
                 # STALE: matches but expired
                 status = DealStatus.STALE
                 summary["stale"] += 1
+            elif not discount_matches and not is_expired:
+                # UPDATED: active deal exists on live page with changed discount
+                status = DealStatus.UPDATED
+                summary["updated"] += 1
             else:
-                # STALE: discount changed or other issue
+                # STALE: expired and discount changed, or another expiry-related issue
                 status = DealStatus.STALE
                 summary["stale"] += 1
             
@@ -125,7 +129,7 @@ def classify_deals(
             )
             classified_deals.append(classified)
     
-    # Find EXTRA deals (on live but not in DB) and UPDATED deals
+    # Find EXTRA deals (on live but not in DB)
     for live_deal in live_deals:
         code = live_deal.code
         
@@ -147,20 +151,6 @@ def classify_deals(
                 expired=_is_expired(live_deal.expiry),
             )
             classified_deals.append(classified)
-        else:
-            # Check if already classified as STALE (for UPDATED detection)
-            db_deal = db_map[code]
-            if db_deal.discount != live_deal.discount:
-                # This is UPDATED: found earlier but discount differs
-                # Update the existing classification if needed
-                existing = next(
-                    (d for d in classified_deals if d.code == code),
-                    None
-                )
-                if existing:
-                    existing.status = DealStatus.STALE
-                    summary["stale"] += 1
-                    summary["updated"] += 1
     
     # Calculate health score (percentage of FRESH deals)
     total_db_deals = len(db_deals)

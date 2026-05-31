@@ -12,6 +12,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Optional
 
+import nest_asyncio
 from playwright.async_api import async_playwright, TimeoutError as PlaywrightTimeoutError
 from pydantic import BaseModel, Field
 
@@ -62,6 +63,7 @@ def scrape_js(
     
     try:
         # Run async scraper
+        nest_asyncio.apply()
         result = asyncio.run(
             _scrape_js_async(
                 url=url,

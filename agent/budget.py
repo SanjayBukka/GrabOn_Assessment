@@ -64,6 +64,7 @@ class BudgetEnforcer:
             count: Number of tokens used
             provider: LLM provider name (groq, gemini_flash, etc.)
         """
+        provider = self._normalize_provider(provider)
         self.tokens_used += count
         
         if provider not in self.tokens_by_provider:
@@ -71,6 +72,17 @@ class BudgetEnforcer:
         self.tokens_by_provider[provider] += count
         
         logger.debug(f"Recorded {count} tokens from {provider} (total: {self.tokens_used})")
+
+    def _normalize_provider(self, provider: str) -> str:
+        """Normalize routed provider labels to cost tracker keys."""
+        provider_key = (provider or "unknown").lower().replace("-", "_")
+        if provider_key.startswith("groq"):
+            return "groq"
+        if provider_key.startswith("gemini"):
+            return "gemini_flash"
+        if provider_key.startswith("openrouter"):
+            return "openrouter"
+        return provider_key
     
     def record_tool_call(self, tool_name: str, success: bool) -> None:
         """

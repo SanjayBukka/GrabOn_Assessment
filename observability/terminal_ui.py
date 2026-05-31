@@ -10,6 +10,7 @@ Displays real-time updates of agent progress with:
 """
 
 import logging
+import sys
 from datetime import datetime
 from typing import Optional
 
@@ -36,7 +37,9 @@ class TerminalUI:
     
     def __init__(self):
         """Initialize terminal UI."""
-        self.console = Console()
+        if hasattr(sys.stdout, "reconfigure"):
+            sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+        self.console = Console(force_terminal=True, legacy_windows=False)
         self.live: Optional[Live] = None
         self.layout: Optional[Layout] = None
         self.state: Optional[AgentState] = None
@@ -77,22 +80,6 @@ class TerminalUI:
         """Render the complete dashboard layout."""
         layout = Layout()
         
-        # Header
-        layout.split(
-            Layout(self._render_header(), size=3),
-            Layout(
-                name="body"
-            )
-        )
-        
-        # Body: split into progress panels and details
-        body_layout = layout["body"]
-        body_layout.split_row(
-            Layout(self._render_merchant_progress(), name="merchants"),
-            Layout(self._render_metrics(), name="metrics"),
-        )
-        
-        # Add iteration log at bottom
         layout.split(
             Layout(self._render_header(), size=3),
             Layout(self._render_merchant_progress(), name="merchants", size=10),
@@ -108,7 +95,7 @@ class TerminalUI:
             return Panel("[*] GrabOn Deal Audit Agent — Initializing...", style="bold blue")
         
         start_time = self.state.start_time.strftime("%H:%M:%S") if self.state.start_time else "N/A"
-        elapsed = (datetime.utcnow() - self.state.start_time).total_seconds() if self.state.start_time else 0
+        elapsed = (datetime.now() - self.state.start_time).total_seconds() if self.state.start_time else 0
         
         current = f" | Currently: {self.state.current_merchant}" if self.state.current_merchant else ""
         
@@ -152,7 +139,11 @@ class TerminalUI:
         # Add current merchant if not in results
         if self.state.current_merchant:
             current = next(
-                (r for r in self.state.merchant_results if r.merchant_id == self.state.current_merchant),
+                (
+                    r for r in self.state.merchant_results
+                    if r.merchant_id == self.state.current_merchant
+                    or r.name == self.state.current_merchant
+                ),
                 None
             )
             if not current:
@@ -265,7 +256,7 @@ class TerminalUI:
         )
         summary_table.add_row(
             "Execution Time",
-            f"{(datetime.utcnow() - state.start_time).total_seconds():.1f}s"
+            f"{(datetime.now() - state.start_time).total_seconds():.1f}s"
         )
         
         self.console.print(summary_table)

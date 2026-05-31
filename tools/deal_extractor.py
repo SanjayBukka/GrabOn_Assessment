@@ -8,8 +8,10 @@ DealRecords with confidence scores.
 
 import json
 import logging
+import re
 from typing import Optional
 
+from bs4 import BeautifulSoup
 from pydantic import BaseModel, Field
 
 from agent.state import DealRecord
@@ -61,16 +63,42 @@ def extract_deals(
             "deals_found_count": 0,
             "llm_provider_used": "N/A",
             "tokens_used": 0,
+            "cost_usd": 0.0,
         }
     
-    # Prepare prompt
-    # Truncate HTML to 8000 chars to avoid token limits
-    html_truncated = html[:8000]
+    # Prepare prompt from relevant deal/coupon sections to avoid losing useful data
+    soup = BeautifulSoup(html, "lxml")
+    relevant_tags = soup.find_all(class_=lambda c: c and any(
+        keyword in c.lower()
+        for keyword in ["coupon", "deal", "offer", "code", "discount"]
+    ))
+    clipboard_tags = soup.find_all(attrs={"data-clipboard-text": True})
+    clipboard_codes = [
+        tag.get("data-clipboard-text")
+        for tag in clipboard_tags
+        if tag.get("data-clipboard-text")
+    ]
+    attribute_codes = _extract_attribute_codes(soup)
+    script_codes = _extract_script_coupon_codes(html)
+    found_codes = _dedupe_codes(clipboard_codes + attribute_codes + script_codes)
+    relevant_html = "\n".join(str(tag) for tag in (clipboard_tags + relevant_tags)[:30])
+    html_truncated = relevant_html[:6000] if relevant_html else html[:6000]
     
-    prompt = f"""You are a deal extraction specialist. Extract all coupon codes and deals from this HTML.
+    prompt = f"""You are a deal extraction specialist. Extract ALL coupon codes and deals from this HTML.
+Look inside div tags, span tags, button text, data attributes, input values,
+JavaScript variables, and any text that looks like a promo code.
+
+Pay special attention to these locations because GrabOn often stores codes there:
+- data-clipboard-text attributes
+- data-code attributes
+- data-coupon attributes
+- button text that looks like a promo code
+- any uppercase alphanumeric string 5-15 characters long
 
 Merchant: {merchant_name}
-HTML Content: {html_truncated}
+Found these clipboard/attribute/script codes: {found_codes}
+
+HTML: {html_truncated}
 
 Return ONLY valid JSON in this exact format:
 {{
@@ -117,6 +145,7 @@ Return ONLY the JSON, no other text."""
                     "deals_found_count": 0,
                     "llm_provider_used": provider_used,
                     "tokens_used": tokens_used,
+                    "cost_usd": cost_usd,
                 }
             
             json_str = response_text[json_start:json_end]
@@ -131,6 +160,7 @@ Return ONLY the JSON, no other text."""
                     "deals_found_count": 0,
                     "llm_provider_used": provider_used,
                     "tokens_used": tokens_used,
+                    "cost_usd": cost_usd,
                 }
             
             # Extract fields
@@ -142,19 +172,38 @@ Return ONLY the JSON, no other text."""
             deals = []
             for deal_dict in deals_list:
                 try:
+                    code = _clean_optional_str(deal_dict.get("code"))
+                    if not code:
+                        logger.warning(f"Skipping extracted deal without coupon code: {deal_dict}")
+                        continue
+
                     deal = DealRecord(
-                        code=deal_dict.get("code", ""),
-                        discount=deal_dict.get("discount", ""),
-                        description=deal_dict.get("description", ""),
-                        expiry=deal_dict.get("expiry", ""),
-                        min_order=deal_dict.get("min_order", 0),
+                        code=code,
+                        discount=_clean_optional_str(deal_dict.get("discount")),
+                        description=_clean_optional_str(deal_dict.get("description")),
+                        expiry=_clean_optional_str(deal_dict.get("expiry")) or "2026-12-31",
+                        min_order=_parse_min_order(deal_dict.get("min_order")),
                         source="LIVE",
-                        conditions=deal_dict.get("conditions"),
+                        conditions=_clean_optional_str(deal_dict.get("conditions")) or None,
                     )
                     deals.append(deal)
                 except Exception as e:
                     logger.warning(f"Could not parse deal: {e}")
                     continue
+
+            existing_codes = {deal.code for deal in deals}
+            for code in found_codes:
+                if code in existing_codes:
+                    continue
+                deals.append(DealRecord(
+                    code=code,
+                    discount="",
+                    description=f"Coupon code found in {merchant_name} page attributes/scripts",
+                    expiry="2026-12-31",
+                    min_order=0,
+                    source="LIVE",
+                ))
+                existing_codes.add(code)
             
             logger.info(f"Extracted {len(deals)} deals from {merchant_name} (confidence={confidence})")
             
@@ -164,6 +213,7 @@ Return ONLY the JSON, no other text."""
                 "deals_found_count": found_count,
                 "llm_provider_used": provider_used,
                 "tokens_used": tokens_used,
+                "cost_usd": cost_usd,
             }
         
         except json.JSONDecodeError as e:
@@ -175,6 +225,7 @@ Return ONLY the JSON, no other text."""
                 "deals_found_count": 0,
                 "llm_provider_used": provider_used,
                 "tokens_used": tokens_used,
+                "cost_usd": cost_usd,
             }
     
     except Exception as e:
@@ -185,7 +236,68 @@ Return ONLY the JSON, no other text."""
             "deals_found_count": 0,
             "llm_provider_used": "ERROR",
             "tokens_used": 0,
+            "cost_usd": 0.0,
         }
+
+
+def _extract_attribute_codes(soup: BeautifulSoup) -> list[str]:
+    """Extract coupon-like values from common code-bearing attributes."""
+    codes = []
+    for attr_name in ["data-code", "data-coupon", "data-coupon-code", "data-clipboard-text", "value"]:
+        for tag in soup.find_all(attrs={attr_name: True}):
+            value = tag.get(attr_name)
+            if value:
+                codes.extend(_find_coupon_like_tokens(str(value)))
+    return codes
+
+
+def _extract_script_coupon_codes(html: str) -> list[str]:
+    """Extract coupon codes embedded in GrabOn JavaScript payloads."""
+    codes = re.findall(r'"CouponCode"\s*:\s*"([^"]+)"', html)
+    codes.extend(re.findall(r"'CouponCode'\s*:\s*'([^']+)'", html))
+    codes.extend(
+        f"OFFER{coupon_id}"
+        for coupon_id in re.findall(r'"CouponID"\s*:\s*(\d+).*?"CouponCode"\s*:\s*""', html)
+    )
+    return [code for code in codes if code]
+
+
+def _find_coupon_like_tokens(text: str) -> list[str]:
+    """Find uppercase alphanumeric strings that look like coupon codes."""
+    return re.findall(r"\b[A-Z0-9]{5,15}\b", text)
+
+
+def _dedupe_codes(codes: list[str]) -> list[str]:
+    """Clean and de-duplicate coupon code candidates while preserving order."""
+    seen = set()
+    deduped = []
+    ignored_codes = {"ACTIVATE", "ACTIVATED", "APPLIED", "COUPON", "COUPONS", "OFFER", "OFFERS"}
+    for code in codes:
+        clean_code = _clean_optional_str(code).upper()
+        if not clean_code or clean_code in seen or clean_code in ignored_codes:
+            continue
+        if not re.fullmatch(r"[A-Z0-9]{5,15}", clean_code):
+            continue
+        seen.add(clean_code)
+        deduped.append(clean_code)
+    return deduped
+
+
+def _clean_optional_str(value) -> str:
+    """Convert nullable LLM fields to clean strings."""
+    if value is None:
+        return ""
+    return str(value).strip()
+
+
+def _parse_min_order(value) -> int:
+    """Parse nullable or free-text minimum order values from LLM output."""
+    if value is None:
+        return 0
+    if isinstance(value, int):
+        return value
+    match = re.search(r"\d+", str(value))
+    return int(match.group(0)) if match else 0
 
 
 # Register the tool
