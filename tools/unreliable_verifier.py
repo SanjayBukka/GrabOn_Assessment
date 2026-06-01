@@ -1,6 +1,5 @@
 """
 Unreliable coupon verifier tool (intentionally fails 30% of the time).
-
 Simulates verification of coupon codes against merchant systems.
 Designed to fail randomly to test agent's retry and recovery logic.
 30% failure rate is intentional and documented.

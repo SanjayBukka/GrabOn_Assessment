@@ -64,15 +64,6 @@ class CostTracker:
                     os.getenv("OPENROUTER_OUTPUT_COST", "0.20")
                 ),
             ),
-            "nvidia": ProviderCost(
-                provider="nvidia",
-                input_cost_per_million=float(
-                    os.getenv("NVIDIA_INPUT_COST", "0.40")
-                ),
-                output_cost_per_million=float(
-                    os.getenv("NVIDIA_OUTPUT_COST", "0.40")
-                ),
-            ),
         }
         
         # Track cumulative costs and tokens
@@ -100,7 +91,7 @@ class CostTracker:
         Calculate cost for a single LLM call.
         
         Args:
-            provider: Name of LLM provider (groq, gemini_flash, openrouter, nvidia)
+            provider: Name of LLM provider (groq, gemini_flash, openrouter)
             input_tokens: Number of input tokens
             output_tokens: Number of output tokens
         

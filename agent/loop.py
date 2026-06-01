@@ -28,8 +28,8 @@ from observability.langsmith_tracer import trace_session, trace_phase, get_trace
 
 # Import tools to trigger registration in registry
 import tools.scraper_html  # noqa: F401
-import tools.google_cache  # noqa: F401
 import tools.scraper_js  # noqa: F401
+import tools.static_template  # noqa: F401
 import tools.deal_extractor  # noqa: F401
 import tools.db_lookup  # noqa: F401
 import tools.deal_classifier  # noqa: F401
@@ -220,7 +220,7 @@ class AgentLoop:
                 )
                 
                 # Store HTML for extraction step
-                if tool_result.success and tool_name in ["scrape_html", "google_cache", "scrape_js"]:
+                if tool_result.success and tool_name in ["scrape_html", "scrape_js", "static_template"]:
                     last_html = tool_result.data.get("html", "")
                     logger.debug(f"Stored {len(last_html)} bytes of HTML for next step")
                 
@@ -404,11 +404,11 @@ class AgentLoop:
         tool_params = {}
         
         if tool_name == "scrape_html":
-            tool_params = {"url": merchant_url}
-        elif tool_name == "google_cache":
-            tool_params = {"original_url": merchant_url}
+            tool_params = {"url": merchant_url, "merchant_id": merchant_id}
         elif tool_name == "scrape_js":
-            tool_params = {"url": merchant_url}
+            tool_params = {"url": merchant_url, "merchant_id": merchant_id}
+        elif tool_name == "static_template":
+            tool_params = {"merchant_id": merchant_id, "merchant_name": merchant_name}
         elif tool_name == "extract_deals":
             tool_params = {
                 "html": last_html,
@@ -543,8 +543,8 @@ class AgentLoop:
         - SUCCESS: Continue to next step (or complete if last step)
         - TRANSIENT: Retry with exponential backoff (2^retry_count seconds)
         - RATE_LIMIT: Wait and retry
-        - NOT_FOUND: Try cache (google_cache) or other fallback
-        - TIMEOUT: Switch to slower tool (scrape_js) or fallback
+        - NOT_FOUND: Try JS scraper, then static template fallback
+        - TIMEOUT: Switch to slower tool (scrape_js), then static template fallback
         - PERMANENT: Request full replan with alternative tools
         
         Args:
@@ -567,11 +567,14 @@ class AgentLoop:
         phase_start = time.time()
         
         if tool_result.success:
-            if tool_name in ["scrape_html", "google_cache"]:
+            if tool_name in ["scrape_html", "scrape_js", "static_template"]:
                 html = tool_result.data.get("html", "") if tool_result.data else ""
-                if not html or len(html.strip()) < 100:
+                if (not html or len(html.strip()) < 100) and tool_name == "scrape_html":
                     decision = "SWITCH_TOOL:scrape_js"
                     reasoning = "HTML too short/empty, switching to JS scraper"
+                elif (not html or len(html.strip()) < 100) and tool_name == "scrape_js":
+                    decision = "SWITCH_TOOL:static_template"
+                    reasoning = "JS HTML too short/empty, switching to static template"
                 else:
                     is_last_step = step_in_plan >= len(current_plan.steps) - 1
                     if is_last_step:
@@ -592,7 +595,13 @@ class AgentLoop:
         
         elif tool_result.error_type == "TRANSIENT":
             # Transient errors (network hiccups, timeouts) - retry with backoff
-            if retry_count < 3:
+            if tool_name == "scrape_html":
+                decision = "SWITCH_TOOL:scrape_js"
+                reasoning = "HTTP scrape failed, switching to JS scraper"
+            elif tool_name == "scrape_js":
+                decision = "SWITCH_TOOL:static_template"
+                reasoning = "JS scrape failed, switching to static template"
+            elif retry_count < 3:
                 decision = "RETRY"
                 reasoning = f"Transient error, retrying (attempt {retry_count + 1})"
             else:
@@ -600,18 +609,26 @@ class AgentLoop:
                 reasoning = f"Max retries ({retry_count}) exceeded for transient errors"
         
         elif tool_result.error_type == "RATE_LIMIT":
-            # Rate limited - wait and retry
-            decision = "RETRY"
-            reasoning = "Rate limited (429/403), waiting 30s before retry"
+            if tool_name == "scrape_html":
+                decision = "SWITCH_TOOL:scrape_js"
+                reasoning = "HTTP scrape rate-limited, switching to JS scraper"
+            elif tool_name == "scrape_js":
+                decision = "SWITCH_TOOL:static_template"
+                reasoning = "JS scrape rate-limited, switching to static template"
+            else:
+                decision = "RETRY"
+                reasoning = "Rate limited, retrying current non-scraper tool"
         
         elif tool_result.error_type == "NOT_FOUND":
-            # Page not found - try cache if scraper
-            if tool_name in ["scrape_html"]:
-                decision = "SWITCH_TOOL:google_cache"
-                reasoning = "Page not found (404), switching to Google Cache"
-            elif tool_name == "google_cache":
+            if tool_name == "scrape_html":
+                decision = "SWITCH_TOOL:scrape_js"
+                reasoning = "Page not found via HTTP, trying JS scraper"
+            elif tool_name == "scrape_js":
+                decision = "SWITCH_TOOL:static_template"
+                reasoning = "Page not found via JS, using static template fallback"
+            elif tool_name == "static_template":
                 decision = "MERCHANT_FAILED"
-                reasoning = "Page not found even in cache, merchant unavailable"
+                reasoning = "Static template unavailable, merchant failed"
             else:
                 decision = "REPLAN"
                 reasoning = "Not-found error, replanning"
@@ -622,16 +639,22 @@ class AgentLoop:
                 decision = "SWITCH_TOOL:scrape_js"
                 reasoning = "HTTP scrape timed out, switching to JS-capable scraper"
             elif tool_name == "scrape_js":
-                decision = "SWITCH_TOOL:google_cache"
-                reasoning = "JS scrape timed out, trying cache"
+                decision = "SWITCH_TOOL:static_template"
+                reasoning = "JS scrape timed out, switching to static template"
             else:
                 decision = "REPLAN"
                 reasoning = "Tool timeout, replanning with alternatives"
         
         elif tool_result.error_type == "PERMANENT":
-            # Permanent errors - request replan
-            decision = "REPLAN"
-            reasoning = f"Permanent error in {tool_name}, replanning with alternatives"
+            if tool_name == "scrape_html":
+                decision = "SWITCH_TOOL:scrape_js"
+                reasoning = "HTTP scrape had permanent error, switching to JS scraper"
+            elif tool_name == "scrape_js":
+                decision = "SWITCH_TOOL:static_template"
+                reasoning = "JS scrape had permanent error, switching to static template"
+            else:
+                decision = "REPLAN"
+                reasoning = f"Permanent error in {tool_name}, replanning with alternatives"
         
         else:
             # Unknown error type - attempt replan

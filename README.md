@@ -5,7 +5,7 @@ A production-grade autonomous agent that audits GrabOn's merchant deal pages usi
 **Status:** ✅ Complete (19 core files + data)  
 **Python:** 3.9+  
 **Framework:** LangChain + LangGraph  
-**LLM Providers:** Groq, Gemini Flash, OpenRouter, Nvidia
+**LLM Providers:** Groq, Gemini Flash, OpenRouter
 
 ---
 
@@ -34,7 +34,7 @@ A production-grade autonomous agent that audits GrabOn's merchant deal pages usi
 │ • scrape_html            │    │ PLAN → Groq 70b       │
 │ • google_cache           │    │ EXTRACT → Gemini       │
 │ • scrape_js              │    │ CLASSIFY → Groq 8b     │
-│ • extract_deals          │    │ DETECT → Nvidia        │
+│ • extract_deals          │    │ DETECT → OpenRouter    │
 │ • db_lookup              │    │ (with fallback chains) │
 │ • classify_deals         │    │                        │
 │ • verify_coupon          │    │ COST TRACKER           │
@@ -128,7 +128,7 @@ CLASSIFICATION task
   └─ Fallback: Groq llama-3.3-70b-versatile
 
 IMPOSSIBLE_DETECTION task
-  ├─ Primary: Nvidia meta/llama-3.1-70b-instruct
+  ├─ Primary: OpenRouter meta-llama/llama-3.2-3b-instruct:free
   └─ Fallback: Groq llama-3.3-70b-versatile
 ```
 
@@ -181,7 +181,7 @@ Full session observability via `langsmith.traceable` decorators:
 **Tags & Metadata per trace:**
 - `merchant_id`, `merchant_name`
 - `tool_name`, `phase` (PLAN/ACT/OBSERVE/DECIDE)
-- `llm_provider` (groq, gemini, openrouter, nvidia)
+- `llm_provider` (groq, gemini, openrouter)
 - `tokens_used`, `cost_usd`
 - `error_type` (if failed)
 - `decision_made` (for DECIDE phase)
@@ -203,14 +203,16 @@ python -m venv venv
 venv\Scripts\activate
 
 # Install dependencies
-pip install -r requirements.txt
-
-# Install Playwright browsers (for JS scraping)
-playwright install chromium
+python.exe -m pip install --upgrade pip
+pip install -r requirements.txt / python -m pip install -r requirements.txt
+playwright install chromium   ## Install Playwright browsers (for JS scraping)
 
 # Copy and configure environment
 copy .env.example .env
-# → Edit .env and fill in your API keys
+groq api key= https://console.groq.com/keys
+gemini api key = https://aistudio.google.com/api-keys
+openrouter api key=https://openrouter.ai/workspaces/default/keys
+langsmith = https://smith.langchain.com/o/8223b96e-077f-4c0d-baca-ab265fa8107b/projects 
 ```
 
 ### 2. Run Full Audit
@@ -255,7 +257,6 @@ GrabOn's "internal database" with 19 merchants' deals. **Intentional gaps for te
 GROQ_API_KEY=your_key
 GOOGLE_API_KEY=your_key
 OPENROUTER_API_KEY=your_key
-NVIDIA_API_KEY=your_key
 
 # LangSmith Tracing
 LANGCHAIN_TRACING_V2=true
@@ -470,7 +471,7 @@ Some tools are async (Playwright), others sync (httpx). Registry needed to suppo
 Pydantic v2 doesn't auto-encode datetime to ISO string in JSON. **Solved:** Added `Config.json_encoders = {datetime: lambda v: v.isoformat()}` to state models.
 
 ### LLM Provider Initialization
-All 4 providers need different environment variable names and initialization. **Solved:** Created `LLMRouter` class that centralizes initialization and fallback logic in one place.
+All 3 providers need different environment variable names and initialization. **Solved:** Created `LLMRouter` class that centralizes initialization and fallback logic in one place.
 
 ### Terminal UI Refresh Rate
 Live Rich dashboard was updating too fast, making it hard to read. **Solved:** Update only after major events (phase completion), not every sub-step.

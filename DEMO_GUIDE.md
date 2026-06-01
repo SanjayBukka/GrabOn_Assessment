@@ -556,7 +556,7 @@ TOTAL for all 20 merchants: ~7-10 minutes
   - DEAL_EXTRACTION → Gemini Flash (good at parsing)
   - CLASSIFICATION → Groq llama-3.1-8b (cheap, fast)
   - FALLBACK → OpenRouter (free tier fallback)
-  - VERIFICATION → Nvidia (not used in basic flow)
+  - DETECTION → OpenRouter (also used as fallback)
 - **Why different models?**
   - Planning needs reasoning → use big model
   - Classification is simple → use small model (cheaper)

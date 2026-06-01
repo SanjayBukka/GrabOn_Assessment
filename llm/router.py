@@ -3,9 +3,10 @@ Multi-LLM router with fallback strategy.
 
 Routes different tasks to appropriate LLM providers:
 - PLANNING → Groq (fast, good reasoning)
-- DEAL_EXTRACTION → Gemini Flash (good at HTML parsing)
+- DEAL_EXTRACTION → OpenRouter (avoids Gemini free-tier quota issues)
 - CLASSIFICATION → Groq (cheap, fast)
-- FALLBACK_EXTRACTION → Groq (fallback tier)
+- FALLBACK_EXTRACTION → OpenRouter (fallback tier)
+- IMPOSSIBLE_DETECTION → OpenRouter (detection task)
 """
 
 import json
@@ -38,9 +39,10 @@ class LLMRouter:
     
     Primary routing:
     - PLANNING → Groq (llama-3.1-70b-versatile)
-    - DEAL_EXTRACTION → Gemini Flash (gemini-1.5-flash)
+    - DEAL_EXTRACTION → OpenRouter, then Groq, then Gemini
     - CLASSIFICATION → Groq (llama-3.1-8b-instant) - cheap
-    - FALLBACK_EXTRACTION → Groq (fallback tier)
+    - FALLBACK_EXTRACTION → OpenRouter (fallback tier)
+    - IMPOSSIBLE_DETECTION → OpenRouter
     """
     
     def __init__(self, cost_tracker: Optional[CostTracker] = None):
@@ -105,20 +107,6 @@ class LLMRouter:
         else:
             self.openrouter = None
 
-        nvidia_key = os.getenv("NVIDIA_API_KEY")
-        if nvidia_key and not nvidia_key.startswith("your_"):
-            from langchain_openai import ChatOpenAI
-
-            self.nvidia = ChatOpenAI(
-                model="meta/llama-3.1-70b-instruct",
-                openai_api_key=nvidia_key,
-                openai_api_base="https://integrate.api.nvidia.com/v1",
-                temperature=0.2,
-                timeout=30,
-            )
-        else:
-            self.nvidia = None
-    
     def get_llm(self, task_type: str) -> Any:
         """
         Get the primary LLM for a task type.
@@ -140,11 +128,14 @@ class LLMRouter:
             raise ValueError("Groq provider not configured")
         
         elif task == TaskType.DEAL_EXTRACTION:
-            if self.gemini_flash:
-                return self.gemini_flash
+            if self.openrouter:
+                return self.openrouter
             elif self.groq_large:
-                logger.warning("Gemini unavailable, falling back to Groq for extraction")
+                logger.warning("OpenRouter unavailable, falling back to Groq for extraction")
                 return self.groq_large
+            elif self.gemini_flash:
+                logger.warning("OpenRouter/Groq unavailable, using Gemini for extraction")
+                return self.gemini_flash
             raise ValueError("No extraction provider available")
         
         elif task == TaskType.CLASSIFICATION:
@@ -164,9 +155,9 @@ class LLMRouter:
             raise ValueError("No fallback provider available")
         
         elif task == TaskType.IMPOSSIBLE_DETECTION:
-            if self.nvidia:
-                logger.info("Using Nvidia for detection task")
-                return self.nvidia
+            if self.openrouter:
+                logger.info("Using OpenRouter for detection task")
+                return self.openrouter
             elif self.groq_large:
                 logger.info("Using Groq large fallback for detection task")
                 return self.groq_large
@@ -243,10 +234,17 @@ class LLMRouter:
         max_tokens: int,
     ) -> tuple[str, int, float, str]:
         """Fallback for deal extraction when primary fails."""
-        logger.info("Attempting fallback extraction with Groq small")
-        try:
-            if self.groq_small:
-                response = self.groq_small.invoke([HumanMessage(content=prompt)])
+        logger.info("Attempting fallback extraction")
+        fallback_chain = [
+            ("Groq", self.groq_small or self.groq_large, "groq"),
+            ("Gemini-Flash", self.gemini_flash, "gemini_flash"),
+        ]
+
+        for provider_name, llm, cost_provider in fallback_chain:
+            if not llm:
+                continue
+            try:
+                response = llm.invoke([HumanMessage(content=prompt)])
                 response_text = response.content
                 
                 input_tokens = len(prompt.split()) * 1.3
@@ -255,17 +253,18 @@ class LLMRouter:
                 output_tokens = int(output_tokens)
                 
                 call_cost = self.cost_tracker.record_call(
-                    provider="groq",
+                    provider=cost_provider,
                     input_tokens=input_tokens,
                     output_tokens=output_tokens,
                     task_type=TaskType.DEAL_EXTRACTION.value,
                 )
                 
-                logger.info(f"Fallback extraction succeeded with Groq")
-                return response_text, input_tokens + output_tokens, call_cost.cost_usd, "Groq"
-        except Exception as e:
-            logger.error(f"Fallback extraction failed: {e}")
-            raise
+                logger.info(f"Fallback extraction succeeded with {provider_name}")
+                return response_text, input_tokens + output_tokens, call_cost.cost_usd, provider_name
+            except Exception as e:
+                logger.warning(f"Fallback extraction failed with {provider_name}: {e}")
+
+        raise ValueError("No extraction fallback provider available")
     
     def _fallback_planning(
         self,
@@ -346,8 +345,6 @@ class LLMRouter:
             return "Gemini-Flash"
         elif llm == self.openrouter:
             return "OpenRouter"
-        elif llm == self.nvidia:
-            return "Nvidia"
         return "Unknown"
 
     def _get_cost_provider_name(self, provider_name: str) -> str:
@@ -359,8 +356,6 @@ class LLMRouter:
             return "gemini_flash"
         if provider.startswith("openrouter"):
             return "openrouter"
-        if provider.startswith("nvidia"):
-            return "nvidia"
         return provider
 
     def shadow_test(self, prompt: str, task_type: str) -> dict:

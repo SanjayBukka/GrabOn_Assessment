@@ -9,6 +9,8 @@ DealRecords with confidence scores.
 import json
 import logging
 import re
+from datetime import datetime
+from html import unescape
 from typing import Optional
 
 from bs4 import BeautifulSoup
@@ -62,6 +64,30 @@ def extract_deals(
             "extraction_confidence": 0.0,
             "deals_found_count": 0,
             "llm_provider_used": "N/A",
+            "tokens_used": 0,
+            "cost_usd": 0.0,
+        }
+
+    structured_deals = _extract_grabon_structured_deals(html)
+    if structured_deals:
+        logger.info(
+            f"Extracted {len(structured_deals)} structured GrabOn deals from {merchant_name}"
+        )
+        return {
+            "deals": structured_deals,
+            "extraction_confidence": 1.0,
+            "deals_found_count": len(structured_deals),
+            "llm_provider_used": "HTML_STRUCTURED",
+            "tokens_used": 0,
+            "cost_usd": 0.0,
+        }
+    if _has_grabon_coupon_cards(html):
+        logger.info(f"No real coupon codes found in structured GrabOn cards for {merchant_name}")
+        return {
+            "deals": [],
+            "extraction_confidence": 1.0,
+            "deals_found_count": 0,
+            "llm_provider_used": "HTML_STRUCTURED",
             "tokens_used": 0,
             "cost_usd": 0.0,
         }
@@ -251,14 +277,127 @@ def _extract_attribute_codes(soup: BeautifulSoup) -> list[str]:
     return codes
 
 
+def _extract_grabon_structured_deals(html: str) -> list[DealRecord]:
+    """Extract live GrabOn coupon cards directly from rendered HTML."""
+    soup = BeautifulSoup(html, "lxml")
+    deals = []
+    seen_codes = set()
+
+    for card in soup.select(".gc-box"):
+        if _is_expired_card(card):
+            continue
+
+        code = _extract_card_code(card)
+        if not code or code in seen_codes:
+            continue
+
+        title = _clean_text(card.select_one("p.title"))
+        discount = _clean_text(card.select_one(".gcbr > span"))
+        details = _clean_text(card.select_one(".cpn-det-v2"))
+
+        deals.append(DealRecord(
+            code=code,
+            discount=discount,
+            description=details or title,
+            expiry=_extract_card_expiry(card),
+            min_order=_parse_min_order(f"{title} {details}"),
+            source="LIVE",
+        ))
+        seen_codes.add(code)
+
+    return deals
+
+
+def _has_grabon_coupon_cards(html: str) -> bool:
+    """Detect whether this is a rendered GrabOn merchant page with coupon cards."""
+    soup = BeautifulSoup(html, "lxml")
+    return bool(soup.select(".gc-box"))
+
+
+def _is_expired_card(card) -> bool:
+    """Return true for expired coupon cards."""
+    card_type = (card.get("data-gcpn-type") or "").lower()
+    class_names = " ".join(card.get("class", [])).lower()
+    return "expired" in card_type or "expired" in class_names
+
+
+def _extract_card_code(card) -> str:
+    """Extract a real coupon code from a GrabOn coupon card."""
+    candidates = []
+
+    for attr_name in ["data-code", "data-inner-text"]:
+        for tag in card.select(f"[{attr_name}]"):
+            value = tag.get(attr_name)
+            if value:
+                candidates.append(value)
+
+    for tag in card.select("[data-type='cpn-code-text']"):
+        candidates.append(tag.get_text(" ", strip=True))
+
+    for candidate in candidates:
+        code = _normalize_coupon_code(candidate)
+        if code:
+            return code
+
+    return ""
+
+
+def _normalize_coupon_code(value) -> str:
+    """Normalize and validate real coupon codes, excluding UI placeholders."""
+    code = _clean_optional_str(value).upper()
+    if not code:
+        return ""
+    ignored_codes = {
+        "ACTIVATE", "ACTIVATEOFFER", "ACTIVATED", "APPLIED", "CODE", "COUPON",
+        "COUPONS", "DEAL", "DEALS", "EXPIRED", "GETCOUPON", "GETDEAL",
+        "OFFER", "OFFERS", "SHOWCOUPONCODE",
+        "CODEACTIVATED", "CODEAPPLIED", "DEALACTIVATED", "DISCOUNTAPPLIED",
+        "ENJOYSAVINGS", "FREESHIPPINGUNLOCKED", "NOCOUPONNEEDED",
+        "PRICEREDUCED", "STARTSHOPPING",
+    }
+    code = re.sub(r"[^A-Z0-9]", "", code)
+    if code in ignored_codes:
+        return ""
+    if code.startswith("OFFER"):
+        return ""
+    if not re.fullmatch(r"[A-Z0-9]{4,24}", code):
+        return ""
+    if not any(char.isdigit() for char in code) and len(code) < 5:
+        return ""
+    return code
+
+
+def _clean_text(tag) -> str:
+    """Convert a BeautifulSoup tag into compact readable text."""
+    if not tag:
+        return ""
+    text = unescape(tag.get_text(" ", strip=True))
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def _extract_card_expiry(card) -> str:
+    """Extract an expiry date when present; otherwise use a future audit date."""
+    text = card.get_text(" ", strip=True)
+    match = re.search(
+        r"(?:valid|expires?|ends?)\D{0,20}(\d{1,2})[/-](\d{1,2})[/-](\d{2,4})",
+        text,
+        flags=re.IGNORECASE,
+    )
+    if not match:
+        return "2026-12-31"
+
+    day, month, year = match.groups()
+    year = f"20{year}" if len(year) == 2 else year
+    try:
+        return datetime(int(year), int(month), int(day)).strftime("%Y-%m-%d")
+    except ValueError:
+        return "2026-12-31"
+
+
 def _extract_script_coupon_codes(html: str) -> list[str]:
     """Extract coupon codes embedded in GrabOn JavaScript payloads."""
     codes = re.findall(r'"CouponCode"\s*:\s*"([^"]+)"', html)
     codes.extend(re.findall(r"'CouponCode'\s*:\s*'([^']+)'", html))
-    codes.extend(
-        f"OFFER{coupon_id}"
-        for coupon_id in re.findall(r'"CouponID"\s*:\s*(\d+).*?"CouponCode"\s*:\s*""', html)
-    )
     return [code for code in codes if code]
 
 
@@ -271,12 +410,10 @@ def _dedupe_codes(codes: list[str]) -> list[str]:
     """Clean and de-duplicate coupon code candidates while preserving order."""
     seen = set()
     deduped = []
-    ignored_codes = {"ACTIVATE", "ACTIVATED", "APPLIED", "COUPON", "COUPONS", "OFFER", "OFFERS"}
+    ignored_codes = {"ACTIVATE", "ACTIVATED", "APPLIED", "CODE", "COUPON", "COUPONS", "OFFER", "OFFERS"}
     for code in codes:
-        clean_code = _clean_optional_str(code).upper()
+        clean_code = _normalize_coupon_code(code)
         if not clean_code or clean_code in seen or clean_code in ignored_codes:
-            continue
-        if not re.fullmatch(r"[A-Z0-9]{5,15}", clean_code):
             continue
         seen.add(clean_code)
         deduped.append(clean_code)

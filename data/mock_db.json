@@ -1,24 +1,2272 @@
 {
-  "version": "2024-01-15",
+  "version": "2026-06-01-live-snapshot",
+  "source": "GrabOn merchant pages scraped on 2026-06-01",
   "deals": [
-    {"merchant_id": "amazon", "code": "AMZNEW10", "discount": "10%", "description": "10% off on electronics", "expiry": "2026-12-31", "min_order": 500, "status": "active"},
-    {"merchant_id": "amazon", "code": "PRIMESAVE", "discount": "15%", "description": "15% off for Prime members", "expiry": "2026-12-31", "min_order": 0, "status": "active"},
-    {"merchant_id": "myntra", "code": "MYNTRA30", "discount": "30%", "description": "30% off on fashion", "expiry": "2024-05-15", "min_order": 799, "status": "active"},
-    {"merchant_id": "myntra", "code": "STYLE20", "discount": "20%", "description": "20% off sitewide", "expiry": "2026-12-31", "min_order": 999, "status": "active"},
-    {"merchant_id": "zomato", "code": "ZOM100", "discount": "₹100 off", "description": "Flat Rs 100 off on orders above 299", "expiry": "2026-12-31", "min_order": 299, "status": "active"},
-    {"merchant_id": "zomato", "code": "ZOMGOLD", "discount": "40%", "description": "40% off for Gold members", "expiry": "2026-12-31", "min_order": 0, "status": "active"},
-    {"merchant_id": "swiggy", "code": "SWIGGY40", "discount": "40%", "description": "40% off up to Rs 80", "expiry": "2026-12-31", "min_order": 199, "status": "active"},
-    {"merchant_id": "flipkart", "code": "FLIPNEW", "discount": "25%", "description": "25% off for new users", "expiry": "2026-12-31", "min_order": 0, "status": "active"},
-    {"merchant_id": "nykaa", "code": "NYKAA20", "discount": "20%", "description": "20% off on beauty", "expiry": "2026-12-31", "min_order": 699, "status": "active"},
-    {"merchant_id": "ajio", "code": "AJIO30", "discount": "30%", "description": "30% off on brands", "expiry": "2026-12-31", "min_order": 1299, "status": "active"},
-    {"merchant_id": "makemytrip", "code": "MMTFLIGHT", "discount": "₹500 off", "description": "Rs 500 off on domestic flights", "expiry": "2026-12-31", "min_order": 3000, "status": "active"},
-    {"merchant_id": "puma", "code": "PUMA25", "discount": "25%", "description": "25% off on shoes", "expiry": "2026-12-31", "min_order": 2999, "status": "active"},
-    {"merchant_id": "boat", "code": "BOATSAVE", "discount": "15%", "description": "15% off on earbuds", "expiry": "2026-12-31", "min_order": 999, "status": "active"},
-    {"merchant_id": "cred", "code": "CREDCASH", "discount": "₹200 off", "description": "Rs 200 cashback on bill payments", "expiry": "2026-12-31", "min_order": 1000, "status": "active"},
-    {"merchant_id": "meesho", "code": "MEESHO99", "discount": "₹99 off", "description": "Rs 99 off on first order", "expiry": "2026-12-31", "min_order": 0, "status": "active"},
-    {"merchant_id": "blinkit", "code": "BLINK50", "discount": "₹50 off", "description": "Rs 50 off on groceries", "expiry": "2026-12-31", "min_order": 299, "status": "active"},
-    {"merchant_id": "tatacliq", "code": "TATA15", "discount": "15%", "description": "15% off on Tata products", "expiry": "2026-12-31", "min_order": 1499, "status": "active"},
-    {"merchant_id": "dominos", "code": "DOM50", "discount": "₹50 off", "description": "Rs 50 off on pizza orders", "expiry": "2026-12-31", "min_order": 299, "status": "active"},
-    {"merchant_id": "netmeds", "code": "MED20", "discount": "20%", "description": "20% off on medicines", "expiry": "2026-12-31", "min_order": 599, "status": "active"}
-  ]
+    {
+      "merchant_id": "myntra",
+      "code": "MYNTRA500",
+      "discount": "End Of Reason Sale",
+      "description": "Myntra End Of Reason Sale is LIVE NOW Get 50% - 90% OFF during the sale period Get an extra Rs 500 OFF on orders above Rs 1799 Applicable to women's lifestyle, men's lifestyle, and kids' lifestyle Applicable for Myntra New Users only Additional 10% OFF on top leading credit cards Install the Myntra APP & apply the coupon code at the checkout page MYNTRA500 Valid Till: Jun 11, 2026 (THU)",
+      "expiry": "2026-01-01",
+      "min_order": 50,
+      "status": "demo_stale"
+    },
+    {
+      "merchant_id": "myntra",
+      "code": "FWDEORS15",
+      "discount": "Up To 95% OFF",
+      "description": "Avail up to 80% OFF during the end of reason sale Get 15% OFF on orders above Rs 300 Maximum discount of up to Rs 150 This code applies to selected products FWDEORS15 Valid Till: Jun 11, 2026 (THU)",
+      "expiry": "2026-01-01",
+      "min_order": 80,
+      "status": "demo_stale"
+    },
+    {
+      "merchant_id": "myntra",
+      "code": "MYNTRA300",
+      "discount": "Up To 90% OFF",
+      "description": "Discount up to 90% OFF + Rs 300 OFF Applies To Fashion, Footwear, Accessories & more Order Value Rs 899 & Above Valid For New Users Shop for sitewide products and get up to 90% OFF. Also, get an extra Rs 300 OFF using a code. The minimum cart value is required of Rs 899 & above. Available for women, men, boys, and girls. This Myntra coupon is valid for the first order purchase Get 10% cashback on selected bank cards Code is accessible on the Myntra APP only Note: All the coupon code in the Myntra will be applicable on selected products & user accounts MYNTRA300 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-01-01",
+      "min_order": 90,
+      "status": "demo_stale"
+    },
+    {
+      "merchant_id": "myntra",
+      "code": "MYNTRASAVE",
+      "discount": "FLAT 25% OFF",
+      "description": "Flat 25% OFF on your orders Minimum cart value is required of Rs 300 Maximum discount of up to Rs 200 Applicable for new users only Valid on selected products Redeem the coupon code at the checkout page Note: In Myntra all the coupons will be applicable on selected products & user accounts MYNTRASAVE Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-01-01",
+      "min_order": 25,
+      "status": "demo_stale"
+    },
+    {
+      "merchant_id": "myntra",
+      "code": "STACKUP",
+      "discount": "Rs 800 OFF",
+      "description": "Get up to 70% OFF on your orders Extra Rs 400 OFF on orders above Rs 2499 Extra Rs 800 OFF on orders above Rs 5000 Categories available are Men's Lifestyle, Women's Lifestyle, Kid's Lifestyle & more Code is accessible to all users STACKUP Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-01-01",
+      "min_order": 70,
+      "status": "demo_stale"
+    },
+    {
+      "merchant_id": "myntra",
+      "code": "FWDNEW200",
+      "discount": "EXTRA ₹200 OFF",
+      "description": "Get up to 80% OF F on your orders Additional Rs 200 OFF on orders above Rs 399 Shop by categories Tshirts Tops Shirts Dresses Shorts Skirts Flip Flops Trousers Code applies to new users only FWDNEW200 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-01-01",
+      "min_order": 80,
+      "status": "demo_stale"
+    },
+    {
+      "merchant_id": "myntra",
+      "code": "NORETURNX",
+      "discount": "FLAT 15% OFF",
+      "description": "Flat 15% OFF on your orders The minimum purchase amount of Rs 399 Enter the coupon code at the checkout page NORETURNX Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-01-01",
+      "min_order": 15,
+      "status": "demo_stale"
+    },
+    {
+      "merchant_id": "myntra",
+      "code": "MYNTRAHALFPRICE",
+      "discount": "50% OFF",
+      "description": "Avail 50% OFF on a minimum purchase of Rs 150 The code is valid for first-time users only Install the Myntra app & apply the coupon code at the checkout page The coupon code is applicable to selected products Applicable for new users only MYNTRAHALFPRICE Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-01-01",
+      "min_order": 50,
+      "status": "demo_stale"
+    },
+    {
+      "merchant_id": "myntra",
+      "code": "MAKEUPOFF",
+      "discount": "Extra 25% OFF",
+      "description": "Get up to 60% OFF on beauty products Extra 25% OFF on orders above Rs 199 The offer is accessible to all users MAKEUPOFF Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-01-01",
+      "min_order": 60,
+      "status": "demo_stale"
+    },
+    {
+      "merchant_id": "myntra",
+      "code": "SPORTS20OFF",
+      "discount": "20% OFF",
+      "description": "Shop for Nike, Puma, adidas, Reebok, Vans and more brands. Shop now and Flat 20% OFF on the latest sports wear at Myntra. Minimum order value should be Rs 799 Apply Myntra sportswear coupons to avail the discount. Shop now. SPORTS20OFF Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-01-01",
+      "min_order": 20,
+      "status": "demo_stale"
+    },
+    {
+      "merchant_id": "myntra",
+      "code": "FWDU15",
+      "discount": "[DEMO CHANGED] Up To 85% OFF",
+      "description": "[DEMO UPDATED] Avail up to 70% OFF during the fashion sale Get 15% OFF on orders above Rs 300 Maximum discount of up to Rs 150 This code is applicable to selected products FWDU15 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 70,
+      "status": "active"
+    },
+    {
+      "merchant_id": "myntra",
+      "code": "MYNTRAEXCLUSIVE",
+      "discount": "[DEMO CHANGED] FLAT 30% OFF",
+      "description": "[DEMO UPDATED] Flat 30% OFF on your orders To avail the discount, the minimum purchase amount should be Rs 300 The coupon code applies to first-time users MYNTRAEXCLUSIVE Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 30,
+      "status": "active"
+    },
+    {
+      "merchant_id": "myntra",
+      "code": "FOOTWEAR10",
+      "discount": "[DEMO CHANGED] Up To 80% OFF",
+      "description": "[DEMO UPDATED] Avail up to 70% OFF on footwear collections Extra 10% OFF when you apply the coupon code at the checkout page Shop by categories Casual Shoes Formal Shoes Flip Flops Sandals Boots Sports Shoes Flats Heels FOOTWEAR10 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 70,
+      "status": "active"
+    },
+    {
+      "merchant_id": "myntra",
+      "code": "EXTRA4YOU",
+      "discount": "[DEMO CHANGED] Up To 85% OFF",
+      "description": "[DEMO UPDATED] Avail up to 70% OFF on all orders Apply the coupon code at the checkout page & get an extra 15% OFF Code is accessible to new users only EXTRA4YOU Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 70,
+      "status": "active"
+    },
+    {
+      "merchant_id": "myntra",
+      "code": "FWDUB15",
+      "discount": "[DEMO CHANGED] Extra 15% OFF",
+      "description": "[DEMO UPDATED] Avail an extra 15% OFF on your orders The minimum cart value is required to be Rs 300 Maximum discount of up to Rs 150 FWDUB15 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 15,
+      "status": "active"
+    },
+    {
+      "merchant_id": "myntra",
+      "code": "CROCS10",
+      "discount": "[DEMO CHANGED] FLAT 10% OFF",
+      "description": "[DEMO UPDATED] Flat 10% OFF on Crocs products Minimum cart value is not required Redeem the coupon code at the checkout page CROCS10 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 10,
+      "status": "active"
+    },
+    {
+      "merchant_id": "myntra",
+      "code": "EXTRA50",
+      "discount": "[DEMO CHANGED] EXTRA ₹50 OFF",
+      "description": "[DEMO UPDATED] Get an extra Rs 50 OFF on your orders To avail the discount, the minimum cart value of Rs 400 Redeem the discount code at the checkout page EXTRA50 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 50,
+      "status": "active"
+    },
+    {
+      "merchant_id": "myntra",
+      "code": "MYN15",
+      "discount": "[DEMO CHANGED] Up To 75% OFF",
+      "description": "[DEMO UPDATED] Get up to 60% OFF on H&M products Extra 15% OFF on purchase of Rs 1999 The promo code is accessible to old users MYN15 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 60,
+      "status": "active"
+    },
+    {
+      "merchant_id": "myntra",
+      "code": "NOREASON10",
+      "discount": "Extra 10% OFF",
+      "description": "Get an extra 10% OFF on the purchase of 2 items Valid on selected styles Redeem the discount code at the checkout page NOREASON10 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 10,
+      "status": "active"
+    },
+    {
+      "merchant_id": "myntra",
+      "code": "FTW15OFF",
+      "discount": "FLAT 15% OFF",
+      "description": "​​​​​​​Flat 15% OFF on your orders Code is accessible on the Footwear collections Shop by Casual Shoes Formal Shoes Boots FTW15OFF Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 15,
+      "status": "active"
+    },
+    {
+      "merchant_id": "myntra",
+      "code": "TRYSNITCH",
+      "discount": "FLAT 15% OFF",
+      "description": "Flat 15% OF F up to Rs 150 on your orders The minimum order value of Rs 1999 Valid for selected users accounts only TRYSNITCH Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 15,
+      "status": "active"
+    },
+    {
+      "merchant_id": "myntra",
+      "code": "INSIDERMORE10",
+      "discount": "10% OFF",
+      "description": "Avail 10% OFF up to Rs 300 on your orders The minimum cart value of Rs 1199 This coupon code is valid for Myntra insider users only INSIDERMORE10 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 10,
+      "status": "active"
+    },
+    {
+      "merchant_id": "myntra",
+      "code": "NORETURN5N",
+      "discount": "Up To 75% OFF",
+      "description": "Get up to 70% OFF on all orders Extra 5% OFF when you apply the coupon code at the checkout page Offer is accessible to everyone NORETURN5N Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 70,
+      "status": "active"
+    },
+    {
+      "merchant_id": "myntra",
+      "code": "TRYNEWBEAUTY",
+      "discount": "FLAT 15% OFF",
+      "description": "Shop now & get 15% OFF on the purchase of beauty products Collections Perfume Lipstick Concealer Face Wash and Cleanser Code is valid on the minimum purchase amount of Rs 999 TRYNEWBEAUTY Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 15,
+      "status": "active"
+    },
+    {
+      "merchant_id": "myntra",
+      "code": "NEEMANSNEW10",
+      "discount": "Up To 70% OFF",
+      "description": "Avail up to 60% OFF on the purchase of Neeman's footwear An additional 10% OFF on your orders Applicable for all users NEEMANSNEW10 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 60,
+      "status": "active"
+    },
+    {
+      "merchant_id": "myntra",
+      "code": "TRYETHNIC15",
+      "discount": "15% OFF",
+      "description": "Get 15% OFF up to Rs 300 OFF on ethnic wear collections ​​​​​​​Valid on selected user account Apply the discount promo code at the checkout page TRYETHNIC15 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 15,
+      "status": "active"
+    },
+    {
+      "merchant_id": "myntra",
+      "code": "TRYNEWPURVAJA",
+      "discount": "FLAT 5% OFF",
+      "description": "Flat 5% OFF on your orders The minimum order value of Rs 999 Offer is accessible to all users TRYNEWPURVAJA Existing User Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 5,
+      "status": "active"
+    },
+    {
+      "merchant_id": "myntra",
+      "code": "WOMENETHNICNEW",
+      "discount": "Up To 85% OFF",
+      "description": "Shop now & get up to 70% OFF on your orders An additional flat 15% OFF on orders above Rs 999 Elevate your style with top-notch brands like Sangria, Anouk, Vishudh, HERE&NOW, Biba, KALINI, all about you, Melange by Lifestyle , and more WOMENETHNICNEW Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 70,
+      "status": "active"
+    },
+    {
+      "merchant_id": "myntra",
+      "code": "TRYJJ15",
+      "discount": "Up To 85% OFF",
+      "description": "Save up to 70% on your orders, and if you apply the code, you can enjoy an extra 15% off ​​​​​​​To proceed with your order, ensure that your cart's total is higher than Rs 999 This coupon code is applicable on jack & jones brand TRYJJ15",
+      "expiry": "2026-12-31",
+      "min_order": 70,
+      "status": "active"
+    },
+    {
+      "merchant_id": "zomato",
+      "code": "GET100",
+      "discount": "FLAT ₹100 OFF",
+      "description": "Flat Rs 100 OFF on Restaurant-style meals. No minimum cart value s required T&C apply GET100 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 100,
+      "status": "active"
+    },
+    {
+      "merchant_id": "zomato",
+      "code": "TASTY",
+      "discount": "FLAT 10% OFF",
+      "description": "Save on delicious food treats at the best price Flat 10% OFF on your order Minimum cart value is Rs 199 Valid for all users TASTY Existing User Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 10,
+      "status": "active"
+    },
+    {
+      "merchant_id": "zomato",
+      "code": "GET150",
+      "discount": "FLAT ₹150 OFF",
+      "description": "Order delicious meals from selected restaurants and get Rs 150 OFF on your order. Apply the coupon code at checkout to unlock the discount instantly. Offer valid only on selected restaurant partners. GET150 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 150,
+      "status": "active"
+    },
+    {
+      "merchant_id": "zomato",
+      "code": "ONECARD3",
+      "discount": "FLAT 3% OFF",
+      "description": "Flat 3% OFF using OneCard Credit Card. Minimum order value to be Rs 399 Offer can be availed on every order ONECARD3 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 3,
+      "status": "active"
+    },
+    {
+      "merchant_id": "zomato",
+      "code": "GET125",
+      "discount": "FLAT ₹125 OFF",
+      "description": "Flat Rs 125 OFF on delicious orders Offer valid on selected restaurants Grab it now. GET125 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 125,
+      "status": "active"
+    },
+    {
+      "merchant_id": "zomato",
+      "code": "AMZNPAY3",
+      "discount": "3% CASHBACK",
+      "description": "Get 3% Cashback on Amazon Pay Balance Cards Minimum order value should be Rs 4 99 . Cashback will be credited in Zomato money after order delivery AMZNPAY3 Existing User Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 3,
+      "status": "active"
+    },
+    {
+      "merchant_id": "zomato",
+      "code": "GET200",
+      "discount": "FLAT ₹200 OFF",
+      "description": "Get flat Rs 200 OFF on your food orders Offer valid on select restaurants. ​​​​​​​ GET200 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 200,
+      "status": "active"
+    },
+    {
+      "merchant_id": "zomato",
+      "code": "IDBIFEAST",
+      "discount": "HOT DEAL",
+      "description": "Get Rs 75 discount using IDBI Bank Credit Cards. Minimum cart value should be Rs 2 99 or above. Promo can be redeemed once per day and twice per calendar month. IDBIFEAST Existing User",
+      "expiry": "2026-12-31",
+      "min_order": 75,
+      "status": "active"
+    },
+    {
+      "merchant_id": "zomato",
+      "code": "PHONEPERUPAYCC",
+      "discount": "Up To Rs.100 OFF",
+      "description": "Grab upto Rs 100 cashback on using Rupay Credit Card on PhonePe UPI. Offer valid on minimum transaction value of Rs 300 or above. Minimum assured cashback of Rs 18 will be available via scratch card on phonepe. Offer valid once per user per day. PHONEPERUPAYCC Existing User",
+      "expiry": "2026-12-31",
+      "min_order": 100,
+      "status": "active"
+    },
+    {
+      "merchant_id": "zomato",
+      "code": "HDFCNEW",
+      "discount": "60% OFF",
+      "description": "Get 60% OFF upto Rs 120 on Zomato Online Food Ordering via HDFC Bank Cards. Valid only for NEW Users. HDFCNEW Existing User",
+      "expiry": "2026-12-31",
+      "min_order": 60,
+      "status": "active"
+    },
+    {
+      "merchant_id": "zomato",
+      "code": "LAZYPAY75",
+      "discount": "Rs.75 CASHBACK",
+      "description": "Verified Today. Grab extra Rs 75 LazyPay cashback on first transaction using Pay Later option on zomato Minimum order amount - Rs 160 Promo is applicable only once on payment through LazyPay. LAZYPAY75 Existing User",
+      "expiry": "2026-12-31",
+      "min_order": 75,
+      "status": "active"
+    },
+    {
+      "merchant_id": "zomato",
+      "code": "PAYTMPOSTPAID",
+      "discount": "Rs.100 CASHBACK",
+      "description": "Zomato Paytm Offer: Flat 50% Off + Upto Rs 100 Paytm Cashback Using Paytm Postpaid Minimum order should be Rs 159 Coupon can be redeemed once per user. PAYTMPOSTPAID",
+      "expiry": "2026-12-31",
+      "min_order": 50,
+      "status": "active"
+    },
+    {
+      "merchant_id": "zomato",
+      "code": "SIMPLNEW",
+      "discount": "FLAT ₹30 OFF",
+      "description": "Grab Rs 30 OFF on zomato using simpl pay option. Minimum order value should be Rs 199 & more. Pay via Simpl wallet to get a maximum discount: Rs 30.​​​​​​​ Offer valid for new users. SIMPLNEW",
+      "expiry": "2026-12-31",
+      "min_order": 30,
+      "status": "active"
+    },
+    {
+      "merchant_id": "zomato",
+      "code": "AMEXEPAY",
+      "discount": "Up To Rs.500 OFF",
+      "description": "Get Flat Rs 100 off on order when paying via American Express cards, issued by IndusInd. Valid on minimum transaction value of Rs 2 00 or above. Offer Valid Once Per Customer During Campaign Period. ​​​​​Maximum discount is Rs 100. AMEXEPAY Existing User",
+      "expiry": "2026-12-31",
+      "min_order": 100,
+      "status": "active"
+    },
+    {
+      "merchant_id": "zomato",
+      "code": "ZOMPAYTM",
+      "discount": "40% OFF",
+      "description": "Get 40% Off up to Rs 80 + Rs 20 to Rs 75 Paytm Cashback Maximum discount per transaction will be Rs 80 Minimum order value should be Rs 199 ZOMPAYTM",
+      "expiry": "2026-12-31",
+      "min_order": 40,
+      "status": "active"
+    },
+    {
+      "merchant_id": "zomato",
+      "code": "SIMPLPARTY",
+      "discount": "20% OFF",
+      "description": "Get 20% OFF up to Rs 80 on your orders A minimum order value of Rs 199 is needed Valid only at select restaurants and select users SIMPLPARTY",
+      "expiry": "2026-12-31",
+      "min_order": 20,
+      "status": "active"
+    },
+    {
+      "merchant_id": "zomato",
+      "code": "FEDERALFUNCC",
+      "discount": "10% OFF",
+      "description": "Get flat 10% off upto Rs 100 on food orders. Use federal bank credit cards for payment Valid twice per user during the offer period. ​​​​​​​Minimum order should be above Rs 399 FEDERALFUNCC Existing User",
+      "expiry": "2026-12-31",
+      "min_order": 10,
+      "status": "active"
+    },
+    {
+      "merchant_id": "zomato",
+      "code": "FEDERALFUNDC",
+      "discount": "Rs.50 OFF",
+      "description": "Get flat Rs 5 0 on food orders. Use federal bank debit cards for payment. Valid once in a day and twice per user and minimum order should be above Rs 399 ​​​​​​​Offer valid on Friday, Saturday and Sunday only. FEDERALFUNDC Existing User",
+      "expiry": "2026-12-31",
+      "min_order": 50,
+      "status": "active"
+    },
+    {
+      "merchant_id": "zomato",
+      "code": "BOBFEST",
+      "discount": "15% OFF",
+      "description": "Get flat 15% off when paying via your Bank of Baroda credit card . Maximum discount amount - Rs 100 . Minimum order value - Rs 399 . Can be used once per week . BOBFEST Existing User",
+      "expiry": "2026-12-31",
+      "min_order": 15,
+      "status": "active"
+    },
+    {
+      "merchant_id": "zomato",
+      "code": "POSTPE150",
+      "discount": "40% OFF",
+      "description": "Flat 40% OFF on Orders through PostPe Cards Offer applicable once per user The maximum discount possible is Rs 150. ​​​​​​​ Minimum cart value - Rs 160 POSTPE150",
+      "expiry": "2026-12-31",
+      "min_order": 40,
+      "status": "active"
+    },
+    {
+      "merchant_id": "zomato",
+      "code": "HSBCDELIGHTS",
+      "discount": "HOT DEAL",
+      "description": "HSBC Bank Offer: Get Zomato Credits worth Rs 100​​​​​​​ Minimum cart value - Rs 549 Valid twice per user. Zomato credits will be valid for 14 days HSBCDELIGHTS Existing User",
+      "expiry": "2026-12-31",
+      "min_order": 100,
+      "status": "active"
+    },
+    {
+      "merchant_id": "zomato",
+      "code": "CITI150",
+      "discount": "Rs.150 OFF",
+      "description": "Get instant savings upto Rs 150 on a minimum transaction of Rs 999 This offer is available to all Citi Credit and Debit cards issued in India, twice per user, except Citi Corporate Credit Cards. CITI150",
+      "expiry": "2026-12-31",
+      "min_order": 150,
+      "status": "active"
+    },
+    {
+      "merchant_id": "zomato",
+      "code": "FIFEAST",
+      "discount": "25% OFF",
+      "description": "Get Flat 25% OFF on Food Orders using Fi Card Maximum discount - Rs 100 Minimum cart amount required - Rs 159 FIFEAST",
+      "expiry": "2026-12-31",
+      "min_order": 25,
+      "status": "active"
+    },
+    {
+      "merchant_id": "swiggy",
+      "code": "DINE150",
+      "discount": "50% OFF 🎉",
+      "description": "Avail 50% OFF on your dineout bookings Get a Flat Rs 200 discount on new orders above Rs 1500 Order food products like pizza, burgers, noodles, chicken tikka masala, sandwiches, etc Use the Swiggy Dineout coupon to get Rs 150 OFF on your orders Coupon valid for new users only. DINE150 Existing User Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 50,
+      "status": "active"
+    },
+    {
+      "merchant_id": "swiggy",
+      "code": "SWIGGYIT",
+      "discount": "Up To 50% OFF",
+      "description": "Sale: Get up to 50% off on select food varieties from restaurants/famous food chain brands like Faasos, Behrouz Biryani, and Barista. Not valid on flash sale items, only in a few restaurants Essential cart value should be Rs 159. Maximum savings - Avail Rs 100 SWIGGYIT Existing User Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 50,
+      "status": "active"
+    },
+    {
+      "merchant_id": "swiggy",
+      "code": "TRYNEW",
+      "discount": "Up To 30% OFF",
+      "description": "Avail up to 30% OFF on your food orders Grab the maximum discount of Rs 75 OFF The minimum order value requires Rs 179 or above The coupon code applies to selected restaurants only TRYNEW Existing User Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 30,
+      "status": "active"
+    },
+    {
+      "merchant_id": "swiggy",
+      "code": "CELEBRATIONS",
+      "discount": "FLAT ₹200 OFF",
+      "description": "Get flat Rs 200 OFF on your orders The discount is exclusively for select restaurants The minimum order value requires Rs 499 & above Use the code to save on your orders CELEBRATIONS Existing User Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 200,
+      "status": "active"
+    },
+    {
+      "merchant_id": "swiggy",
+      "code": "FLAT175",
+      "discount": "FLAT ₹175 OFF",
+      "description": "Enjoy Rs 175 OFF on your food orders The minimum order value needed is Rs 399 & above The discount is applicable only to select restaurants The coupon code can be applied only once in 2 hours FLAT175 Existing User Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 175,
+      "status": "active"
+    },
+    {
+      "merchant_id": "swiggy",
+      "code": "SWIGGY66",
+      "discount": "Rs.166 OFF",
+      "description": "Get flat Rs 166 OFF on your purchase Valid on a minimum cart value of Rs 599 & above Apply the coupon code at checkout to avail the offer Limited-time deal – grab your savings now! SWIGGY66 Existing User Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 166,
+      "status": "active"
+    },
+    {
+      "merchant_id": "swiggy",
+      "code": "FLAT150",
+      "discount": "FLAT ₹150 OFF",
+      "description": "Save Rs 150 OFF on your orders The minimum order value requires Rs 299 & above Offer is valid on select restaurants The coupon code can be applied only once in 2 hours FLAT150 Existing User Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 150,
+      "status": "active"
+    },
+    {
+      "merchant_id": "swiggy",
+      "code": "CRAVINGS",
+      "discount": "Rs.150 OFF",
+      "description": "Grab Rs 150 OFF on your instant food orders The minimum order value requires Rs 299 & above Apply the given code at the checkout page to save the deal Coupon applied only once every 2 hours! CRAVINGS Existing User Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 150,
+      "status": "active"
+    },
+    {
+      "merchant_id": "swiggy",
+      "code": "FLAVORFUL",
+      "discount": "FLAT ₹125 OFF",
+      "description": "Grab Rs 125 OFF on select restaurants The order value requires Rs 249 & above The coupon code can be applied only once in 2 hours FLAVORFUL Existing User Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 249,
+      "status": "active"
+    },
+    {
+      "merchant_id": "swiggy",
+      "code": "AXIS200",
+      "discount": "Rs.200 OFF",
+      "description": "Swiggy-Axis Bank Offer: Get Flat Rs 200 discount using Axis Bank Select Credit Card Offer valid on a minimum cart value of Rs 1000 or above. Valid twice per user per month The maximum available discount is Rs 200 AXIS200 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 200,
+      "status": "active"
+    },
+    {
+      "merchant_id": "swiggy",
+      "code": "150AXIS",
+      "discount": "25% OFF",
+      "description": "Grab flat 25% discount up to Rs 150 on orders above Rs 400 Offer valid thrice per user per month Applicable only on axis bank delight debit cards 150AXIS",
+      "expiry": "2026-12-31",
+      "min_order": 25,
+      "status": "active"
+    },
+    {
+      "merchant_id": "swiggy",
+      "code": "AXISRUPAY",
+      "discount": "15% OFF",
+      "description": "Axis Bank Rupay Credit Card Offer - Flat 15% OFF ​​​​​​​Valid on orders above Rs 300 The payment can be done via Axis Bank Rupay Credit Cards. AXISRUPAY",
+      "expiry": "2026-12-31",
+      "min_order": 15,
+      "status": "active"
+    },
+    {
+      "merchant_id": "swiggy",
+      "code": "AXIS100",
+      "discount": "Rs.100 OFF",
+      "description": "Flat Rs 100 OFF using Axis Bank Prepaid & Transit Cards​​​​​​​ Minimum orders should be R s 299 Applicable twice per user per month AXIS100",
+      "expiry": "2026-12-31",
+      "min_order": 100,
+      "status": "active"
+    },
+    {
+      "merchant_id": "swiggy",
+      "code": "UJJIVAN125",
+      "discount": "25% OFF",
+      "description": "Grab flat 25% discount up to Rs 125 on orders above Rs 400 Only works once per user in a month Applicable only on Ujjivan SFB Debit Cards UJJIVAN125 Existing User",
+      "expiry": "2026-12-31",
+      "min_order": 25,
+      "status": "active"
+    },
+    {
+      "merchant_id": "swiggy",
+      "code": "AXISFEST",
+      "discount": "10% OFF",
+      "description": "Avail 10% OFF upto Rs 100 using Axis Bank Credit Cards. Minimum orders should be R s 749. Applicable twice per user per month AXISFEST",
+      "expiry": "2026-12-31",
+      "min_order": 10,
+      "status": "active"
+    },
+    {
+      "merchant_id": "swiggy",
+      "code": "AXIS120",
+      "discount": "40% OFF",
+      "description": "Offer is valid 4 times per user per month, only on Axis Bank MyZone Credit Card Minimum cart value of Rs 200 is required The maximum available discount per transaction is Rs 120 AXIS120",
+      "expiry": "2026-12-31",
+      "min_order": 40,
+      "status": "active"
+    },
+    {
+      "merchant_id": "swiggy",
+      "code": "PAYZAPP50",
+      "discount": "Rs.50 OFF",
+      "description": "Use code & get Rs 50 off on your orders above Rs 349. Offer valid once per user during the offer period, only on HDFC Bank PayZapp Prepaid Cards Pay using HDFC Bank Diners Club Credit Cards to get 10X Reward Points on orders above Rs 300 PAYZAPP50 Existing User",
+      "expiry": "2026-12-31",
+      "min_order": 50,
+      "status": "active"
+    },
+    {
+      "merchant_id": "swiggy",
+      "code": "HDFC150",
+      "discount": "10% OFF",
+      "description": "Get 10% discount using HDFC Bank Credit Cards Maximum discount up to Rs 150 on orders above Rs 1250 Applicable twice per user during the offer period Valid only on HDFC Bank Infinia, Regalia & Diners Black Credit Cards HDFC150 Existing User",
+      "expiry": "2026-12-31",
+      "min_order": 10,
+      "status": "active"
+    },
+    {
+      "merchant_id": "swiggy",
+      "code": "AUCC100",
+      "discount": "25% OFF",
+      "description": "Grab flat 25% discount, up to Rs 100 in select cities. Applicable twice per user during the offer, only with AU Bank Credit Cards Order value should be above Rs 299 AUCC100",
+      "expiry": "2026-12-31",
+      "min_order": 25,
+      "status": "active"
+    },
+    {
+      "merchant_id": "swiggy",
+      "code": "AUBANK100",
+      "discount": "25% OFF",
+      "description": "Get flat 25% discount, up to Rs 100 in select cities. Applicable twice per user during the offer, only with AU Bank Cards Order value should be above Rs 349 AUBANK100",
+      "expiry": "2026-12-31",
+      "min_order": 25,
+      "status": "active"
+    },
+    {
+      "merchant_id": "nykaa",
+      "code": "EXTRA20",
+      "discount": "Up To 80% OFF",
+      "description": "Grab up to 50% OFF on sitewide products Categories available are Makeup, Skin Care, Hair Care, Bath & Body and more Enter the coupon code at the checkout page & get an additional 20% OFF The minimum order value is Rs 149 The maximum discount of up to Rs 300 Also, avail free shipping on orders above Rs 299 Valid for new users on Nykaa APP EXTRA20% Existing User Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 60,
+      "status": "active"
+    },
+    {
+      "merchant_id": "nykaa",
+      "code": "NEW15",
+      "discount": "Up To 65% OFF",
+      "description": "Avail up to 50% OFF on beauty products Additional 15% OFF up to Rs 300 on your orders Code is accessible for 1st time users Code is applicable to prepaid orders NEW15 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 50,
+      "status": "active"
+    },
+    {
+      "merchant_id": "nykaa",
+      "code": "MAKEUP2PSS10",
+      "discount": "Up To 75% OFF",
+      "description": "Mega Deals on Makeup products Avail up to 60% OFF on makeup store orders Apply the extra 15% OFF coupon code today and avail the additional discount The minimum order value of Rs 1999 & above Maximum discount of up to Rs 200 ​​​​​​​ Applicable on Lipstick Foundation Bestseller Eye Shadow Concealer Eyeliner & Kajals Compact and more MAKEUP2PSS10 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 60,
+      "status": "active"
+    },
+    {
+      "merchant_id": "nykaa",
+      "code": "HAIR4SAVE10",
+      "discount": "Up To 70% OFF",
+      "description": "Get up to 60% OFF on all hair care products. Offers: hair fall - up to 30% off scalp care - up to 20% OFF professional tools - up to 35% OFF , and more Brands: Philips, Plum, Dot & Key, Love Beauty & Planet, and more Extra 10% OFF when you apply the coupon code at the checkout page HAIR4SAVE10",
+      "expiry": "2026-12-31",
+      "min_order": 60,
+      "status": "active"
+    },
+    {
+      "merchant_id": "nykaa",
+      "code": "EXTRA400I",
+      "discount": "FLAT ₹400 OFF",
+      "description": "Flat Rs 400 OFF on your orders The minimum purchase amount of Rs 1500 & above Applicable only on 1st Nykaa order Coupon code is applicable on selected brands EXTRA400I Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 400,
+      "status": "active"
+    },
+    {
+      "merchant_id": "nykaa",
+      "code": "NEW10",
+      "discount": "Up To 60% OFF",
+      "description": "Shop with the Nykaa mobile app and get up to 50% OFF Flat 10% OFF by using the coupon code Maximum discount of Rs 500 This offer is valid for first-time users It is applicable for everyone, but first app purchases Redeem the coupon code at the checkout page Offer applicable on select brands NEW10 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 50,
+      "status": "active"
+    },
+    {
+      "merchant_id": "nykaa",
+      "code": "EXTRA10",
+      "discount": "Up To 60% OFF",
+      "description": "Avail up to 50% OFF on your orders Extra 10% OFF when you apply the coupon code at the checkout page Coupon code is applicable on Nykaa APP for first-time users Code is applicable on selected brands EXTRA10% Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 50,
+      "status": "active"
+    },
+    {
+      "merchant_id": "nykaa",
+      "code": "CAMPUS10EXTRA",
+      "discount": "Extra 10% OFF",
+      "description": "​​​​​​​Shop now & get an additional 10% OFF on prepaid orders The coupon code is applicable to campus products only This offer can be accessible for eveyone Update the coupon code at the checkout page Valid for limited-time period CAMPUS10EXTRA Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 10,
+      "status": "active"
+    },
+    {
+      "merchant_id": "nykaa",
+      "code": "CHUMBAKTEN",
+      "discount": "Extra 10% OFF",
+      "description": "Extra 10% OFF on Chumbak products Code is accessible to everyone Redeem the coupon code at the checkout page CHUMBAKTEN",
+      "expiry": "2026-12-31",
+      "min_order": 10,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "FIRSTORDERFREE",
+      "discount": "BIG BOLD SALE",
+      "description": "The Ajio Big Bold Sale is live now with massive discounts ranging from 50% to 90% OFF on top fashion brands. Refresh your wardrobe with huge discounts on fashion, footwear, beauty, and more. Unlock an extra 10% OFF on your purchases via SBI Bank cards Shop your favorites now and get ready to shop the hottest deals before they’re gone Flat Rs 499 off on 1499 for App purchase Get extra Rs 1000 AJIO Super Cash on orders above Rs 1499 FIRSTORDERFREE Existing User Valid Till: Jun 10, 2026 (WED)",
+      "expiry": "2026-12-31",
+      "min_order": 50,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "BBSFLASH",
+      "discount": "Flash Deal",
+      "description": "Refresh your wardrobe with the hottest women’s fashion deals online! Get up to 80% OFF on stylish dresses, tops, kurtis, and more. Plus, enjoy an extra Rs 400 OFF on your purchase for added savings. Top Brands like - Puma, Adidas, Reebok, Fila and 6000+ big bold sale brands BBSFLASH Valid Till: Jun 7, 2026 (SUN)",
+      "expiry": "2026-12-31",
+      "min_order": 80,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "BBS20",
+      "discount": "Extra 20% OFF",
+      "description": "​​​​​​Grab maximum savings during the Ajio Big Bold Sale Use Ajio code and get an additional 20% OFF Up To Rs 1000 Shop for Rs 2990 to avail this offer BBS20 Existing User Valid Till: Jun 30, 2026 (TUE)",
+      "expiry": "2026-12-31",
+      "min_order": 20,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "BBS15",
+      "discount": "Extra 15% OFF",
+      "description": "Purchase now from top brands like Puma, Adidas, Reebok, Levi's, Superdry, U.S Polo Assn, Spykar & 6000+ More Use the Ajio Big Bold sale coupon code to get an extra 15% OFF Minimum purchase order value required Rs 2990 BBS15 Existing User Valid Till: Jun 30, 2026 (TUE)",
+      "expiry": "2026-12-31",
+      "min_order": 15,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "BBS10",
+      "discount": "EVERYTHING ON SALE🔥",
+      "description": "Shop during Ajio biggest sale on every thing and get 50% to 90% OFF Also, Get an additional discount of Rs 10% OFF on Selected products. Keep shopping & Keep earning 15% cashback every time you shop Earn 100% cashback with every purchases Offer is valid for new users only ​​​​​​​ ​​​​​​​Appliacble on App only BBS10 Existing User Valid Till: Jun 30, 2026 (TUE)",
+      "expiry": "2026-12-31",
+      "min_order": 40,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "BBS5",
+      "discount": "Extra 5% OFF",
+      "description": "Avail up to 5% OFF on select fashion range. M inimum cart value should be above Rs 990 Valid for all users. ​​​​​​​Maximum discount - Rs 750 BBS5 Existing User Valid Till: Jun 30, 2026 (TUE)",
+      "expiry": "2026-12-31",
+      "min_order": 5,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "NATIONAL10",
+      "discount": "Extra 10% OFF",
+      "description": "Get Up To 90% off during India's hottest and biggest Iconic fashion sale. Grab an additional 10% - Up To Rs 600 OFF by using coupon code The minimum cart value required Rs 2190 Applicable on 22,00,000+ Styles | 6000+ Brands NATIONAL10 Existing User Valid Till: Jun 30, 2026 (TUE)",
+      "expiry": "2026-12-31",
+      "min_order": 50,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "TRYWATCHES",
+      "discount": "FLAT 10% OFF",
+      "description": "Explore the latest watch collections during the Ajio Big Bold Sale period and save on great discounts Flat 10% OFF on purchases of watch collections Minimum cart value required Rs 2500 The coupon code is applicable once per user TRYWATCHES Existing User Valid Till: Jun 30, 2026 (TUE)",
+      "expiry": "2026-12-31",
+      "min_order": 10,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "AJIOGRAM20",
+      "discount": "FLAT 20% OFF",
+      "description": "Get an extra 20% discount on fashion apparel in Ajiogram App The minimum cart value should be Rs 1500. Offer valid for both men & women fashion. Apply the given discount code and get a maximum discount of Rs 900 & above AJIOGRAM20 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 20,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "SALE10",
+      "discount": "Up To 90% OFF",
+      "description": "Get Up To 90% off during India's hottest and biggest Iconic fashion sale. Grab an additional 10% - Up To Rs 600 OFF by using coupon code The minimum cart value required Rs 2190 Applicable on 22,00,000+ Styles | 6000+ Brands SALE10 Existing User Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 50,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "HELLOBEAUTY1000",
+      "discount": "FLAT ₹1000 OFF",
+      "description": "​​​​​Order now for beauty products in Ajio Haul at great prices Flat Rs 1000 OFF by using Ajio promo code Also, get free shipping on all orders Avail - Nivea, Cetaphil, L'Oreal, Lakme, Maybelline, Biotique, Plum, Minimalist HELLOBEAUTY1000 Existing User Valid Till: Jun 30, 2026 (TUE)",
+      "expiry": "2026-12-31",
+      "min_order": 1000,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "ETHNICSPL",
+      "discount": "FLAT 12% OFF",
+      "description": "Shop kurtas, sarees, salwar suits, lehengas & more at unbeatable prices. Get an ADDITIONAL 12% OFF on elegant ethnic wear from your favorite brands. Minimum order value required Rs 1490 ETHNICSPL Existing User Valid Till: Jun 30, 2026 (TUE)",
+      "expiry": "2026-12-31",
+      "min_order": 20,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "KIDSLOVE",
+      "discount": "FLAT 30% OFF",
+      "description": "​​​​Refresh your kids’ wardrobe with trendy fashion collections at amazing prices. Get Flat 30% OFF on purchases above Rs 2299 a nd save more on every order. Shop stylish outfits for every occasion before the deal ends. KIDSLOVE Existing User Valid Till: Jun 30, 2026 (TUE)",
+      "expiry": "2026-12-31",
+      "min_order": 25,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "SPORTSRUSH9",
+      "discount": "Extra 9% OFF",
+      "description": "​​​​​Grab premium sportswear & sneakers from Nike, Puma, Adidas, Reebok, Skechers, New Balance, ASICS & Under Armour at EXTRA savings. Shop for Rs 3990 & above and get an extra 9% OFF Valid for both new & existing users SPORTSRUSH9 Existing User Valid Till: Jun 30, 2026 (TUE)",
+      "expiry": "2026-12-31",
+      "min_order": 9,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "FLARE26",
+      "discount": "Up To Rs.550 OFF",
+      "description": "​​​​​​Flare up your cart with Ajio Big Bold sale 2026 and get up To Rs 550 OFF Minimum transaction value required Rs 2000 & above Valid for all users FLARE26 Existing User Valid Till: Jun 30, 2026 (TUE)",
+      "expiry": "2026-12-31",
+      "min_order": 550,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "NIKENORETURN10",
+      "discount": "Extra 10% OFF",
+      "description": "Upgrade your sneaker game with premium Nike footwear & apparel at special prices.​​​​​​​ Apply the Ajio Nike promo code and shop iconic collections for less Grab your favorite sneakers, activewear & performance essentials at 10% OFF. NIKENORETURN10 Existing User Valid Till: Jun 30, 2026 (TUE)",
+      "expiry": "2026-12-31",
+      "min_order": 10,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "SMARTGLASSES",
+      "discount": "Up To Rs.100 OFF",
+      "description": "Upgrade your style with smart tech using Meta smart Glasses on AJIO. Shop now & enjoy up to 30% OFF on trendy AI-powered eyewear and accessories. Capture moments, listen to music & stay connected — all in style! SMARTGLASSES Valid Till: Jun 30, 2026 (TUE)",
+      "expiry": "2026-12-31",
+      "min_order": 30,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "TRENDS700",
+      "discount": "FLAT ₹700 OFF",
+      "description": "This offer is applicable only on selected products. Grab flat Rs 700 off on your orders. Valid on products with cart value above Rs 899 TRENDS700 Existing User Valid Till: Jun 30, 2026 (TUE)",
+      "expiry": "2026-12-31",
+      "min_order": 700,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "NEW30",
+      "discount": "FLAT 30% OFF",
+      "description": "Verified Today. Ajio Coupon code for new user Ajio is offering amazing discounts on clothing & fashion accessories. Shop now and get a Flat 30% discount. Choose from the wide range of attractive collections like fashion wear, footwear, beauty, etc Use the Ajio promo code required to avail of the offer. Grab a maximum discount of Up To Rs 500 on your orders The coupon is applicable for new users only NEW30 Existing User Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 30,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "BLAST",
+      "discount": "Up To Rs.650 OFF",
+      "description": "Shop during the sale period and get a minimum of 50% OFF Also, get an additional 10% OFF by using the codes Minimum cart value required Rs 2000 & above BLAST Valid Till: Jun 30, 2026 (TUE)",
+      "expiry": "2026-12-31",
+      "min_order": 650,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "SALE5",
+      "discount": "Up To 75% OFF",
+      "description": "Explore products from the landing page collections to grab the offer Get 40% to 70% OFF on this clearance sale period Grab an additional 5% OFF by using the promo code Avail Flat 15% cashback on your purchases Minimum transaction value required: Rs 990 SALE5 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 40,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "CHECKOUT",
+      "discount": "EXTRA ₹250 OFF",
+      "description": "Get Rs 250 Off On your purchases. Minimum order value should be at least Rs 1499 Use the coupon code to avail the discount value. CHECKOUT Existing User Valid Till: Jun 30, 2026 (TUE)",
+      "expiry": "2026-12-31",
+      "min_order": 250,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "BEAUTYBLISS",
+      "discount": "Up To 30% OFF",
+      "description": "Purchase here for beauty care products and get up to 30% OFF Offer valid on beauty products only Valid for all users Minimum order value required Rs 1499 💆 Your full skincare + makeup haul — at up to 30% off with zero delivery charges. ​​​​​​​Grab - Nivea, Cetaphil, L'Oreal, Lakme, Maybelline, Biotique, Plum and more. BEAUTYBLISS Valid Till: Jun 30, 2026 (TUE)",
+      "expiry": "2026-12-31",
+      "min_order": 30,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "ACTIVERUSH",
+      "discount": "Extra 10% OFF",
+      "description": "Sale: Extra 10% OFF On Select Premium Fashion Collection Offer valid on top brands, maximum discount - Rs 8000 Minimum cart value r equired Rs 899 Valid for all users ​​​ ACTIVERUSH Existing User Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 10,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "TRENDS",
+      "discount": "Extra 20% OFF",
+      "description": "Here is the biggest sale from AJIO. Get extra 20% OFF on select merchandise This coupon code is applicable to a minimum cart value of Rs 999 Offer valid until stocks last. TRENDS Valid Till: Jun 30, 2026 (TUE)",
+      "expiry": "2026-12-31",
+      "min_order": 20,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "HELLOBEAUTY",
+      "discount": "FLAT ₹100 OFF",
+      "description": "This offer is redeemable only on selected products at the website. Grab Up To 45% OFF on selected beauty orders Flat Rs 100 off on beauty products​​​​​​​ Minimum transaction value required Rs 499 only Also avail free delivery with the orders HELLOBEAUTY Existing User Valid Till: Jun 30, 2026 (TUE)",
+      "expiry": "2026-12-31",
+      "min_order": 45,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "WELCOMEBACK15",
+      "discount": "Welcome Offer",
+      "description": "Explore brand-selected products and get a discount Avail 15% OFF by using coupon code The coupon is applied for selected products only Offer valid on orders above Rs 1990 ​​​​​​​Offer is valid on specific products WELCOMEBACK15 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 15,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "GLAM35",
+      "discount": "Up To 35% OFF",
+      "description": "Glow More, Spend Less! Get Up to 35% OFF on Top Beauty Brands​​​​​​​ Shop favorites like Lakmé, Maybelline, L'Oréal, Plum, Minimalist & Dot & Key at exciting discounts Upgrade your vanity with premium beauty essentials from leading brands at amazing prices. GLAM35 Valid Till: Jun 30, 2026 (TUE)",
+      "expiry": "2026-12-31",
+      "min_order": 35,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "BAGWATI10",
+      "discount": "FLAT 10% OFF",
+      "description": "Sale: Grab 10% OFF On Bags Collection Valid for new users users ​​​​​​​ Minimum cart value required Rs 2000 BAGWATI10 Existing User Valid Till: Jun 30, 2026 (TUE)",
+      "expiry": "2026-12-31",
+      "min_order": 10,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "LUXE20",
+      "discount": "Extra 20% OFF",
+      "description": "​​​​​Buy now luxury collections and save 20% OFF on your orders Avail brands - Micheal kors.Boss, Montblanc.Tumi, Onitsuka tiger, Armani exchange & Tommy Hilfiger Use Ajio coupon to get this special offer LUXE20 Existing User Valid Till: Jun 30, 2026 (TUE)",
+      "expiry": "2026-12-31",
+      "min_order": 20,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "DHANVARSHA2",
+      "discount": "AJIO GOLD DEAL💰",
+      "description": "Buy the Gold coins & bars on AJIO Today at great prices Plus, avail an extra 2% OFF by using the DHANVARSHA2 coupon code. Enjoy Rs 1750 OFF on UPI payments Grab 10% OFF with selected bank CC/DB bank cards​​​​​​​ DHANVARSHA2 Valid Till: Jun 30, 2026 (TUE)",
+      "expiry": "2026-12-31",
+      "min_order": 2000,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "CIRCLEPASS",
+      "discount": "FLAT 22% OFF",
+      "description": "Purchase now and get Flat 22% OFF on your orders Grab Up To Rs 400 OFF by using the coupon code Offer is applicable for Circle Pass members only CIRCLEPASS Valid Till: Jun 30, 2026 (TUE)",
+      "expiry": "2026-12-31",
+      "min_order": 22,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "BLUSH",
+      "discount": "Up To 25% OFF",
+      "description": "​​Shop PAC makeup products on AJIO at exciting discounted prices. Get a minimum 15% OFF plus an extra 25% OFF on selected beauty essentials. Upgrade your makeup collection with premium products at great savings. BLUSH Existing User Valid Till: Jun 30, 2026 (TUE)",
+      "expiry": "2026-12-31",
+      "min_order": 25,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "STEALDEAL",
+      "discount": "SPECIAL OFFER",
+      "description": "Shop now and get 10% OFF on your purchases Use the code to avail the offer Minimum transaction value required Rs 1500 & above Grab Up To Rs 1000 on your orders STEALDEAL Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 10,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "SHIPPINGONUS",
+      "discount": "FREE Delivery",
+      "description": "Order exclusive collections from Ajio and get more benefits Enjoy FREE shipping by using the FREE shipping code Applicable to selected articles SHIPPINGONUS Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 6,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "KIDS20",
+      "discount": "FLAT 20% OFF",
+      "description": "Get the latest branded Kids fashion products at Ajio this festive season. Get 20% off on your orders Minimum order value - Rs 1499 Valid on all brands and applicable for all users. KIDS20 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 20,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "AG15",
+      "discount": "Extra 15% OFF",
+      "description": "Order now from Ajiogram and get the best discounts on selected collections Get 15% OFF on your orders Minimum cart value required i s Rs 1299 This offer is valid on the Ajiogram app AG15 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 15,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "25NYRIKA",
+      "discount": "Extra 25% OFF",
+      "description": "Buy now for Nyrikaa collections and get it for the best discounts Up To 75% OFF Flat 25% OFF on purchases of selected products Minimum purchase value required Rs 1699 25NYRIKA Existing User Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 75,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "KIDS30",
+      "discount": "30% OFF",
+      "description": "Get 30% OFF on all kids collection at Ajio. Minimum order value should be Rs 1990. KIDS30 Existing User Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 30,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "GL20",
+      "discount": "Extra 20% OFF",
+      "description": "Here is the biggest sale from AJIO. Get extra Up To 20% OFF on select merchandise This coupon code is applicable to a minimum cart value of Rs 999 Offer valid until stocks last. GL20 Valid Till: Jun 30, 2026 (TUE)",
+      "expiry": "2026-12-31",
+      "min_order": 20,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "GAPKIDSDEAL",
+      "discount": "Up To 78% OFF",
+      "description": "Refresh your little one’s wardrobe with adorable styles at unbeatable prices! Shop trendy kids’ fashion, footwear & essentials with discounts of up to 78% OFF. Hurry, grab the cutest collections before the best picks are gone! GAPKIDSDEAL Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 78,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "SHEINZ",
+      "discount": "Up To Rs.100 OFF",
+      "description": "Order now from Shein collections and get the best discounts on it Avail Up Rs 100 OFF by using the discount code Valid on orders above Rs 799 SHEINZ Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 100,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "MISSYOU",
+      "discount": "Up To Rs.500 OFF",
+      "description": "Celebrate red hot sale with ajio special collections Grab an extra Up To Rs 500 OFF on your picks Minimum cart value required Rs 3490 & above MISSYOU Existing User Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 500,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "NYRIKAFASHION30",
+      "discount": "Extra 30% OFF",
+      "description": "​​​​​Shop now from Nyrikaa collections in Ajio and get top deals on your purchases Get Flat 30% OFF by using the GrabOn promo code Minimum cart value required Rs 1299 NYRIKAFASHION30 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 30,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "ONLYEXCLUSIVE",
+      "discount": "FLAT 30% OFF",
+      "description": "Enjoy 30% OFF on trending styles from ONLY, Vero Moda, Pepe Jeans, Spykar, Allen Solly & other top brands.​​​​​​ Use the Ajio Discount code for today and get an instant Discount Valid on orders above Rs 1099 ONLYEXCLUSIVE Existing User Valid Till: Jun 30, 2026 (TUE)",
+      "expiry": "2026-12-31",
+      "min_order": 30,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "SWEETHOME",
+      "discount": "Up To 30% OFF",
+      "description": "Buy now for home essentials and get an instant discount Grab Up To 30% OFF by using the coupon Minimum transaction value required is Rs 1199 SWEETHOME Existing User Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 30,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "KIDS15",
+      "discount": "FLAT 15% OFF",
+      "description": "Grab a minimum of 50% OFF on the latest kids styles Get an extra 15% OFF by using the GrabOn Ajio Promo Code ​​​​​​​​​​​​​​ Minimum purchase value required Rs 1499 & above Valid for all users KIDS15 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 15,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "ACCESSOREASE5",
+      "discount": "FLAT 5% OFF",
+      "description": "​​​​​​Upgrade your style with fashionable accessories a t amazing prices. Enjoy an instant 5% OFF when you shop for Rs 1500 or more. Don’t miss the chance to grab your favorites at extra savings today! ACCESSOREASE5 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 5,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "PREMIUMPERKS",
+      "discount": "Up To 10% OFF",
+      "description": "​​​​​Pick now for the trendy premium perks collection to grab this special offer Use the Ajio Coupon code to get up to 10% OFF Offer valid on s elected products PREMIUMPERKS Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 10,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "AJIOGRAM10",
+      "discount": "App Offer",
+      "description": "Shop now in the Ajiogram app And get great deals on it Flat 10% OFF b y using the code Applicable on orders above Rs 1200 AJIOGRAM10 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 10,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "FEASTSPL2",
+      "discount": "FLAT 10% OFF",
+      "description": "​​​​​Shop for Rs 4999 to avail this offer Flat 18% OFF by using the coupon code Grab the maximum discount of Rs 2000 on your orders FEASTSPL2 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 18,
+      "status": "active"
+    },
+    {
+      "merchant_id": "ajio",
+      "code": "ZOOM14",
+      "discount": "Up To 14% OFF",
+      "description": "​​​​​​Pick the latest trendy styles a nd save best discounts Grab an extra 14% OFF on your orders Valid for all users ZOOM14 Existing User Valid Till: Jun 30, 2026 (TUE)",
+      "expiry": "2026-12-31",
+      "min_order": 14,
+      "status": "active"
+    },
+    {
+      "merchant_id": "makemytrip",
+      "code": "FLTGB",
+      "discount": "FLAT ₹500 OFF",
+      "description": "GrabOn Exclusive Domestic Flight Coupon Details Flat Rs 500 OFF on domestic flight tickets. Valid only for logged-in users Works on all Domestic Flights across all routes Redeem the coupon code at the checkout page FLTGB Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 500,
+      "status": "active"
+    },
+    {
+      "merchant_id": "makemytrip",
+      "code": "WELCOMETRIP",
+      "discount": "Up To 25% OFF",
+      "description": "Avail up to 25% OFF on domestic hotel bookings Code is accessible to logged-in users only Applicable for first-time users WELCOMETRIP Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 25,
+      "status": "active"
+    },
+    {
+      "merchant_id": "makemytrip",
+      "code": "MMTSECURE",
+      "discount": "Up To Rs.2000 OFF",
+      "description": "​​​​Book here for domestic flights and grab more discounts Avail Up To Rs 2000 OFF by using coupon code This offer is not valid for Gift Cards and My Wallet This offer is only valid on one-way and roundtrip domestic flight bookings MMTSECURE Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 2000,
+      "status": "active"
+    },
+    {
+      "merchant_id": "makemytrip",
+      "code": "MMTVACATION",
+      "discount": "Up To 15% OFF",
+      "description": "Vacation Ka Occasion Sale Get up to 15% OFF on Domestic Flight Bookings Redeem the coupon code at the checkout page Code is accessible to all users MMTVACATION Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 15,
+      "status": "active"
+    },
+    {
+      "merchant_id": "makemytrip",
+      "code": "MMTSUPER",
+      "discount": "Up To Rs.2000 OFF",
+      "description": "Get up to Rs 2000 OFF on domestic flight bookings This offer is only valid on one-way and roundtrip domestic flight bookings. MakeMyTrip coupon code is applicable only on flights to select destinations MMTSUPER Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 2000,
+      "status": "active"
+    },
+    {
+      "merchant_id": "makemytrip",
+      "code": "MMTBUSGRAB",
+      "discount": "FLAT 15% OFF",
+      "description": "Travel now to your favourite destinations on a bus journey at affordable prices Flat 15% OFF up to Rs 300 OFF by using GrabOn's exclusive promo code The offer is valid on a minimum booking value of Rs 200 The offer does not apply to Government/ RTC buses Note - The offer will be applicable on booking amount exclusive of convenience fee, Insurance, Zero Cancellation Protection, Taxes & Ancillaries fee. MMTBUSGRAB Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 15,
+      "status": "active"
+    },
+    {
+      "merchant_id": "makemytrip",
+      "code": "WELCOMEMMT",
+      "discount": "FLAT 25% OFF",
+      "description": "Flat 25% OFF on domestic hotel bookings Valid only on transactions with a minimum amount of Rs 7500 Applicable for new users only Users need to be logged in to his/her account to avail the offer Users need to make their first Domestic hotel or homestay booking The offer does not apply to payments made directly at the hotel or through PayPal, MMT Gift Card and My Wallet WELCOMEMMT Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 25,
+      "status": "active"
+    },
+    {
+      "merchant_id": "makemytrip",
+      "code": "MMTTRAINGRAB",
+      "discount": "FLAT ₹100 OFF",
+      "description": "Book here for train tickets and get additional benefits Grab Flat Rs 100 OFF by using GrabOn exclusive code Minimum booking value should be Rs 200 Offer is applicable fo r new users only MMTTRAINGRAB Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 100,
+      "status": "active"
+    },
+    {
+      "merchant_id": "makemytrip",
+      "code": "CABON2",
+      "discount": "Up To Rs.249 OFF",
+      "description": "Exclusive Coupon: Get up to Rs 249 OFF​​​​​​​ on Cab Bookings Redeem the coupon code at the checkout page Code is applicable for existing users only CABON2 Existing User Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 249,
+      "status": "active"
+    },
+    {
+      "merchant_id": "makemytrip",
+      "code": "CABON",
+      "discount": "Up To Rs.500 OFF",
+      "description": "​​​​​​​Get up to Rs 500 OFF on cab bookings Code is applicable for new users only Redeem the coupon code at the checkout page CABON Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 500,
+      "status": "active"
+    },
+    {
+      "merchant_id": "makemytrip",
+      "code": "MMTONECARDEMI",
+      "discount": "Up To 8% OFF",
+      "description": "Flat 8% OFF up to Rs 1,200 + 3/6M Interest Free EMI, on Domestic Flights Minimum transaction amount of Rs 7,500 Flat 8% OFF up to Rs 2,500 + 3/6M Interest Free EMI, on International Flights Minimum transaction amount of Rs 20000 Valid on OneCard Credit Card EMI Bookings MMTONECARDEMI Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 8,
+      "status": "active"
+    },
+    {
+      "merchant_id": "makemytrip",
+      "code": "MMTHSBC",
+      "discount": "FLAT 12% OFF",
+      "description": "Flat 12% OFF on Domestic Flight Tickets Minimum transaction value of Rs 5000 Maximum discount of up to Rs 1800 Valid on HSB C Bank Credit Cards Redeem the coupon code at the checkout page Valid on every Thursday MMTHSBC Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 12,
+      "status": "active"
+    },
+    {
+      "merchant_id": "makemytrip",
+      "code": "HDFCEMI",
+      "discount": "Up To Rs.2000 OFF",
+      "description": "Get up to Rs 2000 OFF on Domestic Flight Bookings The minimum transaction value of Rs 15000 Valid on HDFC Bank Easy EMI on Credit Card Transactions HDFCEMI Existing User Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 2000,
+      "status": "active"
+    },
+    {
+      "merchant_id": "makemytrip",
+      "code": "MMTBOI",
+      "discount": "FLAT 12% OFF",
+      "description": "Flat 12% OFF on Domestic Flight Bookings Minimum transaction amount is not required The offer is valid for bookings made on MakeMyTrip's Desktop website, Mobile site, Android & iOS App only This offer will be valid once per user per card per month per campaign timeline This offer is not valid on the booking made through any other payment mode apart from the relevant Bank of India Visa Credit Card. MMTBOI Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 12,
+      "status": "active"
+    },
+    {
+      "merchant_id": "makemytrip",
+      "code": "MMTAUEMI",
+      "discount": "FLAT 10% OFF",
+      "description": "Flat 10% OFF on Domestic Flight bookings To avail the discount the minimum value of Rs 5000 Maximum discount of up to Rs 1800 The offer is valid only on AU Bank Credit Card, for 3 months, No-cost EMI bookings only MMTAUEMI Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 10,
+      "status": "active"
+    },
+    {
+      "merchant_id": "makemytrip",
+      "code": "MMTAU",
+      "discount": "Up To 10% OFF",
+      "description": "Get 10% Instant Discount (up to Rs 1000) on Domestic Flights Minimum booking amount: Rs 4,000 10% Instant Discount* ( up to Rs 3,000), on International Flights Minimum booking amount: Rs 10,000 Valid on AU Bank Credit Cards Valid only on Tuesday MMTAU Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 10,
+      "status": "active"
+    },
+    {
+      "merchant_id": "makemytrip",
+      "code": "MMTJK",
+      "discount": "Up To 12% OFF",
+      "description": "Flat 12% OFF up to Rs 1,500 on Domestic Flights Minimum transaction value of Rs 5000 Flat 10% Instant Discount (up to Rs 2,500) on all hotels, on Domestic Hotels Minimum transaction value of Rs 5000 MMTJK Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 12,
+      "status": "active"
+    },
+    {
+      "merchant_id": "makemytrip",
+      "code": "KOTAKEMI",
+      "discount": "FLAT 10% OFF",
+      "description": "FLAT 10% Instant Discount (Up to Rs 1800) + 3-month Interest-free* EMI on Domestic Flights Minimum transaction amount Rs 5,000 Valid on Kotak Mahindra Bank Credit Cards KOTAKEMI Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 10,
+      "status": "active"
+    },
+    {
+      "merchant_id": "makemytrip",
+      "code": "MMTRBLFEST",
+      "discount": "12% OFF",
+      "description": "Flat 12% discount (up to Rs 1500) on domestic flights The customer should be logged into his/her MMT account to avail the offer Valid for 1 booking per card per MMT account during the offer period, on RBL Bank Credit Cards, Debit Cards and Credit Card EMI payments only. This offer is not valid on RBL Bank Net Banking payments. MMTRBLFEST",
+      "expiry": "2026-12-31",
+      "min_order": 12,
+      "status": "active"
+    },
+    {
+      "merchant_id": "makemytrip",
+      "code": "STUDENTSPECIAL",
+      "discount": "Rs.600 OFF",
+      "description": "Book with Special Student Fares available on Select Airlines Grab upto Rs 600 off on domestic flight fares Get upto Rs 10000 off on international flights. Coupon code is valid for limited period STUDENTSPECIAL Existing User",
+      "expiry": "2026-12-31",
+      "min_order": 600,
+      "status": "active"
+    },
+    {
+      "merchant_id": "makemytrip",
+      "code": "SENIORCITIZEN",
+      "discount": "Rs.600 OFF",
+      "description": "Grab flat Rs 600 discount on Domestic Flight Bookings exclusive for Senior Citizens This offer can be availed only once per customer, during the offer duration, only valid on one-way and roundtrip domestic flights bookings. Coupon is only applicable on transaction value of Rs 2500 and greater (Fare calculated per passenger) Maximum discount applicable per transaction is Rs 2500 Offer is valid for both one-way or return domestic flight booking. SENIORCITIZEN Existing User",
+      "expiry": "2026-12-31",
+      "min_order": 600,
+      "status": "active"
+    },
+    {
+      "merchant_id": "makemytrip",
+      "code": "ARMEDFORCES",
+      "discount": "Rs.600 OFF",
+      "description": "Grab flat Rs 600 discount on Domestic Flight Bookings exclusive for Armed Forces personnel. This offer can be availed only once per customer, during the offer duration. Can be availed only on flight bookings with no minimum transaction amount Offer is valid for both one-way or return domestic flight booking. ARMEDFORCES Existing User",
+      "expiry": "2026-12-31",
+      "min_order": 600,
+      "status": "active"
+    },
+    {
+      "merchant_id": "makemytrip",
+      "code": "MMTWINGS",
+      "discount": "Up To Rs.5000 OFF",
+      "description": "Grab Upto Rs 5000 OFF on All International Flights Applicable for both one-way or return international flight bookings. ​​​​​​​Offer applicable on selected periods MMTWINGS",
+      "expiry": "2026-12-31",
+      "min_order": 5000,
+      "status": "active"
+    },
+    {
+      "merchant_id": "makemytrip",
+      "code": "MMTBOBEMI",
+      "discount": "10% OFF",
+      "description": "Domestic Flights - Avail 10% Instant Discount up to Rs 1500 and 3 & 6-month interest free EMI, minimum transaction to be Rs 6000 Domestic Hotels - Get 15% Off, up to Rs 5,000 on Domestic Hotels & Homestays, minimum booking value should be Rs 3000 Holiday Packages - Up to 30% OFF (up to Rs 35,000) + 3- & 6-month interest free EMI, minimum transaction should be Rs 40,000 Offer valid on Bank of Baroda Credit Cards The offer is applicable on 1 booking per card during sale duration. This coupon is valid only on Tuesday and Friday MMTBOBEMI",
+      "expiry": "2026-12-31",
+      "min_order": 10,
+      "status": "active"
+    },
+    {
+      "merchant_id": "makemytrip",
+      "code": "MMTIDFCEMI",
+      "discount": "Up To Rs.1200 OFF",
+      "description": "IDFC Bank Domestic Flight Coupon Details - Get 12% instant discount up to Rs 1200 on domestic flight booking. No minimum ticket value required. Apply the given coupon code at the checkout page to avail the offer. Offer valid on IDFC FIRST BANK Cards with EMI option. MMTIDFCEMI",
+      "expiry": "2026-12-31",
+      "min_order": 1200,
+      "status": "active"
+    },
+    {
+      "merchant_id": "makemytrip",
+      "code": "MMTHEALTH",
+      "discount": "FLASH SALE",
+      "description": "Grab Upto Rs 2000 OFF on Flights for medical professionel The offer is valid for ONE flight booking per user i.e. only on his/her flight booking. This promo is only applicable on one-way and roundtrip flight bookings. MMTHEALTH Existing User",
+      "expiry": "2026-12-31",
+      "min_order": 2000,
+      "status": "active"
+    },
+    {
+      "merchant_id": "makemytrip",
+      "code": "MMTICICIEMI",
+      "discount": "Up To Rs.4000 OFF",
+      "description": "Make My Trip ICICI Bank Coupon Details - International Flights - Flat 12 % Instant Discount ( Rs 2000 ) on all EMI tenures. (Minimum Booking Value Rs 50000) Holiday Packages -Avail upto 3 5% Instant Discount (Up to Rs 35000) on all EMI tenures. (Minimum Booking Value Rs 30000) Offer applicable on ICICI Bank Credit Card EMI transactions MMTICICIEMI Existing User",
+      "expiry": "2026-12-31",
+      "min_order": 4000,
+      "status": "active"
+    },
+    {
+      "merchant_id": "makemytrip",
+      "code": "MMTBFLEMI",
+      "discount": "15% OFF",
+      "description": "Grab 15 % OFF + 3/6 months no cost EMI on Domestic Flights with Bajaj Finserv EMI Bookings Offer is valid for bookings made on Website, mobile site and mobile app (Android & iOS) only. NOT applicable on part payment transactions. MMTBFLEMI",
+      "expiry": "2026-12-31",
+      "min_order": 15,
+      "status": "active"
+    },
+    {
+      "merchant_id": "makemytrip",
+      "code": "MMTUBI",
+      "discount": "12% OFF",
+      "description": "Grab flat 12% off up to Rs 1250 on domestic flights using the discount code Offer is valid when paid via UBI cards ​​​​​​​Minimum transaction is not required MMTUBI Existing User",
+      "expiry": "2026-12-31",
+      "min_order": 12,
+      "status": "active"
+    },
+    {
+      "merchant_id": "makemytrip",
+      "code": "AXISFLYEMI",
+      "discount": "Up To Rs.1050 OFF",
+      "description": "Axis Bank Credit Card Offer - Up To Rs 1050 OFF On Flights + Avail No Cost EMI Use coupon: AXISFLY and get upto Rs 1050 OFF on flight bookings. AXISFLYEMI",
+      "expiry": "2026-12-31",
+      "min_order": 1050,
+      "status": "active"
+    },
+    {
+      "merchant_id": "makemytrip",
+      "code": "DUBAIFLY",
+      "discount": "5% OFF",
+      "description": "Customer gets flat 5% instant discount up to Rs 5,000 on bookings. Offer is only valid on flights from and to Dubai. Valid on both One-Way & Return International Bookings. DUBAIFLY Existing User",
+      "expiry": "2026-12-31",
+      "min_order": 5,
+      "status": "active"
+    },
+    {
+      "merchant_id": "makemytrip",
+      "code": "FEDERALINTEMI",
+      "discount": "Up To 15% OFF",
+      "description": "Federal Bank Credit Card EMI Offer: Upto 15% OFF on International Hotels​​​​​​​ Offer is valid on select properties Flat 10% Off on Domestic Flights via Federal Bank Credit Card EMI Bookings by applying code: FEDERALEMI FEDERALINTEMI",
+      "expiry": "2026-12-31",
+      "min_order": 15,
+      "status": "active"
+    },
+    {
+      "merchant_id": "makemytrip",
+      "code": "AMEXFEST",
+      "discount": "15% OFF",
+      "description": "Grab Flat 15% OFF on Domestic Hotels & Homestays with American Express Cards, upto Rs 5000 discount This offer is valid on select domestic hotels only. Bookings where \"Book now Pay Later\" option is selected, and Re 1 has been paid for reservation, will not be eligible for the instant discount offer Offer is not applicable if the hotel is booked using the Pay-At-Hotel OR Book Now Pay Later option. AMEXFEST Existing User",
+      "expiry": "2026-12-31",
+      "min_order": 15,
+      "status": "active"
+    },
+    {
+      "merchant_id": "makemytrip",
+      "code": "MMTPP",
+      "discount": "Rs.500 OFF",
+      "description": "Grab flat Rs 500 OFF on domestic flights using paytm postpaid option The offer is valid for ONE flight booking per user i.e. only on his/her flight booking. This promo is only applicable on one-way and roundtrip flight bookings. ​​​​​​​Valid on selected domestic flight bookings only MMTPP Existing User",
+      "expiry": "2026-12-31",
+      "min_order": 500,
+      "status": "active"
+    },
+    {
+      "merchant_id": "makemytrip",
+      "code": "MMTFLAT500",
+      "discount": "Rs.500 OFF",
+      "description": "MakeMyTrip Flight Offer Details - Get flat Rs 500 instant off on domestic flight tickets. Book minimum 3 or more one-way tickets or 2 or more roundtrip tickets to avail the offer. Minimum ticket booking value to be Rs 3000. Offer valid for ONE time per user. Valid for both one-way or return domestic flight bookings. Not valid for Gift Cards, My Wallet and Multi-city Bookings. Spicejet Business Class Fare is here! Enjoy 2X2 seating, gourmet meals, lounge access and much more MMTFLAT500 Existing User",
+      "expiry": "2026-12-31",
+      "min_order": 3,
+      "status": "active"
+    },
+    {
+      "merchant_id": "makemytrip",
+      "code": "MMTFDC",
+      "discount": "FREE OFFER",
+      "description": "Avail free of cost date change on domestic flights for defence personnel The offer is valid for ONE flight booking per user i.e. only on his/her flight booking. This promo is only applicable on one-way and roundtrip flight bookings. MMTFDC Existing User",
+      "expiry": "2026-12-31",
+      "min_order": 0,
+      "status": "active"
+    },
+    {
+      "merchant_id": "makemytrip",
+      "code": "INSTANTBOOK",
+      "discount": "Rs.500 OFF",
+      "description": "Insights Of Flight Coupon - Get up to Rs 500 instant off on domestic flight booking. No minimum ticket value required to avail the offer. INSTANTBOOK Existing User",
+      "expiry": "2026-12-31",
+      "min_order": 500,
+      "status": "active"
+    },
+    {
+      "merchant_id": "makemytrip",
+      "code": "MMTNEARBY",
+      "discount": "10% OFF",
+      "description": "FLAT 10% OFF on Hotels & Homestays in India. Maximum discount - Rs 5000 The offer is valid on 1 booking per user per month throughout the offer period. Coupon is applicable on selected hotels only MMTNEARBY Existing User",
+      "expiry": "2026-12-31",
+      "min_order": 10,
+      "status": "active"
+    },
+    {
+      "merchant_id": "makemytrip",
+      "code": "HSBCINT",
+      "discount": "20% OFF",
+      "description": "Upto 20% Instant Discount (up to Rs 20,000) on select hotels Valid on HSBC Credit Cards and Credit Card EMI only. For Credit Card, the offer is valid on 1 booking per card throughout the offer period. HSBCINT",
+      "expiry": "2026-12-31",
+      "min_order": 20,
+      "status": "active"
+    },
+    {
+      "merchant_id": "makemytrip",
+      "code": "MMTPNB",
+      "discount": "10% OFF",
+      "description": "Avail a 10% discount on purchase of domestic flight tickets with punjab national bank credit cards. Use code at checkout and avail the offer MMTPNB",
+      "expiry": "2026-12-31",
+      "min_order": 10,
+      "status": "active"
+    },
+    {
+      "merchant_id": "makemytrip",
+      "code": "MMTZEST",
+      "discount": "15% OFF",
+      "description": "Exclusive Offer for ZestMoney Customers - Domestic Flights - 3 Months No Cost EMI + Flat 10% Off (up to Rs 2000) using code: MMTZEST International Flights - 3 Months No Cost EMI + Flat 6% instant discount (up to Rs 10,000) using code: MMTZESTINT Domestic Hotels - 3 Months No Cost EMI + Flat 12% savings (up to Rs 5000) using code: MMTZEST International Hotels - Flat 15% discount (up to Rs 10,000) + 3 Months No Cost EMI using code: MMTZESTINT Maximum transaction value for ZestMoney as a paymode is 1.5 lakh. Offer is valid on minimum transaction amount of Rs 3000. MMTZEST Existing User",
+      "expiry": "2026-12-31",
+      "min_order": 15,
+      "status": "active"
+    },
+    {
+      "merchant_id": "makemytrip",
+      "code": "FLYMMT150",
+      "discount": "FLAT ₹150 OFF",
+      "description": "Insights Of MMT Flight Coupon Code - Get flat Rs 150 discount on domestic flight bookings. Minimum booking value should be Rs 3000. This offer cannot be combined with No Cost EMI paymode. Offer is not valid on domestic flights multi-city bookings FLYMMT150 Existing User",
+      "expiry": "2026-12-31",
+      "min_order": 150,
+      "status": "active"
+    },
+    {
+      "merchant_id": "boat",
+      "code": "GRABON500",
+      "discount": "FLAT ₹500 OFF",
+      "description": "Get up to 75% OFF on your orders Additional Rs 500 OFF on selected products Enter the discount coupon code at the checkout page GRABON500 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 75,
+      "status": "active"
+    },
+    {
+      "merchant_id": "boat",
+      "code": "BOATHEAD",
+      "discount": "Up To 85% OFF",
+      "description": "boAthead Days Grab up to 80% OFF on all top sellers Extra 5% OFF on prepaid orders Collections: Storm Call, Rockerz 111, Rockerz 109, Airdopes Ace & many more Redeem the coupon code at the checkout page BOATHEAD Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 80,
+      "status": "active"
+    },
+    {
+      "merchant_id": "boat",
+      "code": "GRABON400",
+      "discount": "FLAT ₹400 OFF",
+      "description": "boAt GrabOn Exclusive Coupon Flat Rs 400 OFF on your orders Products: Airdopes Ultra Plus, Rockerz 195V2 Pro, Airdopes 148 & more​​​​​​​ ​​​​​​​Promo code is accessible to all users Note: Visit the landing page and the coupon code will applicable on landing page products only GRABON400 Existing User Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 400,
+      "status": "active"
+    },
+    {
+      "merchant_id": "boat",
+      "code": "GRABON300",
+      "discount": "Rs.300 OFF",
+      "description": "Get up to 80% OFF on your orders Extra Rs 300 OFF on selected products, and the code will be applicable on the landing page products only Free shipping is available GRABON300 Existing User Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 80,
+      "status": "active"
+    },
+    {
+      "merchant_id": "boat",
+      "code": "GRABON100",
+      "discount": "EXTRA ₹100 OFF",
+      "description": "Avail an extra Rs 1 00 OFF on your orders Types of collections available are Rugby Plus, Xtend Plus, Xplorer Watch & more Applicable for everyone Note: Code will be applicable on landing page products GRABON100 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 100,
+      "status": "active"
+    },
+    {
+      "merchant_id": "boat",
+      "code": "GRAB400",
+      "discount": "EXTRA ₹400 OFF",
+      "description": "Order now & get up to 70% OFF on your purchases Extra Rs 400 OFF on selected products The discount code is applicable to selected products only GRAB400 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 70,
+      "status": "active"
+    },
+    {
+      "merchant_id": "boat",
+      "code": "GRAB300",
+      "discount": "Rs.300 OFF",
+      "description": "Get up to 80% OFF on the purchase of Wireless Earbuds Additional Rs 300 OFF on selected products Enter the coupon code at the checkout page GRAB300 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 80,
+      "status": "active"
+    },
+    {
+      "merchant_id": "boat",
+      "code": "GRAB2000",
+      "discount": "FLAT ₹2000 OFF",
+      "description": "Flat Rs 2000 OFF on boAt Valour Ring 1 Get the product price at Rs 10999 FREE express delivery GRAB2000 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 1,
+      "status": "active"
+    },
+    {
+      "merchant_id": "boat",
+      "code": "BOAT5",
+      "discount": "Up To 85% OFF",
+      "description": "Discount Up To 80% OFF UPI Payments Extra Rs 15 OFF Extra Discount 5% OFF Replacement Free 7 Days Shop here for awesome products with unbelievable prices Get Up to 80% Off on BoAt Products Extra 5% OFF on purchase of 2 items Search here for Airdopes, Wireless, Smart Watches, Wired, Speakers, Home Audio, Mobile Accessories, & more Get an extra Rs 15 off on All UPI Payments Free shipping is available Get 1 year warranty on your purchases BOAT5 Existing User Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 80,
+      "status": "active"
+    },
+    {
+      "merchant_id": "boat",
+      "code": "UNLOCK15",
+      "discount": "Up To 85% OFF",
+      "description": "boAt Deals Sale is offering up to 70% Off Search here for Airdopes, Smartwatch, Wireless Headphones, Bluetooth Speakers, Wired Headphones, Accessories, and many more Use the code to get an extra 15% Off Enter the coupon code at the checkout page NOTE - Applicable On Selected Products UNLOCK15 Existing User Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 70,
+      "status": "active"
+    },
+    {
+      "merchant_id": "boat",
+      "code": "BOAT6",
+      "discount": "6% OFF",
+      "description": "Get 6% OFF on purchase of 2 or more items Redeem the discount code at the checkout page Offer accessible to all users BOAT6 Existing User Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 6,
+      "status": "active"
+    },
+    {
+      "merchant_id": "boat",
+      "code": "BOAT7",
+      "discount": "Up To 77% OFF",
+      "description": "Boat STORM Sale - Shop here for awesome products with unbelievable prices Get Up to 70% Off + 7% Off by using the given code Search here for Smartwatches, Airdopes, Neckbands, Headphones, Speakers, and more NOTE - Valid on Purchases above 5 Products BOAT7 Existing User Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 70,
+      "status": "active"
+    },
+    {
+      "merchant_id": "boat",
+      "code": "FLASH500",
+      "discount": "FLAT ₹500 OFF",
+      "description": "Flat Rs 500 OFF on selected products Products available are Rockerz 111, Rockerz 258 Pro+, Airdopes 138 Pro & many more Visit the landing to avail the discount code ​​​​​​ FLASH500 Existing User Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 500,
+      "status": "active"
+    },
+    {
+      "merchant_id": "boat",
+      "code": "GRAB100",
+      "discount": "FLAT ₹100 OFF",
+      "description": "Flat Rs 100 OFF on boAt Airdopes Prime 701 Price starts at Rs 1799 Enter the coupon code at the checkout page GRAB100 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 701,
+      "status": "active"
+    },
+    {
+      "merchant_id": "boat",
+      "code": "SMARTCHOICE",
+      "discount": "Up To 87% OFF",
+      "description": "Get up to 80% OFF on your orders Buy a Smartwatch & any other boAt product to gift by using the code and get 7% OFF on the Smartwatch ​​​​​​​​​​​​​​The price starts from Rs 1299 Note: This coupon code will valid on the landing page products only​​​​​​​ SMARTCHOICE Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 80,
+      "status": "active"
+    },
+    {
+      "merchant_id": "boat",
+      "code": "BOAT10",
+      "discount": "10% OFF",
+      "description": "Shop here for the best prices on the best of the Boat Products Use the given code and get a flat 10% Off on purchases of more than 10 items Products available are Nirvana Ion, Airdopes 131, Rockerz 235 V2 Pro, Airdopes 161, Storm Call, Immortal 170​​​​​​​, Bassheads 105​​​​​​​ & many more products Applicable once per order per user ​​​​​​​ BOAT10 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 10,
+      "status": "active"
+    },
+    {
+      "merchant_id": "boat",
+      "code": "WINTER300",
+      "discount": "Rs.300 OFF",
+      "description": "Get up to 80% OFF on your orders Additional Rs 300 OFF on selected products Enter the coupon code at the checkout page WINTER300",
+      "expiry": "2026-12-31",
+      "min_order": 80,
+      "status": "active"
+    },
+    {
+      "merchant_id": "boat",
+      "code": "TAKE300",
+      "discount": "Rs.300 OFF",
+      "description": "Shop here for awesome products at unbelievable prices Get up to 80% Off + Extra Rs 300 Off by using the code on selected products Search here for Earphones, Headphones, Smart Phones, and more NOTE - Valid on the landing page products TAKE300 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 80,
+      "status": "active"
+    },
+    {
+      "merchant_id": "boat",
+      "code": "BIG100",
+      "discount": "Up To 75% OFF",
+      "description": "Boat Sale - Shop here for awesome products with unbelievable prices Get Up to 75% Off + Rs 100 Off on selected products Search here for Earphones, Hustle Headphones, Music Mavericks, Bass It Up, Mood Groomers, Wear Your Vibe, and more Note: Visit the landing page to avail the discount code BIG100 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 75,
+      "status": "active"
+    },
+    {
+      "merchant_id": "boat",
+      "code": "BRINGMYBASS",
+      "discount": "Rs.300 OFF",
+      "description": "boAt Best Deals - Shop here and get flat Rs 300 Off by using the code Search here for Smartwatches, Soundbars, True Wireless Earbuds, Wireless Headphones, Wireless Speakers, Party Speakers, Neckbands, and many more Get a 7-day Replacement and Free Shipping with a 1year Warranty BringMyBass Existing User Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 80,
+      "status": "active"
+    },
+    {
+      "merchant_id": "blinkit",
+      "code": "PAYTMUPI",
+      "discount": "SITEWIDE OFF",
+      "description": "Get up to 80% OFF on groceries and staples including rice & flour, edible oils, ghee, spices, salt, sugar, dry fruits, nuts & pulses And, also get an extra up to Rs 200 cashback by using the code Minimum order value - Rs 199 The price starts from Rs 10 ​​​​​​​ PAYTMUPI Existing User Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 80,
+      "status": "active"
+    },
+    {
+      "merchant_id": "blinkit",
+      "code": "MBKUPI",
+      "discount": "Summer Specials",
+      "description": "Save up to 50% on orders during the sale Unlock an extra Rs 20 OFF using the code Starting from Rs 99 onwards Limited period offer MBKUPI Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 50,
+      "status": "active"
+    },
+    {
+      "merchant_id": "blinkit",
+      "code": "AUCC30",
+      "discount": "Up To 55% OFF",
+      "description": "Shop now and get up to 50% OFF on fruits & vegetables. Use the code to enjoy an extra 5% OFF. Categories include: Fresh Vegetables, Fresh Fruits, Mangoes & Melons, Seasonal, and Exotics. Offer valid for all users. Note: The code is valid for Yes Bank card users! AUCC30 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 50,
+      "status": "active"
+    },
+    {
+      "merchant_id": "blinkit",
+      "code": "MBKFEST",
+      "discount": "Rs.25 CASHBACK",
+      "description": "Use Mobikwik Wallet to earn flat Rs. 25 cashback. Receive a minimum cashback of Rs 10 per transaction guaranteed. Ensure a minimum order amount of Rs. 249 to qualify. The offer is valid once per period for both new and old users. MBKFEST Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 25,
+      "status": "active"
+    },
+    {
+      "merchant_id": "tatacliq",
+      "code": "NEW400",
+      "discount": "FLAT ₹400 OFF",
+      "description": "Avail Rs 400 OFF on your orders​​​​​​​ Minimum order value should be Rs 3200 Accessible for new users only NEW400 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 400,
+      "status": "active"
+    },
+    {
+      "merchant_id": "tatacliq",
+      "code": "FIRSTORDERFREE",
+      "discount": "BIG BOLD SALE",
+      "description": "The Ajio Big Bold Sale is live now with massive discounts ranging from 50% to 90% OFF on top fashion brands. Refresh your wardrobe with huge discounts on fashion, footwear, beauty, and more. Unlock an extra 10% OFF on your purchases via SBI Bank cards Shop your favorites now and get ready to shop the hottest deals before they’re gone Flat Rs 499 off on 1499 for App purchase Get extra Rs 1000 AJIO Super Cash on orders above Rs 1499 FIRSTORDERFREE Existing User Valid Till: Jun 7, 2026 (SUN)",
+      "expiry": "2026-12-31",
+      "min_order": 50,
+      "status": "active"
+    },
+    {
+      "merchant_id": "tatacliq",
+      "code": "FASHION10",
+      "discount": "Up To 90% OFF",
+      "description": "Get up to 80% OFF on your orders Extra 10% OFF On All Products Minimum cart value should be Rs 2399 Get a maximum discount of Rs 500 ​​​​​​​Additional 10% OFF via IDFC, Bobcard, ICICI Bank credit & debit cards FASHION10 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 80,
+      "status": "active"
+    },
+    {
+      "merchant_id": "tatacliq",
+      "code": "ETHNIC15",
+      "discount": "Up To 90% OFF",
+      "description": "Get up to 75% OFF on women's clothing The minimum purchase amount is required to be Rs 34 9 9 to avail the extra 15% OFF Offer is accessible to all users ETHNIC15",
+      "expiry": "2026-12-31",
+      "min_order": 75,
+      "status": "active"
+    },
+    {
+      "merchant_id": "tatacliq",
+      "code": "BIGSAVE10",
+      "discount": "Up To 85% OFF",
+      "description": "​​​​​​​Get up to 75% OFF on the purchase of Men's Clothing Extra 10% OFF on orders above Rs 2400 Maximum discount of up to Rs 500 Enter the coupon code at the checkout page BIGSAVE10",
+      "expiry": "2026-12-31",
+      "min_order": 75,
+      "status": "active"
+    },
+    {
+      "merchant_id": "tatacliq",
+      "code": "WESTERWEAR15",
+      "discount": "Up To 65% OFF",
+      "description": "​​​​​​​Avail up to 50% OFF on western wear collection Also get extra 15% OFF by using coupon code This is valid for all users WESTERWEAR15 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 50,
+      "status": "active"
+    },
+    {
+      "merchant_id": "tatacliq",
+      "code": "ICICIMTCSF",
+      "discount": "FLAT 15% OFF",
+      "description": "Get flat 15% OFF on your orders during icici bank credit cards Minimum order value should be Rs 3000 Redeem the coupon code at the checkout page ICICIMTCSF Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 15,
+      "status": "active"
+    },
+    {
+      "merchant_id": "tatacliq",
+      "code": "TRYBEAUTY",
+      "discount": "Up To 80% OFF",
+      "description": "Shop for beauty products and cosmetics from top brands and get the best price Discounts of up to 70% on beauty products Also, get an extra 10% OFF by using the coupon code The minimum cart value is required of Rs 899 Maximum discount of up to Rs 200 This offer can apply to all users TRYBEAUTY Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 70,
+      "status": "active"
+    },
+    {
+      "merchant_id": "tatacliq",
+      "code": "CASHBACK7",
+      "discount": "Up To 87% OFF",
+      "description": "Get up to 80% OFF on the latest kids' fashion wear . Additional 7% cashback on a minimum purchase of Rs 1499 Avail maximum discount of up to Rs 200 Brands available: Lilliput, Kittens, Beebay, Hop, UFO, Peppermint, Barbie, etc. CASHBACK7 Existing User",
+      "expiry": "2026-12-31",
+      "min_order": 80,
+      "status": "active"
+    },
+    {
+      "merchant_id": "tatacliq",
+      "code": "HDFCEMIF",
+      "discount": "FLAT 15% OFF",
+      "description": "Avail 15% OFF on HDFC bank credit cards Minimum order value should be Rs 5000 Use the code to get this offer HDFCEMIF Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 15,
+      "status": "active"
+    },
+    {
+      "merchant_id": "tatacliq",
+      "code": "TCFICICIVDEMI",
+      "discount": "FLAT 15% OFF",
+      "description": "Get flat 15% Off on ICICI bank credit cards Minimum order value should be Rs 5000 TCFICICIVDEMI Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 15,
+      "status": "active"
+    },
+    {
+      "merchant_id": "tatacliq",
+      "code": "WATCHFEST10",
+      "discount": "Up To 90% OFF",
+      "description": "Avail up to 80% OFF on Watch collections Get an extra 10% OFF by using the coupon code Minimum cart value should be Rs 5990 and more Valid for all users WATCHFEST10 Existing User Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 80,
+      "status": "active"
+    },
+    {
+      "merchant_id": "zepto",
+      "code": "QUICKSAVE200",
+      "discount": "SITEWIDE OFF",
+      "description": "Shop more and Save more! Enjoy up to 95% OFF across all products. Get an additional discount of up to Rs 200 on orders above Rs 1299. Shop electronics, fashion, kitchen products, and more. Install the app to access extra benefits. QUICKSAVE200 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 95,
+      "status": "active"
+    },
+    {
+      "merchant_id": "zepto",
+      "code": "QUICKSAVE100",
+      "discount": "Up To 60% OFF",
+      "description": "Buy groceries and essentials at the best prices today. Save up to 60% on your orders. Apply the code and get an e xtra Rs 100 OFF. Offer valid for a limited time. DEAL ACTIVATED Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 60,
+      "status": "active"
+    },
+    {
+      "merchant_id": "zepto",
+      "code": "AMAZONPAY",
+      "discount": "Rs.25 CASHBACK",
+      "description": "Order now & get the best discounts . And grab Rs 25 cashback on your orders. Valid for Amazon Pay users. AMAZONPAY Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 25,
+      "status": "active"
+    },
+    {
+      "merchant_id": "zepto",
+      "code": "QUICKSAVE50",
+      "discount": "Up To 60% OFF",
+      "description": "Get up to 60% OFF on personal care & self-care products. Avail an additional Rs 50 OF F with the code. The starting price is just Rs 99. Includes lotions, skincare, beauty items, and more. Applicable to all users. QUICKSAVE50 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 60,
+      "status": "active"
+    },
+    {
+      "merchant_id": "zepto",
+      "code": "QUICKSAVE150",
+      "discount": "FLAT 150% OFF",
+      "description": "Shop now & get flat Rs 150 OFF on your orders. The order value required is Rs 1899. Use the code & grab the offer. QUICKSAVE150 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 150,
+      "status": "active"
+    },
+    {
+      "merchant_id": "zepto",
+      "code": "MBK300",
+      "discount": "Up To Rs.300 CASHBACK",
+      "description": "Order your favorite products & grab the best discounts. Get up to Rs 300 cashback on your orders. Minimum transaction value Rs 399. Applicable for all users. MBK300 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 300,
+      "status": "active"
+    },
+    {
+      "merchant_id": "zepto",
+      "code": "ZEPHSBC",
+      "discount": "FLAT ₹100 OFF",
+      "description": "Get flat 12% OFF with HSBC Bank Credit Cards. The minimum cart value required is Rs 999. ​​​​​​​ ZEPHSBC Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 100,
+      "status": "active"
+    },
+    {
+      "merchant_id": "dominos",
+      "code": "GET30",
+      "discount": "Rs 30 OFF",
+      "description": "Order pizzas and avail flat Rs 30 OFF Minimum order value is Rs 200 Valid only for all users Applicable only on mobile app Not valid on combos, EDV offers Offer applicable only for select users GET30 Existing User Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 30,
+      "status": "active"
+    },
+    {
+      "merchant_id": "dominos",
+      "code": "PIZZAPARTY",
+      "discount": "Pizza Mania Special",
+      "description": "Order now on Dominos app and get 7 items for just Rs 377 ​​​​​​​ In addition, receive Rs 50 cashback for your next order (valid for 14 days) ​​​​​​​ Apply coupon code PIZZAPARTY Effective cost ₹327 after cashback Free delivery, no extra charges Steps to claim the offer: - Log in to the Domino’s app - Select delivery (takeaway not included) - Add 1 Regular Margherita Pizza - From the Pizza Mania section, add: 1 Onion Pizza, 2 Tomato Pizzas, 2 Veg Parcels,1 Coca-Cola PIZZAPARTY Existing User Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 7,
+      "status": "active"
+    },
+    {
+      "merchant_id": "mcdonald",
+      "code": "GRAB150",
+      "discount": "FLAT ₹150 OFF",
+      "description": "Save Rs 150 OFF on your McDelivery orders with the exclusive coupon code. Offer valid on a minimum cart value of Rs 549. Applicable on orders placed via App, Web, or Msite. Valid for both Advance and Regular McDelivery orders. Available for all users across McDonald’s West & South India outlets. GRAB150 Existing User Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 150,
+      "status": "active"
+    },
+    {
+      "merchant_id": "mcdonald",
+      "code": "GRAB349",
+      "discount": "COMBO OFFER",
+      "description": "Grab a Free McAloo Tikki + Fries + Veg Pizza McPuff Combo ! Applies on orders above Rs 349. Applicable on McDelivery, both Advance & Regular orders.​​​​​​​ Note - Offer applicable at McDonald’s West & South India outlets GRAB349 Existing User Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 349,
+      "status": "active"
+    },
+    {
+      "merchant_id": "mcdonald",
+      "code": "GRAB199",
+      "discount": "Tasty Treat!",
+      "description": "Order through McDelivery to grab this offer. Get a Free McAloo Tikki Burger order above Rs 199. All users can avail of this offer Works on App, Web & Msite. Available on Advance or Regular orders. Valid across McDonald’s West & South India. Limited stock – don’t miss out. GRAB199 Existing User Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 199,
+      "status": "active"
+    },
+    {
+      "merchant_id": "mcdonald",
+      "code": "GRABONXMCD699",
+      "discount": "Free McSpicy Treat 🍗",
+      "description": "Get a McSpicy Chicken/McSpicy Paneer Free on orders above Rs 699 Offer valid only on McDelivery orders. Available while stocks last. Applicable on App, Web, and Msite. The coupon code is accessible to all users. Applicable on all Advance and Regular orders. Offer available at McDonald’s outlets in West & South India GRABONXMCD699 Existing User Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 699,
+      "status": "active"
+    },
+    {
+      "merchant_id": "mcdonald",
+      "code": "GRABON499",
+      "discount": "FLAT ₹100 OFF",
+      "description": "Grab Rs 100 OFF on Delicious Food Deals Valid on orders of Rs 449 and above. The coupon code is accessible to new users only Available only on McDelivery orders Order via App, Website, or Mobile site Works for both Advance & Regular orders Coupon code can be availed once per user Applicable at McDonald’s West & South India outlets GRABON499 Existing User Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 100,
+      "status": "active"
+    },
+    {
+      "merchant_id": "mcdonald",
+      "code": "GRABONFRIES",
+      "discount": "FREE PERI PERI FRIES",
+      "description": "Enjoy FREE Medium Peri Peri Fries with orders above Rs 299 Valid on McDelivery orders only Available on App, Web & Msite Applicable for Advance & Regular orders McDonald’s West & South India​​​​​​​ New users can avail of this offer GRABONFRIES Existing User Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 299,
+      "status": "active"
+    },
+    {
+      "merchant_id": "mcdonald",
+      "code": "GRABON199",
+      "discount": "Tasty Treat On Us!",
+      "description": "Get a Free Coke on your first McDelivery Order Applicable on orders over Rs 199 Available on McDelivery via App, Web, & Mobile site Valid on both Advance and Regular orders Offer available at McDonald’s West & South India Users can avail this coupon code only one time Applicable for new users GRABON199 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 199,
+      "status": "active"
+    },
+    {
+      "merchant_id": "mcdonald",
+      "code": "GRABONXMCD599",
+      "discount": "FLAT ₹100 OFF",
+      "description": "Shop now and save big on your orders Get Rs 100 OFF on orders over Rs 599 All users can avail of this offer Enjoy this offer exclusively on McDelivery orders! Place your order through the App, Web, or Msite. Valid on both Advance and Regular orders. Available at McDonald’s outlets in West & South India. GRABONXMCD599 Existing User Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 100,
+      "status": "active"
+    },
+    {
+      "merchant_id": "mcdonald",
+      "code": "GRABON349",
+      "discount": "FLAT ₹75 OFF",
+      "description": "Order now and enjoy Rs 75 OFF on your favorite meals Applies to carts of Rs 349 or more Use the exclusive code & grab this offer Valid for new users The coupon code can be used only once per user Valid on app, Web, and Msite Applicable on both Advance and Regular orders Note - Valid across McDonald’s West & South India GRABON349 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 75,
+      "status": "active"
+    },
+    {
+      "merchant_id": "mcdonald",
+      "code": "GRABONXMCD499",
+      "discount": "FREE OFFER",
+      "description": "Get a free McVeggie or McChicken burge r on orders above Rs 499 at McDonald’s Valid on McDelivery orders only Applicable on app, web & mSite Offer available in West & South India till stocks last Valid for repeated users GRABONXMCD499 Existing User Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 499,
+      "status": "active"
+    },
+    {
+      "merchant_id": "netmeds",
+      "code": "NMSNEW20",
+      "discount": "FLAT 20% OFF",
+      "description": "Get your medications at a discounted price with 20% OFF on medicines and 5% NMS SuperCash Please note that the minimum purchase amount for medicines is Rs 799 This special deal is exclusively available for first-time users only ​​​​​​​ NMSNEW20 Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 20,
+      "status": "active"
+    },
+    {
+      "merchant_id": "netmeds",
+      "code": "NMS15",
+      "discount": "15% OFF",
+      "description": "Flat 15% OFF on medicines orders​​​​​​​ 30% NMS SuperCash (maximum cashback - Rs 1000) on ‘PrePaid’ medicine orders​​​​​​​ The minimum order value of Rs 699 ​​​​​​​​​​​​​​ NMS15",
+      "expiry": "2026-12-31",
+      "min_order": 15,
+      "status": "active"
+    },
+    {
+      "merchant_id": "netmeds",
+      "code": "FREEDEL",
+      "discount": "FREE SHIPPING",
+      "description": "​​​​​​​Shop for your favourite products in your cart and get free delivery The minimum order value should be Rs 750 This can be applicable to all users FREEDEL Valid Till: Jun 6, 2026 (SAT)",
+      "expiry": "2026-12-31",
+      "min_order": 750,
+      "status": "active"
+    },
+    {
+      "merchant_id": "amazon",
+      "code": "DEMO_MISSING_01",
+      "discount": "Demo missing deal",
+      "description": "Seeded demo DB-only coupon to demonstrate MISSING classification.",
+      "expiry": "2026-12-31",
+      "min_order": 0,
+      "status": "active"
+    },
+    {
+      "merchant_id": "amazon",
+      "code": "DEMO_MISSING_02",
+      "discount": "Demo missing deal",
+      "description": "Seeded demo DB-only coupon to demonstrate MISSING classification.",
+      "expiry": "2026-12-31",
+      "min_order": 0,
+      "status": "active"
+    },
+    {
+      "merchant_id": "amazon",
+      "code": "DEMO_MISSING_03",
+      "discount": "Demo missing deal",
+      "description": "Seeded demo DB-only coupon to demonstrate MISSING classification.",
+      "expiry": "2026-12-31",
+      "min_order": 0,
+      "status": "active"
+    },
+    {
+      "merchant_id": "amazon",
+      "code": "DEMO_MISSING_04",
+      "discount": "Demo missing deal",
+      "description": "Seeded demo DB-only coupon to demonstrate MISSING classification.",
+      "expiry": "2026-12-31",
+      "min_order": 0,
+      "status": "active"
+    },
+    {
+      "merchant_id": "amazon",
+      "code": "DEMO_MISSING_05",
+      "discount": "Demo missing deal",
+      "description": "Seeded demo DB-only coupon to demonstrate MISSING classification.",
+      "expiry": "2026-12-31",
+      "min_order": 0,
+      "status": "active"
+    },
+    {
+      "merchant_id": "amazon",
+      "code": "DEMO_MISSING_06",
+      "discount": "Demo missing deal",
+      "description": "Seeded demo DB-only coupon to demonstrate MISSING classification.",
+      "expiry": "2026-12-31",
+      "min_order": 0,
+      "status": "active"
+    },
+    {
+      "merchant_id": "amazon",
+      "code": "DEMO_MISSING_07",
+      "discount": "Demo missing deal",
+      "description": "Seeded demo DB-only coupon to demonstrate MISSING classification.",
+      "expiry": "2026-12-31",
+      "min_order": 0,
+      "status": "active"
+    },
+    {
+      "merchant_id": "flipkart",
+      "code": "DEMO_MISSING_08",
+      "discount": "Demo missing deal",
+      "description": "Seeded demo DB-only coupon to demonstrate MISSING classification.",
+      "expiry": "2026-12-31",
+      "min_order": 0,
+      "status": "active"
+    },
+    {
+      "merchant_id": "flipkart",
+      "code": "DEMO_MISSING_09",
+      "discount": "Demo missing deal",
+      "description": "Seeded demo DB-only coupon to demonstrate MISSING classification.",
+      "expiry": "2026-12-31",
+      "min_order": 0,
+      "status": "active"
+    },
+    {
+      "merchant_id": "flipkart",
+      "code": "DEMO_MISSING_10",
+      "discount": "Demo missing deal",
+      "description": "Seeded demo DB-only coupon to demonstrate MISSING classification.",
+      "expiry": "2026-12-31",
+      "min_order": 0,
+      "status": "active"
+    },
+    {
+      "merchant_id": "flipkart",
+      "code": "DEMO_MISSING_11",
+      "discount": "Demo missing deal",
+      "description": "Seeded demo DB-only coupon to demonstrate MISSING classification.",
+      "expiry": "2026-12-31",
+      "min_order": 0,
+      "status": "active"
+    },
+    {
+      "merchant_id": "flipkart",
+      "code": "DEMO_MISSING_12",
+      "discount": "Demo missing deal",
+      "description": "Seeded demo DB-only coupon to demonstrate MISSING classification.",
+      "expiry": "2026-12-31",
+      "min_order": 0,
+      "status": "active"
+    },
+    {
+      "merchant_id": "flipkart",
+      "code": "DEMO_MISSING_13",
+      "discount": "Demo missing deal",
+      "description": "Seeded demo DB-only coupon to demonstrate MISSING classification.",
+      "expiry": "2026-12-31",
+      "min_order": 0,
+      "status": "active"
+    }
+  ],
+  "demo_mismatch_seed": {
+    "enabled": true,
+    "target_counts": {
+      "stale": 10,
+      "missing": 13,
+      "updated": 8,
+      "extra": 4
+    },
+    "stale_codes": [
+      "FWDEORS15",
+      "FWDNEW200",
+      "MAKEUPOFF",
+      "MYNTRA300",
+      "MYNTRA500",
+      "MYNTRAHALFPRICE",
+      "MYNTRASAVE",
+      "NORETURNX",
+      "SPORTS20OFF",
+      "STACKUP"
+    ],
+    "updated_codes": [
+      "CROCS10",
+      "EXTRA4YOU",
+      "EXTRA50",
+      "FOOTWEAR10",
+      "FWDU15",
+      "FWDUB15",
+      "MYN15",
+      "MYNTRAEXCLUSIVE"
+    ],
+    "extra_codes_removed_from_db": [
+      "10TRYHNM",
+      "FWDUB10",
+      "NEEMANSNEW5",
+      "SPORTSOFF"
+    ],
+    "missing_codes_added_to_db": [
+      "DEMO_MISSING_01",
+      "DEMO_MISSING_02",
+      "DEMO_MISSING_03",
+      "DEMO_MISSING_04",
+      "DEMO_MISSING_05",
+      "DEMO_MISSING_06",
+      "DEMO_MISSING_07",
+      "DEMO_MISSING_08",
+      "DEMO_MISSING_09",
+      "DEMO_MISSING_10",
+      "DEMO_MISSING_11",
+      "DEMO_MISSING_12",
+      "DEMO_MISSING_13"
+    ]
+  }
 }

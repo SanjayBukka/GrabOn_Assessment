@@ -76,7 +76,7 @@ def classify_deals(
             live_deal = live_map[code]
             
             # Deal exists in both DB and live
-            is_expired = _is_expired(live_deal.expiry)
+            is_expired = _is_expired(live_deal.expiry) or _is_expired(db_deal.expiry)
             discount_matches = db_deal.discount == live_deal.discount
             
             if discount_matches and not is_expired:

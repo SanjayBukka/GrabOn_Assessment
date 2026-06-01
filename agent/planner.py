@@ -28,7 +28,7 @@ class PlanStep(BaseModel):
 class Plan(BaseModel):
     """Complete execution plan for a merchant."""
     steps: list[PlanStep] = Field(default_factory=list)
-    fallback_if_scrape_fails: str = Field(default="google_cache")
+    fallback_if_scrape_fails: str = Field(default="scrape_js_then_static_template")
     estimated_tool_calls: int = Field(default=4)
 
 
@@ -109,7 +109,7 @@ Return ONLY valid JSON in this exact format:
     {{"step": 3, "tool": "db_lookup", "reason": "Get internal DB records"}},
     {{"step": 4, "tool": "classify_deals", "reason": "Compare and classify"}}
   ],
-  "fallback_if_scrape_fails": "google_cache",
+  "fallback_if_scrape_fails": "scrape_js_then_static_template",
   "estimated_tool_calls": 4
 }}
 
@@ -205,12 +205,12 @@ Create an alternative plan that:
 Return ONLY valid JSON in this exact format:
 {{
   "steps": [
-    {{"step": 1, "tool": "google_cache", "reason": "Fallback: fetch from cache"}},
-    {{"step": 2, "tool": "extract_deals", "reason": "Extract from cached HTML"}},
+    {{"step": 1, "tool": "static_template", "reason": "Fallback: generate static HTML from mock DB"}},
+    {{"step": 2, "tool": "extract_deals", "reason": "Extract from static fallback HTML"}},
     {{"step": 3, "tool": "db_lookup", "reason": "Get DB records"}},
     {{"step": 4, "tool": "classify_deals", "reason": "Classify deals"}}
   ],
-  "fallback_if_scrape_fails": "scrape_js",
+  "fallback_if_scrape_fails": "static_template",
   "estimated_tool_calls": 4
 }}
 
@@ -282,7 +282,7 @@ Return ONLY the JSON, no other text."""
             
             plan = Plan(
                 steps=steps,
-                fallback_if_scrape_fails=parsed.get("fallback_if_scrape_fails", "google_cache"),
+                fallback_if_scrape_fails=parsed.get("fallback_if_scrape_fails", "scrape_js_then_static_template"),
                 estimated_tool_calls=parsed.get("estimated_tool_calls", 4),
             )
             
@@ -301,7 +301,7 @@ Return ONLY the JSON, no other text."""
                 PlanStep(step=3, tool="db_lookup", reason="Get DB records"),
                 PlanStep(step=4, tool="classify_deals", reason="Classify and compare"),
             ],
-            fallback_if_scrape_fails="google_cache",
+            fallback_if_scrape_fails="scrape_js_then_static_template",
             estimated_tool_calls=4,
         )
     
@@ -317,10 +317,10 @@ Return ONLY the JSON, no other text."""
         """
         strategies = {
             "TRANSIENT": "Retry with exponential backoff or use alternative tool",
-            "RATE_LIMIT": "Use cache or wait before retrying",
+            "RATE_LIMIT": "Try scrape_js, then static_template if scraping remains blocked",
             "NOT_FOUND": "Mark merchant as unavailable",
             "TIMEOUT": "Switch to slower but more reliable tool (e.g., Playwright)",
-            "PERMANENT": "Use fallback tool or graceful degradation",
+            "PERMANENT": "Use static_template fallback or graceful degradation",
         }
         return strategies.get(error_type, "Use fallback tool")
     
