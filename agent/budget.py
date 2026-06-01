@@ -1,10 +1,3 @@
-"""
-Budget enforcement for resource-constrained agent execution.
-
-Tracks token consumption, tool calls, wall clock time, and consecutive failures.
-Enforces hard limits and raises BudgetExceededError when exceeded.
-"""
-
 import logging
 import os
 import time
@@ -21,15 +14,7 @@ class BudgetExceededError(Exception):
 
 
 class BudgetEnforcer:
-    """
-    Enforces resource limits for agent execution.
-    
-    Tracked limits:
-    - MAX_TOKENS_PER_RUN: Total tokens (default 150,000)
-    - MAX_WALL_CLOCK_SECONDS: Total execution time (default 900s = 15 min)
-    - MAX_TOOL_CALLS: Total tool invocations (default 200)
-    - MAX_CONSECUTIVE_FAILURES: Max consecutive failures (default 5)
-    """
+    """Enforces resource limits for agent execution."""
     
     def __init__(self):
         """Initialize budget enforcer with limits from .env."""
@@ -38,7 +23,7 @@ class BudgetEnforcer:
         self.max_tool_calls = int(os.getenv("MAX_TOOL_CALLS", "200"))
         self.max_consecutive_failures = int(os.getenv("MAX_CONSECUTIVE_FAILURES", "5"))
         
-        # Tracking
+        # Runtime counters are updated by the agent loop after each tool/LLM call.
         self.tokens_used = 0
         self.tokens_by_provider: dict[str, int] = {}
         self.tool_calls_used = 0
@@ -57,13 +42,7 @@ class BudgetEnforcer:
         )
     
     def record_tokens(self, count: int, provider: str = "unknown") -> None:
-        """
-        Record token consumption from an LLM call.
-        
-        Args:
-            count: Number of tokens used
-            provider: LLM provider name (groq, gemini_flash, etc.)
-        """
+        """Record token consumption from an LLM call."""
         provider = self._normalize_provider(provider)
         self.tokens_used += count
         
@@ -85,13 +64,7 @@ class BudgetEnforcer:
         return provider_key
     
     def record_tool_call(self, tool_name: str, success: bool) -> None:
-        """
-        Record a tool call and update failure counter.
-        
-        Args:
-            tool_name: Name of tool that was called
-            success: True if call succeeded, False if failed
-        """
+        """Record a tool call and update failure counter."""
         self.tool_calls_used += 1
         
         if tool_name not in self.tool_calls_by_name:
@@ -124,21 +97,10 @@ class BudgetEnforcer:
         return time.time() - self.wall_clock_start
     
     def check_limits(self, raise_on_exceeded: bool = True) -> BudgetStatus:
-        """
-        Check if any limits have been exceeded.
-        
-        Args:
-            raise_on_exceeded: If True, raise BudgetExceededError if limit exceeded
-        
-        Returns:
-            BudgetStatus with ok flag and reason
-        
-        Raises:
-            BudgetExceededError: If limit exceeded and raise_on_exceeded=True
-        """
+        """Check if any limits have been exceeded."""
         elapsed = self.get_wall_clock_elapsed()
         
-        # Check each limit
+        # Hard-stop checks are ordered by cost/risk: tokens, time, calls, failures.
         if self.tokens_used >= self.max_tokens:
             reason = (
                 f"Token limit exceeded: {self.tokens_used}/{self.max_tokens} tokens used"
@@ -215,25 +177,12 @@ class BudgetEnforcer:
         )
     
     def get_report(self) -> dict:
-        """
-        Get comprehensive usage report.
-        
-        Returns:
-            Dictionary with all usage metrics and percentages
-        """
+        """Get comprehensive usage report."""
         elapsed = self.get_wall_clock_elapsed()
         return self._build_report(elapsed)
     
     def _build_report(self, elapsed: float) -> dict:
-        """
-        Build usage report dictionary.
-        
-        Args:
-            elapsed: Wall clock seconds elapsed
-        
-        Returns:
-            Detailed usage report
-        """
+        """Build usage report dictionary."""
         tokens_pct = (self.tokens_used / self.max_tokens * 100) if self.max_tokens > 0 else 0
         time_pct = (elapsed / self.max_wall_clock_seconds * 100) if self.max_wall_clock_seconds > 0 else 0
         calls_pct = (self.tool_calls_used / self.max_tool_calls * 100) if self.max_tool_calls > 0 else 0

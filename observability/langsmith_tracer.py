@@ -1,15 +1,4 @@
-"""
-LangSmith integration for tracing agent execution.
-
-Wraps agent operations in LangSmith traces for full observability.
-Provides decorators and utilities for tracing:
-- Full agent session (parent trace)
-- Per-merchant loops (child traces)
-- Individual tool calls (grandchild traces)
-- LLM calls with cost tracking
-
-Traces are viewable at: https://smith.langchain.com
-"""
+"""LangSmith integration for tracing agent execution."""
 
 import logging
 import os
@@ -22,12 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 class LangSmithTracer:
-    """
-    LangSmith tracing integration for agent observability.
-    
-    Provides decorators and utilities for tracing agent execution
-    with full context tags for session, merchant, tool, and LLM operations.
-    """
+    """LangSmith tracing integration for agent observability."""
     
     def __init__(self):
         """Initialize LangSmith tracer."""
@@ -40,17 +24,7 @@ class LangSmithTracer:
             logger.info("LangSmith tracing disabled")
     
     def trace_session(self, run_name: str = "audit_session"):
-        """
-        Decorator to trace entire agent session.
-        
-        Usage:
-            @tracer.trace_session("audit_session")
-            async def run(merchants):
-                ...
-        
-        Args:
-            run_name: Name of the session trace
-        """
+        """Decorator to trace entire agent session."""
         def decorator(func: Callable) -> Callable:
             if not self.enabled:
                 return func
@@ -89,18 +63,7 @@ class LangSmithTracer:
         return decorator
     
     def trace_merchant(self, merchant_id: str, merchant_name: str):
-        """
-        Decorator to trace per-merchant audit loop.
-        
-        Usage:
-            @tracer.trace_merchant("amazon", "Amazon")
-            async def run_merchant(merchant_data):
-                ...
-        
-        Args:
-            merchant_id: ID of merchant
-            merchant_name: Name of merchant
-        """
+        """Decorator to trace per-merchant audit loop."""
         def decorator(func: Callable) -> Callable:
             if not self.enabled:
                 return func
@@ -148,18 +111,7 @@ class LangSmithTracer:
         return decorator
     
     def trace_tool(self, tool_name: str, merchant_id: str = ""):
-        """
-        Decorator to trace individual tool execution.
-        
-        Usage:
-            @tracer.trace_tool("scrape_html", "amazon")
-            def scrape_html(url):
-                ...
-        
-        Args:
-            tool_name: Name of tool
-            merchant_id: Optional merchant ID
-        """
+        """Decorator to trace individual tool execution."""
         def decorator(func: Callable) -> Callable:
             if not self.enabled:
                 return func
@@ -212,19 +164,7 @@ class LangSmithTracer:
         provider: str = "",
         merchant_id: str = "",
     ):
-        """
-        Decorator to trace LLM calls with cost tracking.
-        
-        Usage:
-            @tracer.trace_llm("PLANNING", "groq", "amazon")
-            def call_llm(prompt):
-                ...
-        
-        Args:
-            task_type: Type of task (PLANNING, EXTRACTION, etc.)
-            provider: LLM provider name
-            merchant_id: Optional merchant ID
-        """
+        """Decorator to trace LLM calls with cost tracking."""
         def decorator(func: Callable) -> Callable:
             if not self.enabled:
                 return func
@@ -285,18 +225,7 @@ class LangSmithTracer:
         phase: str,
         merchant_id: str = "",
     ):
-        """
-        Decorator to trace agent loop phases (PLAN/ACT/OBSERVE/DECIDE).
-        
-        Usage:
-            @tracer.trace_phase("PLAN", "amazon")
-            def plan_phase(merchant):
-                ...
-        
-        Args:
-            phase: Phase name (PLAN, ACT, OBSERVE, DECIDE)
-            merchant_id: Optional merchant ID
-        """
+        """Decorator to trace agent loop phases (PLAN/ACT/OBSERVE/DECIDE)."""
         def decorator(func: Callable) -> Callable:
             if not self.enabled:
                 return func

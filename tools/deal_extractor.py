@@ -1,10 +1,4 @@
-"""
-Deal extraction from HTML using LLM.
-
-Uses LLMRouter to call Gemini Flash for extraction of coupon codes
-and deals from raw HTML. Parses structured JSON response and returns
-DealRecords with confidence scores.
-"""
+"""Deal extraction from HTML using LLM."""
 
 import json
 import logging
@@ -44,17 +38,7 @@ def extract_deals(
     merchant_name: str,
     merchant_id: str,
 ) -> dict:
-    """
-    Extract deals from HTML using LLM.
-    
-    Args:
-        html: Raw HTML content
-        merchant_name: Name of merchant (e.g., "Amazon")
-        merchant_id: ID of merchant (e.g., "amazon")
-    
-    Returns:
-        Dictionary with deals list, confidence, tokens_used, provider_used
-    """
+    """Extract deals from HTML using LLM."""
     logger.info(f"Extracting deals from {merchant_name} ({len(html)} chars)")
     
     if not html or len(html.strip()) == 0:

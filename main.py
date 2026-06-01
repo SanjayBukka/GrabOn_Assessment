@@ -1,25 +1,4 @@
-"""
-GrabOn Merchant Deal Audit Agent — Entry Point
-
-Main execution script for the autonomous deal audit agent.
-
-Usage:
-    python main.py                    # Run full audit (all 20 merchants)
-    python main.py --merchants 5      # Run first 5 merchants only
-    python main.py --eval             # Run eval suite instead
-    python main.py --merchant amazon  # Run single merchant by ID
-
-Environment:
-    - Copy .env.example to .env and fill in your API keys
-    - LANGCHAIN_TRACING_V2=true for LangSmith integration
-    - See .env.example for all configuration options
-
-Exit codes:
-    0: Success
-    1: General error
-    2: Budget exceeded
-    3: No merchants to audit
-"""
+"""GrabOn Merchant Deal Audit Agent Entry Point"""
 
 import asyncio
 import argparse
@@ -50,20 +29,7 @@ from observability.terminal_ui import TerminalUI
 
 
 def load_merchants(limit: int = None, merchant_id: str = None) -> list:
-    """
-    Load merchants from data/merchants.json.
-    
-    Args:
-        limit: Maximum number of merchants to load (None = all)
-        merchant_id: Specific merchant ID to load (overrides limit)
-        
-    Returns:
-        List of merchant dicts with 'id', 'name', 'url' keys
-        
-    Raises:
-        FileNotFoundError: If merchants.json not found
-        ValueError: If no merchants loaded
-    """
+    """Load merchants from data/merchants.json."""
     merchants_path = Path("data/merchants.json")
     
     if not merchants_path.exists():
@@ -98,15 +64,7 @@ def load_merchants(limit: int = None, merchant_id: str = None) -> list:
 
 
 async def run_audit(merchants: list) -> int:
-    """
-    Run the main audit loop.
-    
-    Args:
-        merchants: List of merchants to audit
-        
-    Returns:
-        Exit code (0 for success, non-zero for failure)
-    """
+    """Run the main audit loop."""
     if not merchants:
         logger.error("No merchants to audit")
         return 3
@@ -126,7 +84,7 @@ async def run_audit(merchants: list) -> int:
         
         # Report results
         print("\n" + "=" * 70)
-        print("✅ AUDIT COMPLETE")
+        print("[OK] AUDIT COMPLETE")
         print("=" * 70)
         print(f"Session ID:        {state.session_id}")
         print(f"Merchants:         {state.merchants_completed} completed, {state.merchants_failed} failed")
@@ -161,12 +119,7 @@ async def run_audit(merchants: list) -> int:
 
 
 async def run_evals() -> int:
-    """
-    Run the evaluation suite instead of main audit.
-    
-    Returns:
-        Exit code (0 for all tests passed, 1 for failures)
-    """
+    """Run the evaluation suite instead of main audit."""
     try:
         from evals.runner import EvalRunner
         
@@ -177,7 +130,7 @@ async def run_evals() -> int:
         
         # Print summary
         print("\n" + "=" * 70)
-        print("📊 EVAL SUITE RESULTS")
+        print("[EVAL] EVAL SUITE RESULTS")
         print("=" * 70)
         
         runner.print_summary(results)
@@ -187,26 +140,24 @@ async def run_evals() -> int:
         total = len(results)
         
         if passed == total:
-            print(f"\n✅ All {total} evals passed!")
+            print(f"\n[OK] All {total} evals passed!")
             return 0
         else:
-            print(f"\n⚠️  {passed}/{total} evals passed")
+            print(f"\n[WARN] {passed}/{total} evals passed")
             return 1
     
     except ImportError:
         logger.error("Eval runner not yet implemented")
-        print("❌ Eval runner not yet implemented")
+        print("[X] Eval runner not yet implemented")
         return 1
     except Exception as e:
         logger.error(f"Eval error: {e}", exc_info=True)
-        print(f"❌ EVAL ERROR: {e}")
+        print(f"[X] EVAL ERROR: {e}")
         return 1
 
 
 def main():
-    """
-    Parse arguments and dispatch to appropriate handler.
-    """
+    """Parse arguments and dispatch to appropriate handler."""
     parser = argparse.ArgumentParser(
         description="GrabOn Merchant Deal Audit Agent",
         formatter_class=argparse.RawDescriptionHelpFormatter,

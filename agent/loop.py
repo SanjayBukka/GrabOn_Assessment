@@ -1,13 +1,4 @@
-"""
-Core agent loop implementation with explicit PLAN/ACT/OBSERVE/DECIDE phases.
-
-This is the main agent execution engine that orchestrates the audit process.
-The AgentLoop class implements a clear 4-phase decision loop:
-- PLAN: Create strategy using LLM planner
-- ACT: Execute the next planned tool
-- OBSERVE: Analyze the result
-- DECIDE: Determine next action (continue, retry, switch tool, replan, or fail)
-"""
+"""Core agent loop implementation with explicit PLAN/ACT/OBSERVE/DECIDE phases."""
 
 import asyncio
 import json
@@ -39,25 +30,10 @@ logger = logging.getLogger(__name__)
 
 
 class AgentLoop:
-    """
-    Core agent loop with explicit PLAN/ACT/OBSERVE/DECIDE phases.
-    
-    This class orchestrates the audit of GrabOn deal pages by:
-    1. Planning each merchant's audit strategy (LLM-based)
-    2. Acting by executing planned tools with timeouts
-    3. Observing the results and error classifications
-    4. Deciding on next steps (continue, retry, fallback, replan, or fail)
-    
-    Budget is enforced at every iteration to prevent runaway execution.
-    """
+    """Core agent loop with explicit PLAN/ACT/OBSERVE/DECIDE phases."""
     
     def __init__(self, ui: Optional[TerminalUI] = None):
-        """
-        Initialize the agent loop.
-        
-        Args:
-            ui: Optional TerminalUI for live updates during execution
-        """
+        """Initialize the agent loop."""
         self.ui = ui
         self.registry = get_registry()
         self.budget_enforcer = BudgetEnforcer()
@@ -67,22 +43,8 @@ class AgentLoop:
     
     @trace_session("audit_session")
     async def run(self, merchants: List[Dict]) -> AgentState:
-        """
-        Run the agent audit loop for all merchants.
-        
-        For each merchant, executes the full PLAN/ACT/OBSERVE/DECIDE loop.
-        Enforces budget limits globally and halts if exceeded.
-        
-        Args:
-            merchants: List of merchant dicts with 'id', 'name', 'url' keys
-            
-        Returns:
-            Final AgentState containing all iterations, results, and audit report
-            
-        Raises:
-            BudgetExceededError: If any resource limit is breached
-        """
-        # Initialize global state
+        """Run the agent audit loop for all merchants."""
+        # AgentState is the single source of truth for report generation.
         self.state = AgentState(
             session_id=datetime.now().strftime("%Y%m%d_%H%M%S"),
             start_time=datetime.now(),
@@ -108,14 +70,14 @@ class AgentLoop:
         # Process each merchant
         for merchant in merchants:
             try:
-                # Check budget before processing merchant
+                # Stop before a new merchant if the previous work exhausted budget.
                 budget_status = self.budget_enforcer.check_limits(raise_on_exceeded=False)
                 if not budget_status.ok:
                     logger.error(f"Budget limit breached before merchant: {budget_status.reason}")
                     self.state.budget_exceeded = True
                     break
                 
-                # Process this merchant with full PLAN/ACT/OBSERVE/DECIDE loop
+                # Each merchant gets its own full PLAN/ACT/OBSERVE/DECIDE cycle.
                 await self._run_merchant(merchant)
                 
             except BudgetExceededError as e:
@@ -149,22 +111,7 @@ class AgentLoop:
         return self.state
     
     async def _run_merchant(self, merchant: Dict) -> Optional[MerchantResult]:
-        """
-        Run the full PLAN/ACT/OBSERVE/DECIDE loop for one merchant.
-        
-        Executes a complete audit of a single merchant by:
-        1. Creating an initial plan
-        2. For each step in plan: ACT → OBSERVE → DECIDE
-        3. Replanning when tools fail (with fallback strategies)
-        4. Retrying transient failures with exponential backoff
-        5. Stopping after max consecutive failures
-        
-        Args:
-            merchant: Merchant dict with 'id', 'name', 'url' keys
-            
-        Returns:
-            MerchantResult with scraped/classified deals or error status
-        """
+        """Run the full PLAN/ACT/OBSERVE/DECIDE loop for one merchant."""
         merchant_id = merchant.get("id", "")
         merchant_name = merchant.get("name", "")
         merchant_url = merchant.get("url", "")
@@ -195,7 +142,7 @@ class AgentLoop:
         try:
             # Main loop: continue until plan complete or fatal error
             while True:
-                # ==================== PHASE 1: PLAN ====================
+                # PLAN: build or refresh the merchant audit plan.
                 if current_plan is None:
                     current_plan = await self._phase_plan(
                         merchant_id, merchant_name, merchant_url
@@ -214,26 +161,26 @@ class AgentLoop:
                 plan_step = current_plan.steps[step_in_plan]
                 tool_name = plan_step.tool
                 
-                # ==================== PHASE 2: ACT ====================
+                # ACT: execute the selected tool.
                 tool_result = await self._phase_act(
                     merchant_id, merchant_name, tool_name, merchant_url, result, last_html
                 )
                 
-                # Store HTML for extraction step
+                # Scraped HTML is passed forward to extract_deals.
                 if tool_result.success and tool_name in ["scrape_html", "scrape_js", "static_template"]:
                     last_html = tool_result.data.get("html", "")
                     logger.debug(f"Stored {len(last_html)} bytes of HTML for next step")
                 
-                # ==================== PHASE 3: OBSERVE ====================
+                # OBSERVE: convert the tool result into agent state.
                 observation = await self._phase_observe(tool_name, tool_result)
                 
-                # ==================== PHASE 4: DECIDE ====================
+                # DECIDE: choose continue, retry, fallback, replan, or fail.
                 decision = await self._phase_decide(
                     merchant_id, merchant_name, tool_name, tool_result,
                     current_plan, step_in_plan, retry_count
                 )
                 
-                # EXECUTE DECISION
+                # Apply the decision to the current plan cursor.
                 if decision == "CONTINUE":
                     # Move to next step in plan
                     step_in_plan += 1
@@ -285,7 +232,7 @@ class AgentLoop:
                     self.state.consecutive_failures += 1
                     break
                 
-                # Check budget after EVERY iteration
+                # Budget is checked after every decision to prevent runaway loops.
                 budget_status = self.budget_enforcer.check_limits(raise_on_exceeded=False)
                 if not budget_status.ok:
                     logger.error(f"Budget limit exceeded: {budget_status.reason}")
@@ -318,20 +265,7 @@ class AgentLoop:
     async def _phase_plan(
         self, merchant_id: str, merchant_name: str, merchant_url: str
     ) -> Plan:
-        """
-        PLAN phase: Create audit plan using LLM-based planner.
-        
-        Calls the AgentPlanner to generate a step-by-step plan for auditing
-        this merchant, taking into account available tools and budget constraints.
-        
-        Args:
-            merchant_id: Merchant ID
-            merchant_name: Merchant name
-            merchant_url: Merchant URL
-            
-        Returns:
-            Plan object with ordered list of tool execution steps
-        """
+        """PLAN phase: Create audit plan using LLM-based planner."""
         phase_start = time.time()
         logger.debug(f"PLAN phase for {merchant_name}")
         
@@ -380,27 +314,11 @@ class AgentLoop:
         result: MerchantResult,
         last_html: str,
     ) -> ToolResult:
-        """
-        ACT phase: Execute the planned tool with timeout enforcement.
-        
-        Prepares tool parameters and executes the tool via the registry.
-        Handles different tool types (scrapers, extractors, classifiers).
-        
-        Args:
-            merchant_id: Merchant ID
-            merchant_name: Merchant name
-            tool_name: Tool to execute
-            merchant_url: Merchant URL for scrapers
-            result: Current MerchantResult tracking
-            last_html: HTML from previous scraping step (for extractors)
-            
-        Returns:
-            ToolResult with success/failure status and data/error info
-        """
+        """ACT phase: Execute the planned tool with timeout enforcement."""
         phase_start = time.time()
         logger.debug(f"ACT phase: executing {tool_name}")
         
-        # Prepare tool parameters based on tool type
+        # Tool parameters are derived from the current merchant state.
         tool_params = {}
         
         if tool_name == "scrape_html":
@@ -443,7 +361,7 @@ class AgentLoop:
         llm_provider = ""
         llm_cost_usd = 0.0
         
-        # Update result tracking based on tool outcome
+        # Successful tools mutate the merchant result that later enters the report.
         if tool_result.success:
             if tool_name == "extract_deals":
                 result.live_deals = tool_result.data.get("deals", [])
@@ -466,7 +384,7 @@ class AgentLoop:
                 result.health_score = tool_result.data.get("merchant_health_score", 0.0)
                 logger.info(f"Classified {len(result.classified_deals)} deals")
         
-        # Record iteration
+        # Iterations are the audit trail shown in the final report.
         iteration = AgentIteration(
             step_number=len(self.state.iterations) + 1,
             phase=Phase.ACT,
@@ -485,20 +403,7 @@ class AgentLoop:
     
     @trace_phase("OBSERVE")
     async def _phase_observe(self, tool_name: str, tool_result: ToolResult) -> str:
-        """
-        OBSERVE phase: Analyze tool execution result.
-        
-        Evaluates whether the tool succeeded, timed out, was rate-limited,
-        received a not-found error, or experienced a permanent failure.
-        This classification drives the DECIDE phase logic.
-        
-        Args:
-            tool_name: Tool that was executed
-            tool_result: Result from tool execution
-            
-        Returns:
-            Observation string describing the result
-        """
+        """OBSERVE phase: Analyze tool execution result."""
         phase_start = time.time()
         
         if tool_result.success:
@@ -536,34 +441,7 @@ class AgentLoop:
         step_in_plan: int,
         retry_count: int,
     ) -> str:
-        """
-        DECIDE phase: Determine next action based on tool result.
-        
-        Implements the failure recovery decision tree:
-        - SUCCESS: Continue to next step (or complete if last step)
-        - TRANSIENT: Retry with exponential backoff (2^retry_count seconds)
-        - RATE_LIMIT: Wait and retry
-        - NOT_FOUND: Try JS scraper, then static template fallback
-        - TIMEOUT: Switch to slower tool (scrape_js), then static template fallback
-        - PERMANENT: Request full replan with alternative tools
-        
-        Args:
-            merchant_id: Merchant ID
-            merchant_name: Merchant name
-            tool_name: Tool that was executed
-            tool_result: Result from execution
-            current_plan: Current execution plan
-            step_in_plan: Current step number in plan
-            retry_count: Number of retries so far for this step
-            
-        Returns:
-            Decision string matching one of:
-            - "CONTINUE": Proceed to next step
-            - "RETRY": Retry current step with backoff
-            - "SWITCH_TOOL:alternative_tool": Try different tool
-            - "REPLAN": Request replan from planner
-            - "MERCHANT_FAILED": Give up on this merchant
-        """
+        """DECIDE phase: Determine next action based on tool result."""
         phase_start = time.time()
         
         if tool_result.success:
@@ -681,20 +559,7 @@ class AgentLoop:
         return decision
     
     def _generate_report(self) -> Dict:
-        """
-        Generate the final audit report as a dictionary.
-        
-        Aggregates statistics from the session including:
-        - Session metadata (ID, duration, merchants processed)
-        - Deal statistics (fresh, stale, missing, updated, extra)
-        - Cost breakdown by provider and task type
-        - Tool execution statistics (calls, success rates)
-        - Full iteration log (last 50)
-        - Recovery events
-        
-        Returns:
-            Report dictionary ready for JSON serialization
-        """
+        """Generate the final audit report as a dictionary."""
         report = {
             "session_id": self.state.session_id,
             "generated_at": datetime.now().isoformat(),
@@ -789,12 +654,7 @@ class AgentLoop:
         self.state.total_cost_usd += cost_usd
     
     def _calculate_cost_breakdown(self) -> dict:
-        """
-        Calculate cost breakdown by provider.
-        
-        Returns:
-            Dictionary with cost info by provider
-        """
+        """Calculate cost breakdown by provider."""
         from llm.cost_tracker import CostTracker
         
         cost_tracker = CostTracker()
@@ -849,12 +709,7 @@ class AgentLoop:
         return by_task_type
     
     def _save_report(self) -> None:
-        """
-        Save the audit report to disk as JSON.
-        
-        Creates reports/ directory if needed and saves with filename:
-        audit_{session_id}.json
-        """
+        """Save the audit report to disk as JSON."""
         if not self.state or not self.state.final_report:
             logger.warning("No report to save")
             return

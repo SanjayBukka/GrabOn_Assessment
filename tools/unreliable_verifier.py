@@ -1,9 +1,4 @@
-"""
-Unreliable coupon verifier tool (intentionally fails 30% of the time).
-Simulates verification of coupon codes against merchant systems.
-Designed to fail randomly to test agent's retry and recovery logic.
-30% failure rate is intentional and documented.
-"""
+"""Unreliable coupon verifier tool (intentionally fails 30% of the time)."""
 
 import logging
 import random
@@ -34,22 +29,7 @@ def verify_coupon(
     merchant_id: str,
     coupon_code: str,
 ) -> dict:
-    """
-    Verify if a coupon code is active (intentionally unreliable).
-    
-    This tool fails 30% of the time to simulate unreliable external systems
-    and test the agent's retry and recovery logic.
-    
-    Args:
-        merchant_id: Merchant ID
-        coupon_code: Coupon code to verify
-    
-    Returns:
-        Dictionary with is_active, verified_discount, verified_expiry, verification_source
-    
-    Raises:
-        Exception: Randomly (30% of time) to test retry logic
-    """
+    """Verify if a coupon code is active (intentionally unreliable)."""
     logger.info(f"Verifying coupon {coupon_code} for {merchant_id}")
     
     # Simulate failure 30% of the time

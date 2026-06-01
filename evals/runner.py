@@ -1,20 +1,3 @@
-"""
-Evaluation harness for testing the GrabOn audit agent.
-
-Runs the agent against 30 predefined test scenarios and verifies:
-- Expected agent decisions at each phase
-- Deal classifications (FRESH/STALE/MISSING/UPDATED/EXTRA)
-- Final merchant status outcomes
-- Budget enforcement triggers
-- Multi-LLM fallback behavior
-
-Usage:
-    python main.py --eval              # Run all 30 scenarios
-    python main.py --eval --scenario TC001  # Run single scenario
-
-Results are printed in a summary table with pass/fail indicators.
-"""
-
 import asyncio
 import logging
 from typing import Dict, List, Any, Optional
@@ -39,11 +22,7 @@ class EvalResult:
 
 
 class EvalRunner:
-    """
-    Evaluation harness for agent testing.
-    
-    Runs agent against predefined scenarios and validates behavior.
-    """
+    """Evaluation harness for agent testing."""
     
     def __init__(self):
         """Initialize eval runner."""
@@ -51,15 +30,7 @@ class EvalRunner:
         self.scenarios = SCENARIOS
     
     async def run_all(self, scenario_filter: Optional[str] = None) -> List[EvalResult]:
-        """
-        Run all scenarios (or filtered subset).
-        
-        Args:
-            scenario_filter: Optional scenario ID to run single test
-            
-        Returns:
-            List of EvalResult dicts with pass/fail status
-        """
+        """Run all scenarios (or filtered subset)."""
         logger.info(f"Starting eval suite with {len(self.scenarios)} scenarios")
         
         # Filter if specific scenario requested
@@ -79,15 +50,7 @@ class EvalRunner:
         return self.results
     
     async def _run_scenario(self, scenario: Dict[str, Any]) -> EvalResult:
-        """
-        Run a single test scenario.
-        
-        Args:
-            scenario: Scenario definition dict
-            
-        Returns:
-            EvalResult with pass/fail and reason
-        """
+        """Run a single test scenario."""
         scenario_id = scenario["id"]
         scenario_name = scenario["name"]
         category = scenario["category"]
@@ -96,7 +59,7 @@ class EvalRunner:
         start_time = time.time()
         
         try:
-            # Determine test type based on category
+            # Route each scenario to the validator that matches its failure mode.
             if category == "happy_path":
                 passed, reason, details = await self._test_happy_path(scenario)
             elif category == "failure_recovery":
@@ -142,22 +105,7 @@ class EvalRunner:
             )
     
     async def _test_happy_path(self, scenario: Dict[str, Any]) -> tuple:
-        """
-        Test happy path scenarios.
-        
-        Validates:
-        - Scraper succeeds with 200 OK
-        - Extractor successfully parses deals
-        - DB lookup returns expected deals
-        - Classification is FRESH (all matches)
-        - Final status is "completed"
-        
-        Args:
-            scenario: Scenario dict
-            
-        Returns:
-            (passed: bool, reason: str, details: dict)
-        """
+        """Test happy path scenarios."""
         # Verify scenario structure
         mock_resp = scenario.get("mock_responses", {})
         if not mock_resp:
@@ -186,7 +134,7 @@ class EvalRunner:
         # Check expected classification
         expected_classification = scenario.get("expected_classification")
 
-        # Special case: empty merchant (no deals expected)
+        # Empty merchants are valid success cases, not failed extractions.
         if expected_classification == [] or expected_classification == "":
             deals = extractor_resp.get("deals", [])
             if deals:
@@ -236,25 +184,11 @@ class EvalRunner:
         )
     
     async def _test_failure_recovery(self, scenario: Dict[str, Any]) -> tuple:
-        """
-        Test failure recovery scenarios.
-        
-        Validates:
-        - First tool fails with expected error_type
-        - Agent makes recovery decision (RETRY, SWITCH_TOOL, REPLAN)
-        - Fallback tool succeeds or gracefully degrades
-        - Final status reflects recovery (completed or error)
-        
-        Args:
-            scenario: Scenario dict
-            
-        Returns:
-            (passed: bool, reason: str, details: dict)
-        """
+        """Test failure recovery scenarios."""
         mock_resp = scenario.get("mock_responses", {})
         scenario_id = scenario.get("id", "")
 
-        # TC014: unreliable_verifier retry test - scraper succeeds intentionally
+        # Non-scraper recovery: verifier should fail once and then recover.
         if scenario_id == "TC014":
             verify = mock_resp.get("verify", {})
             retries = verify.get("retries", [])
@@ -269,7 +203,7 @@ class EvalRunner:
                 "final_success": True,
             }
 
-        # TC015: malformed JSON retry - scraper succeeds, extractor retries
+        # Non-scraper recovery: extractor should retry after malformed JSON.
         if scenario_id == "TC015":
             extractor = mock_resp.get("extractor", {})
             retries = extractor.get("retries", [])
@@ -305,7 +239,7 @@ class EvalRunner:
                 return False, f"Expected SWITCH_TOOL:scrape_js, got {expected_decision}", {}
             return True, "Empty HTML -> scrape_js fallback validated", {}
 
-        # Validate that primary scraper failed for default recovery scenarios
+        # Default recovery scenarios start from a failed primary scraper.
         scraper_resp = mock_resp.get("scraper", {})
         if scraper_resp.get("success"):
             return False, "Scraper should fail in recovery scenario", {}
@@ -359,20 +293,7 @@ class EvalRunner:
         )
     
     async def _test_budget_exceeded(self, scenario: Dict[str, Any]) -> tuple:
-        """
-        Test budget enforcement scenarios.
-        
-        Validates:
-        - Budget limits are defined in scenario
-        - Expected decision is budget-related (BUDGET_EXCEEDED, MAX_CONSECUTIVE_FAILURES)
-        - Expected outcome is "budget_exceeded"
-        
-        Args:
-            scenario: Scenario dict
-            
-        Returns:
-            (passed: bool, reason: str, details: dict)
-        """
+        """Test budget enforcement scenarios."""
         # Validate budget config
         budget_config = scenario.get("budget_config")
         if not budget_config:
@@ -396,7 +317,7 @@ class EvalRunner:
                 {"expected": expected_outcome},
             )
         
-        # Map decision to budget type
+        # Convert the expected decision into the budget limit being tested.
         if expected_decision == "BUDGET_EXCEEDED":
             limit_type = "unknown"
             if budget_config.get("max_tool_calls"):
@@ -419,21 +340,7 @@ class EvalRunner:
         )
     
     async def _test_edge_cases(self, scenario: Dict[str, Any]) -> tuple:
-        """
-        Test edge case and impossible scenarios.
-        
-        Validates:
-        - Permanent 404: All scrapers return NOT_FOUND
-        - All blocked: All tools fail with RATE_LIMIT
-        - Hallucination: Extractor confidence < 0.3
-        - Zero deals: Both DB and live have no deals
-        
-        Args:
-            scenario: Scenario dict
-            
-        Returns:
-            (passed: bool, reason: str, details: dict)
-        """
+        """Test edge case and impossible scenarios."""
         scenario_id = scenario["id"]
         mock_resp = scenario.get("mock_responses", {})
         
@@ -475,7 +382,7 @@ class EvalRunner:
                     f"Confidence should be < 0.3 for hallucination, got {confidence}",
                     {"confidence": confidence},
                 )
-            # Check that mock HTML doesn't contain the coupon codes
+            # A hallucinated coupon is one the extractor returned but HTML never contained.
             scraper_resp = mock_resp.get("scraper", {})
             html = scraper_resp.get("html", "")
             deals = extractor_resp.get("deals", [])
@@ -521,21 +428,7 @@ class EvalRunner:
         )
     
     async def _test_multi_llm(self, scenario: Dict[str, Any]) -> tuple:
-        """
-        Test multi-LLM routing and fallback scenarios.
-        
-        Validates:
-        - Primary LLM fails (rate limit, timeout)
-        - Router falls back to alternative provider
-        - Alternative provider succeeds
-        - Cost tracking is accurate
-        
-        Args:
-            scenario: Scenario dict
-            
-        Returns:
-            (passed: bool, reason: str, details: dict)
-        """
+        """Test multi-LLM routing and fallback scenarios."""
         scenario_id = scenario["id"]
         mock_resp = scenario.get("mock_responses", {})
         
@@ -647,12 +540,7 @@ class EvalRunner:
         )
     
     def print_summary(self, results: List[EvalResult]) -> None:
-        """
-        Print evaluation results as a summary table.
-        
-        Args:
-            results: List of EvalResult from run_all()
-        """
+        """Print evaluation results as a summary table."""
         if not results:
             print("❌ No eval results to display")
             return

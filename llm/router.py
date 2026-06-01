@@ -1,13 +1,4 @@
-"""
-Multi-LLM router with fallback strategy.
-
-Routes different tasks to appropriate LLM providers:
-- PLANNING → Groq (fast, good reasoning)
-- DEAL_EXTRACTION → OpenRouter (avoids Gemini free-tier quota issues)
-- CLASSIFICATION → Groq (cheap, fast)
-- FALLBACK_EXTRACTION → OpenRouter (fallback tier)
-- IMPOSSIBLE_DETECTION → OpenRouter (detection task)
-"""
+"""Multi-LLM router with fallback strategy."""
 
 import json
 import logging
@@ -34,16 +25,7 @@ class TaskType(str, Enum):
 
 
 class LLMRouter:
-    """
-    Routes tasks to appropriate LLM providers with fallback strategy.
-    
-    Primary routing:
-    - PLANNING → Groq (llama-3.1-70b-versatile)
-    - DEAL_EXTRACTION → OpenRouter, then Groq, then Gemini
-    - CLASSIFICATION → Groq (llama-3.1-8b-instant) - cheap
-    - FALLBACK_EXTRACTION → OpenRouter (fallback tier)
-    - IMPOSSIBLE_DETECTION → OpenRouter
-    """
+    """Routes tasks to appropriate LLM providers with fallback strategy."""
     
     def __init__(self, cost_tracker: Optional[CostTracker] = None):
         """Initialize LLM router with all provider clients and cost tracker."""
@@ -108,18 +90,7 @@ class LLMRouter:
             self.openrouter = None
 
     def get_llm(self, task_type: str) -> Any:
-        """
-        Get the primary LLM for a task type.
-        
-        Args:
-            task_type: Type of task (PLANNING, DEAL_EXTRACTION, etc.)
-        
-        Returns:
-            Configured LLM client
-        
-        Raises:
-            ValueError: If task type is unknown or no provider available
-        """
+        """Get the primary LLM for a task type."""
         task = TaskType(task_type.upper())
         
         if task == TaskType.PLANNING:
@@ -171,20 +142,7 @@ class LLMRouter:
         prompt: str,
         max_tokens: int = 2048,
     ) -> tuple[str, int, float, str]:
-        """
-        Call LLM with tracking and fallback strategy.
-        
-        Args:
-            task_type: Type of task
-            prompt: Text prompt to send to LLM
-            max_tokens: Max tokens in response
-        
-        Returns:
-            Tuple of (response_text, tokens_used, cost_usd, provider_used)
-        
-        Raises:
-            Exception: If all providers fail
-        """
+        """Call LLM with tracking and fallback strategy."""
         task = TaskType(task_type.upper())
         
         # Primary attempt
@@ -359,12 +317,7 @@ class LLMRouter:
         return provider
 
     def shadow_test(self, prompt: str, task_type: str) -> dict:
-        """
-        Run a prompt through the primary provider and one shadow provider.
-
-        The primary response remains the production answer. The secondary
-        response is for comparison and rubric-visible shadow testing.
-        """
+        """Run a prompt through the primary provider and one shadow provider."""
         primary_response, p_tokens, p_cost, p_provider = self.call_with_tracking(
             task_type=task_type,
             prompt=prompt,

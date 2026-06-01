@@ -1,10 +1,4 @@
-"""
-Deal classifier comparing live vs database deals.
-
-Classifies each deal as FRESH, STALE, MISSING, UPDATED, or EXTRA
-by comparing codes, discounts, and expiry dates.
-Uses simple code-based logic (no LLM for most cases).
-"""
+"""Deal classifier comparing live vs database deals."""
 
 import logging
 from datetime import datetime
@@ -37,17 +31,7 @@ def classify_deals(
     db_deals: list[DealRecord],
     live_deals: list[DealRecord],
 ) -> dict:
-    """
-    Classify deals by comparing database vs live deals.
-    
-    Args:
-        merchant_id: Merchant ID
-        db_deals: Deals from internal database
-        live_deals: Deals scraped from live page
-    
-    Returns:
-        Dictionary with classified_deals list, summary counts, health_score
-    """
+    """Classify deals by comparing database vs live deals."""
     logger.info(
         f"Classifying deals for {merchant_id}: "
         f"{len(db_deals)} DB deals, {len(live_deals)} live deals"
@@ -64,11 +48,11 @@ def classify_deals(
         "error": 0,
     }
     
-    # Create lookup maps by code
+    # Code maps make DB-vs-live matching deterministic and explainable.
     db_map = {deal.code: deal for deal in db_deals}
     live_map = {deal.code: deal for deal in live_deals}
     
-    # Classify each DB deal
+    # DB deals drive FRESH, STALE, UPDATED, and MISSING classifications.
     for db_deal in db_deals:
         code = db_deal.code
         
@@ -129,7 +113,7 @@ def classify_deals(
             )
             classified_deals.append(classified)
     
-    # Find EXTRA deals (on live but not in DB)
+    # Live-only codes are EXTRA because they are missing from the internal DB.
     for live_deal in live_deals:
         code = live_deal.code
         
@@ -152,7 +136,7 @@ def classify_deals(
             )
             classified_deals.append(classified)
     
-    # Calculate health score (percentage of FRESH deals)
+    # Health score measures how much of the DB is still fresh on the live page.
     total_db_deals = len(db_deals)
     fresh_count = summary["fresh"]
     health_score = (
@@ -175,15 +159,7 @@ def classify_deals(
 
 
 def _is_expired(expiry_date_str: str) -> bool:
-    """
-    Check if a deal is expired based on expiry date string.
-    
-    Args:
-        expiry_date_str: Date string in format "YYYY-MM-DD"
-    
-    Returns:
-        True if expired, False if still valid
-    """
+    """Check if a deal is expired based on expiry date string."""
     try:
         if not expiry_date_str:
             return False

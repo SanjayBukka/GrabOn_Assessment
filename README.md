@@ -1,555 +1,187 @@
 # GrabOn Merchant Deal Audit Agent
 
-A production-grade autonomous agent that audits GrabOn's merchant deal pages using a PLAN/ACT/OBSERVE/DECIDE loop with multi-LLM routing, budget enforcement, failure recovery, and full LangSmith observability.
+## What I Built
 
-**Status:** ✅ Complete (19 core files + data)  
-**Python:** 3.9+  
-**Framework:** LangChain + LangGraph  
-**LLM Providers:** Groq, Gemini Flash, OpenRouter
+I built an autonomous audit agent for GrabOn merchant pages. It scrapes live coupon pages, extracts deals, compares them with a mock internal DB, classifies differences, and writes a report with cost, latency, tool, and recovery details.
 
----
+I chose this assignment because it tests the real hard parts of agent systems: unreliable websites, imperfect LLM output, fallback routing, budget limits, and explainable failure recovery.
 
-## 🏗️ Architecture Overview
+## Architecture
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    AGENT LOOP (agent/loop.py)               │
-│                                                              │
-│  For each merchant:                                         │
-│  ┌──────────┐    ┌─────────┐    ┌──────────┐    ┌────────┐ │
-│  │  PLAN    │───▶│  ACT    │───▶│ OBSERVE  │───▶│ DECIDE │ │
-│  │ (Planner)│    │(Registry)    │(Classify)│    │ (Tree) │ │
-│  └──────────┘    └─────────┘    └──────────┘    └────────┘ │
-│       │                              ▲                  │    │
-│       └──────────────────────────────┴──────────────────┘    │
-│                                                              │
-│  BUDGET ENFORCER                   LANGSMITH TRACER        │
-│  (4 hard limits)                   (Full session trace)    │
-└─────────────────────────────────────────────────────────────┘
-         │                                    │
-         ▼                                    ▼
-┌──────────────────────────┐    ┌────────────────────────┐
-│   TOOL REGISTRY          │    │  LLM ROUTER            │
-│                          │    │                        │
-│ • scrape_html            │    │ PLAN → Groq 70b       │
-│ • google_cache           │    │ EXTRACT → Gemini       │
-│ • scrape_js              │    │ CLASSIFY → Groq 8b     │
-│ • extract_deals          │    │ DETECT → OpenRouter    │
-│ • db_lookup              │    │ (with fallback chains) │
-│ • classify_deals         │    │                        │
-│ • verify_coupon          │    │ COST TRACKER           │
-└──────────────────────────┘    │ (per-provider, per-task)
-         │                       └────────────────────────┘
-         ▼
-┌──────────────────────────┐
-│  TERMINAL UI (Rich)      │
-│                          │
-│ • Live progress bars     │
-│ • Merchant status icons  │
-│ • Recent iterations      │
-│ • Cost/token display     │
-└──────────────────────────┘
-```
+```text
++------------------+
+| main.py          |
+| load merchants   |
++--------+---------+
+         |
+         v
++-----------------------------+
+| AgentLoop                   |
+| for each merchant           |
+| Amazon -> Myntra -> Zomato  |
++-------------+---------------+
+              |
+              v
+      +----------------+
+      | PLAN           |
+      | AgentPlanner   |
+      +-------+--------+
+              |
+              v
+      +----------------+
+      | ACT            |
+      | ToolRegistry   |
+      +-------+--------+
+              |
+              v
+      +----------------+
+      | OBSERVE        |
+      | success/error  |
+      +-------+--------+
+              |
+              v
+      +-------------------------------+
+      | DECIDE                        |
+      | continue / retry / switch     |
+      | replan / fail merchant        |
+      +---+-----------------------+---+
+          |                       |
+          | continue              | retry / switch / replan
+          v                       |
+   next tool or done <------------+
 
-### Agent Loop Phases
-
-The core `AgentLoop` class (`agent/loop.py`) implements an explicit 4-phase decision loop:
-
-#### 1. **PLAN Phase**
-- LLM planner creates a step-by-step strategy for the merchant
-- Considers available tools, budget constraints, and merchant characteristics
-- Returns ordered list of tool execution steps
-- **Provider:** Groq llama-3.3-70b-versatile (fast reasoning)
-
-#### 2. **ACT Phase**
-- Execute the next planned tool via the registry
-- Timeout enforcement (tool-specific)
-- Parameter preparation based on tool type
-- Success/failure recorded
-
-#### 3. **OBSERVE Phase**
-- Analyze tool execution result
-- Classify error types:
-  - `TRANSIENT` → Retry with exponential backoff
-  - `RATE_LIMIT` → Wait 30s, retry
-  - `NOT_FOUND` → Try cache
-  - `TIMEOUT` → Switch to slower tool
-  - `PERMANENT` → Request replan
-- Log full iteration context (phase, tool, observation, latency)
-
-#### 4. **DECIDE Phase**
-- Intelligent decision tree based on result classification
-- Actions:
-  - `CONTINUE` → Next step in plan
-  - `RETRY` → Same step, exponential backoff (2^retry_count)
-  - `SWITCH_TOOL:alternative` → Replace failed tool
-  - `REPLAN` → Request new plan from planner
-  - `MERCHANT_FAILED` → Give up, move to next merchant
-- Budget checked after **every** decision
-
-### Tool Registry
-
-Dynamic tool discovery via `@register` decorator. Each tool has:
-- **Name & description** (for LLM awareness)
-- **Pydantic input/output schema** (strict validation)
-- **Timeout enforcement** (prevents hanging)
-- **Error classification** (drives DECIDE phase)
-- **Stats tracking** (success rate, latency)
-
-**7 Registered Tools:**
-
-| Tool | Purpose | Timeout | Error Types |
-|------|---------|---------|-------------|
-| `scrape_html` | HTTP GET with UA rotation | 10s | RATE_LIMIT, NOT_FOUND, TIMEOUT |
-| `google_cache` | Google/Bing cache fallback | 15s | NOT_FOUND, RATE_LIMIT, TIMEOUT |
-| `scrape_js` | Playwright headless chromium | 30s | TIMEOUT, PERMANENT |
-| `extract_deals` | LLM JSON extraction from HTML | 20s | TRANSIENT (JSON parse failures) |
-| `db_lookup` | Query mock DB | 2s | None (always succeeds or returns []) |
-| `classify_deals` | Compare DB vs live | 5s | None (always succeeds) |
-| `verify_coupon` | Mock verification (30% fail rate test) | 8s | TRANSIENT (intentional failures) |
-
-### Multi-LLM Routing
-
-Task-aware provider selection with fallback chains:
-
-```
-PLANNING task
-  ├─ Primary: Groq llama-3.3-70b-versatile
-  ├─ Fallback 1: Gemini gemini-2.0-flash
-  ├─ Fallback 2: OpenRouter meta-llama/llama-3.2-3b
-  └─ Fallback 3: Groq llama-3.1-8b-instant
-
-DEAL_EXTRACTION task
-  ├─ Primary: Gemini gemini-2.0-flash
-  └─ Fallback: Groq llama-3.1-8b-instant
-
-CLASSIFICATION task
-  ├─ Primary: Groq llama-3.1-8b-instant (cheap!)
-  └─ Fallback: Groq llama-3.3-70b-versatile
-
-IMPOSSIBLE_DETECTION task
-  ├─ Primary: OpenRouter meta-llama/llama-3.2-3b-instruct:free
-  └─ Fallback: Groq llama-3.3-70b-versatile
++-----------------------------+       +-----------------------------+
+| Tool Layer                  |       | LLM Layer                   |
+| scrape_html                 |       | Groq: planning/classify     |
+| google_cache                |       | Gemini Flash: extraction    |
+| scrape_js                   |       | OpenRouter: fallback        |
+| static_template             |       | shadow_test comparisons     |
+| extract_deals               |       | per-task cost tracking      |
+| db_lookup                   |       +-----------------------------+
+| classify_deals              |
+| verify_coupon               |
++--------------+--------------+
+               |
+               v
++-----------------------------+
+| State + Guardrails          |
+| AgentState                  |
+| BudgetEnforcer              |
+| tokens/time/tools/failures  |
++--------------+--------------+
+               |
+               v
++-----------------------------+
+| Outputs                     |
+| Rich terminal dashboard     |
+| LangSmith traces            |
+| reports/audit_<time>.json   |
++-----------------------------+
 ```
 
-**Cost Tracking:** Per-provider, per-task-type, with configurable rates from `.env`
+## Module Design and Tradeoffs
 
-### Budget Enforcement
+- `agent/loop.py`: explicit PLAN/ACT/OBSERVE/DECIDE loop. More verbose than a hidden framework flow, but easier to debug and explain.
+- `agent/planner.py`: LLM-driven plan and replan logic with safe defaults when providers fail.
+- `tools/registry.py`: one wrapper for timeout, stats, validation, and error handling. Tradeoff: each tool must return consistent structured output.
+- `tools/deal_extractor.py`: BeautifulSoup pre-filtering plus LLM extraction and hidden-code detection. This keeps token usage low while still catching GrabOn coupon attributes.
+- `tools/deal_classifier.py`: deterministic comparison between DB and live deals. I kept classification non-LLM so audit labels stay stable.
+- `llm/router.py`: task-based routing, fallback providers, shadow testing, and per-task cost tracking.
+- `agent/budget.py`: hard limits stop runaway runs. Tradeoff: a partial report may be produced instead of forcing completion.
+- `evals/`: 15 focused scenarios covering happy path, recovery, budgets, edge cases, and multi-LLM behavior.
 
-`BudgetEnforcer` class enforces 4 independent hard limits:
+## How to Run
 
-1. **Max Tokens Per Run** (default: 150,000)
-   - Input + output tokens across all LLM calls
-   - Checked after every iteration
-
-2. **Max Wall Clock Seconds** (default: 900s = 15 min)
-   - Total execution time
-   - Prevents long-running hangs
-
-3. **Max Tool Calls** (default: 200)
-   - Total invocations of any tool
-   - Prevents tool call loops
-
-4. **Max Consecutive Failures** (default: 5)
-   - Halt after N consecutive merchant failures
-   - Indicates systemic issue (API down, credentials wrong)
-
-If **any** limit breached:
-- Set `state.budget_exceeded = True`
-- Generate partial report (completed vs. remaining merchants)
-- Raise `BudgetExceededError`
-- Agent halts immediately
-
-### LangSmith Tracing
-
-Full session observability via `langsmith.traceable` decorators:
-
-**Trace Hierarchy:**
-```
-├─ SESSION: Full audit ("audit_session")
-│  ├─ MERCHANT_1: merchant_amazon
-│  │  ├─ PHASE: PLAN
-│  │  ├─ PHASE: ACT
-│  │  │  ├─ TOOL: scrape_html
-│  │  │  └─ LLM: (if fallback needed)
-│  │  ├─ PHASE: OBSERVE
-│  │  └─ PHASE: DECIDE
-│  ├─ MERCHANT_2: merchant_myntra
-│  └─ ...
-```
-
-**Tags & Metadata per trace:**
-- `merchant_id`, `merchant_name`
-- `tool_name`, `phase` (PLAN/ACT/OBSERVE/DECIDE)
-- `llm_provider` (groq, gemini, openrouter)
-- `tokens_used`, `cost_usd`
-- `error_type` (if failed)
-- `decision_made` (for DECIDE phase)
-
-**View traces at:** https://smith.langchain.com
-
----
-
-## 🚀 Quick Start
-
-### 1. Setup (< 10 minutes)
+Prerequisites: Python 3.10+, Playwright Chromium, and API keys for Groq, Google Gemini, and OpenRouter.
 
 ```powershell
-# Clone and navigate
-cd GrabOn_Assignment
-
-# Create virtual environment
 python -m venv venv
-venv\Scripts\activate
-
-# Install dependencies
-python.exe -m pip install --upgrade pip
-pip install -r requirements.txt / python -m pip install -r requirements.txt
-playwright install chromium   ## Install Playwright browsers (for JS scraping)
-
-# Copy and configure environment
+.\venv\Scripts\activate
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+python -m playwright install chromium
 copy .env.example .env
-groq api key= https://console.groq.com/keys
-gemini api key = https://aistudio.google.com/api-keys
-openrouter api key=https://openrouter.ai/workspaces/default/keys
-langsmith = https://smith.langchain.com/o/8223b96e-077f-4c0d-baca-ab265fa8107b/projects 
 ```
 
-### 2. Run Full Audit
-
-```powershell
-# All 20 merchants
-python main.py
-
-# First 5 merchants only
-python main.py --merchants 5
-
-# Single merchant
-python main.py --merchant amazon
-
-# Run evaluation suite
-python main.py --eval
-```
-
-### 3. View Results
-
-- **Report:** `reports/audit_{session_id}.json`
-- **Traces:** https://smith.langchain.com
-- **Terminal:** Live Rich dashboard during execution
-
----
-
-## 📋 Data Files & Configuration
-
-### `data/merchants.json`
-20 merchants with URLs, categories, and GrabOn page URLs.
-
-### `data/mock_db.json`
-GrabOn's "internal database" with 19 merchants' deals. **Intentional gaps for testing:**
-- **Missing entirely:** `zepto`, `shopsy`, `mcdonald` → Classified as `MISSING`
-- **Expired deal:** `myntra/MYNTRA30` (expiry: 2024-05-15) → Classified as `STALE`
-- **Sibling deal:** `shopsy` not in DB, deal on live page → Classified as `EXTRA`
-
-### `.env.example`
+Fill these environment variables in `.env`:
 
 ```env
-# LLM Provider Keys
-GROQ_API_KEY=your_key
-GOOGLE_API_KEY=your_key
-OPENROUTER_API_KEY=your_key
+GROQ_API_KEY=your_groq_key_here
+GOOGLE_API_KEY=your_gemini_key_here
+OPENROUTER_API_KEY=your_openrouter_key_here
 
-# LangSmith Tracing
 LANGCHAIN_TRACING_V2=true
 LANGCHAIN_ENDPOINT=https://api.smith.langchain.com
-LANGCHAIN_API_KEY=your_key
+LANGCHAIN_API_KEY=your_langsmith_key_here
 LANGCHAIN_PROJECT=grabon-audit-agent
 
-# Budget Limits
 MAX_TOKENS_PER_RUN=150000
 MAX_WALL_CLOCK_SECONDS=900
 MAX_TOOL_CALLS=200
 MAX_CONSECUTIVE_FAILURES=5
 
-# Scraping
 SCRAPE_DELAY_SECONDS=2
 USE_PLAYWRIGHT=true
 
-# Cost Tracking (USD per 1M tokens)
 GROQ_INPUT_COST=0.05
 GROQ_OUTPUT_COST=0.08
 GEMINI_INPUT_COST=0.075
 GEMINI_OUTPUT_COST=0.30
-#... (see .env.example for all)
+OPENROUTER_INPUT_COST=0.10
+OPENROUTER_OUTPUT_COST=0.20
 ```
 
----
+Pinned dependencies are in `requirements.txt`: LangGraph, LangChain, Groq, Google GenAI, OpenAI/OpenRouter client, LangSmith, httpx, Playwright, BeautifulSoup, lxml, Pydantic, Rich, python-dotenv, pytest, tenacity, aiofiles, python-dateutil, and nest-asyncio.
 
-## 📂 Project Structure
+Useful commands:
 
-```
-GrabOn_Assignment/
-├── agent/
-│   ├── loop.py              ← CORE: AgentLoop with PLAN/ACT/OBSERVE/DECIDE
-│   ├── state.py             ← Pydantic models (Phase, AgentIteration, etc)
-│   ├── budget.py            ← BudgetEnforcer with 4 hard limits
-│   └── planner.py           ← LLM planner + replanning logic
-├── tools/
-│   ├── registry.py          ← Dynamic tool discovery + execution
-│   ├── scraper_html.py      ← HTTP scraper + UA rotation
-│   ├── google_cache.py      ← Cache fallback (Google → Bing)
-│   ├── scraper_js.py        ← Playwright JS scraper
-│   ├── deal_extractor.py    ← LLM deal extraction
-│   ├── db_lookup.py         ← Mock DB query
-│   ├── deal_classifier.py   ← Deal status classification
-│   └── unreliable_verifier.py ← 30% fail rate test tool
-├── llm/
-│   ├── router.py            ← Task-aware LLM provider routing
-│   └── cost_tracker.py      ← Per-provider cost tracking
-├── observability/
-│   ├── terminal_ui.py       ← Rich live dashboard
-│   └── langsmith_tracer.py  ← @traceable decorators
-├── evals/
-│   ├── scenarios.py         ← 30 test scenarios
-│   └── runner.py            ← Eval harness (pass/fail validation)
-├── data/
-│   ├── merchants.json       ← 20 merchants with URLs
-│   ├── mock_db.json         ← Internal deal database
-│   └── scraped/             ← Auto-created, raw HTML storage
-├── reports/                 ← Auto-created, final audit reports
-├── main.py                  ← Entry point with argparse
-├── requirements.txt         ← Pinned for reproducibility
-├── .env.example             ← Config template
-└── README.md                ← This file
-```
-
----
-
-## 🧪 Evaluation Suite
-
-30 test scenarios covering:
-
-### Happy Path (10 scenarios)
-- TC001-TC010: Exact matches, new deals, expired deals, empty merchants, multi-deal audits
-
-### Failure & Recovery (8 scenarios)
-- TC011-TC018: 403 fallback, timeout recovery, max retries, malformed JSON, graceful degradation
-
-### Budget Enforcement (4 scenarios)
-- TC019-TC022: Token limit, time limit, tool call limit, consecutive failures
-
-### Edge Cases (4 scenarios)
-- TC023-TC026: Permanent 404, all tools blocked, hallucination detection, zero deals
-
-### Multi-LLM Routing (4 scenarios)
-- TC027-TC030: Provider fallbacks, cost tracking, cheap model selection
-
-**Run evals:**
 ```powershell
 python main.py --eval
+python main.py --merchants 3
+python main.py --merchant amazon
+python main.py
 ```
 
-**Output:** Pass/fail table by category with duration and failure reasons.
+Outputs:
 
----
+- Reports: `reports/audit_<timestamp>.json`
+- Traces: LangSmith project from `LANGCHAIN_PROJECT`
+- Live progress: terminal dashboard
 
-## 📊 Audit Report Format
+## Eval Results
 
-`reports/audit_{session_id}.json`:
+Latest local eval suite:
 
-```json
-{
-  "session_id": "20240115_143001",
-  "generated_at": "2024-01-15T14:47:23Z",
-  "duration_seconds": 743,
-  "total_merchants": 20,
-  "completed": 18,
-  "failed": 2,
-  "budget_exceeded": false,
-  
-  "summary": {
-    "total_deals_audited": 47,
-    "fresh": 28,
-    "stale": 8,
-    "missing": 6,
-    "updated": 3,
-    "extra": 2
-  },
-  
-  "cost_breakdown": {
-    "total_usd": 0.0047,
-    "by_provider": {
-      "groq": {"tokens": 45000, "cost_usd": 0.0023},
-      "gemini_flash": {"tokens": 38000, "cost_usd": 0.0019}
-    }
-  },
-  
-  "tool_call_stats": {
-    "total_calls": 94,
-    "by_tool": {
-      "scrape_html": {"calls": 20, "success": 16, "failed": 4},
-      "google_cache": {"calls": 4, "success": 3, "failed": 1}
-    }
-  },
-  
-  "merchants": [
-    {
-      "merchant_id": "amazon",
-      "name": "Amazon",
-      "status": "completed",
-      "health_score": 1.0,
-      "deals": [
-        {
-          "code": "AMZNEW10",
-          "classification": "FRESH",
-          "db_discount": "10%",
-          "live_discount": "10%"
-        }
-      ]
-    }
-  ],
-  
-  "iterations_log": [...],
-  "recovery_events": [...]
-}
-```
+- Scenarios: 15
+- Pass rate: 15/15, 100%
+- Accuracy: 100% against deterministic expected outcomes
+- Eval cost: $0, because scenarios use mocked responses
+- Eval latency: each mocked scenario reports 0ms; full command is about 5 seconds locally including imports and setup
 
----
+Latest live smoke target:
 
-## 🔍 Key Design Decisions
+- Command: `python main.py --merchants 3`
+- Expected behavior: 3/3 merchants complete, positive runtime, no terminal crash, deals extracted from live pages when available
+- Live cost and latency vary by provider limits and website response time
 
-### 1. **Explicit Phase Enum**
-`Phase.PLAN`, `Phase.ACT`, `Phase.OBSERVE`, `Phase.DECIDE` are enum values, not strings.
-- Makes state machine explicit and type-safe
-- Enables phase-specific logging and tracing
-- Evaluators can easily identify loop structure
+## What Broke First
 
-### 2. **Error Type Classification**
-Tools return structured `ToolResult` with `error_type` enum:
-- `TRANSIENT` → Retry (network hiccups, JSON parse failures)
-- `RATE_LIMIT` → Wait then retry (429, 403)
-- `NOT_FOUND` → Try alternative (404)
-- `TIMEOUT` → Switch tool (hangs)
-- `PERMANENT` → Request replan (auth failures, gone forever)
+The hardest bug was that the report looked successful while hiding empty or wrong merchant results. The loop completed tool calls, but the final `MerchantResult` was not always appended and the report summary was not reliably aggregated from `state.merchant_results`.
 
-This drives the DECIDE phase logic cleanly.
+I fixed it by making merchant completion write one final structured result, generating the report from stored state, and tightening recovery paths so retries, replans, and fallbacks still produce inspectable output.
 
-### 3. **Tool Registry Pattern**
-Decorator-based registration (`@registry.register`) enables:
-- Dynamic discovery (no hardcoded tool list)
-- Easy addition of new tools (drop file, add decorator)
-- Uniform timeout enforcement
-- Stats collection per tool
+Technical scenarios I handled:
 
-### 4. **Budget as Hard Stop**
-Budget, not soft warnings. If limit breached:
-- Raise `BudgetExceededError` immediately
-- Don't continue the loop
-- Generate partial report with what was completed
+- Scenario 1: Amazon looked successful but produced `live_deals_count = 0`. The scraper returned HTML, so the agent marked the scrape as successful, but the coupon codes were hidden in `data-clipboard-text` instead of visible page text. I adjusted `deal_extractor.py` to scan coupon-like attributes first, prepend discovered codes to the LLM prompt, and only then send a trimmed HTML slice.
+- Scenario 2: Myntra returned a 403 during raw scraping. The OBSERVE phase classified it as `RATE_LIMIT`, and DECIDE switched the next action from `scrape_html` to `google_cache`. I added structured error types so the agent could choose a recovery path instead of treating all scraper failures the same.
+- Scenario 3: Zomato loaded an almost empty static page because the coupon cards were rendered later by JavaScript. The agent saw successful HTTP status but empty HTML, so I added an empty-content check that routes to `scrape_js` using Playwright. This separated "page fetched" from "page has usable evidence."
+- Scenario 4: The extractor sometimes returned invalid JSON or `min_order: null`. That crashed record validation. I tightened the prompt, added retry behavior for malformed JSON, and normalized nullable fields like `min_order` to `0` before creating `DealRecord`.
+- Scenario 5: A planning model became unavailable during testing. I updated model names and added provider fallback order in `llm/router.py`, so planning can move from Groq to Gemini/OpenRouter/Groq-small while still recording task-level cost and provider used.
 
-This prevents runaway costs in production.
+## What I Would Change With 2 More Weeks
 
-### 5. **LangSmith for Full Observability**
-Not just LLM calls, but **entire loop** is traced:
-- Each phase as a span
-- Each tool as a span
-- Metadata tags for filtering
-- Decision tree visible post-hoc
-
-Enables debugging, cost analysis, UX improvements.
-
----
-
-## ⚙️ What Broke First (Honest Assessment)
-
-### Import Cycles
-Initially had circular import between `agent/loop.py` and `tools/registry.py` because loop imports registry, registry imports state. **Solved:** Moved state to separate module `agent/state.py`, both loop and registry import state (no cycle).
-
-### Async/Sync Mismatch
-Some tools are async (Playwright), others sync (httpx). Registry needed to support both. **Solved:** Wrapper functions detect coroutine via `asyncio.iscoroutinefunction()`, handles appropriately.
-
-### Pydantic v2 Datetime JSON
-Pydantic v2 doesn't auto-encode datetime to ISO string in JSON. **Solved:** Added `Config.json_encoders = {datetime: lambda v: v.isoformat()}` to state models.
-
-### LLM Provider Initialization
-All 3 providers need different environment variable names and initialization. **Solved:** Created `LLMRouter` class that centralizes initialization and fallback logic in one place.
-
-### Terminal UI Refresh Rate
-Live Rich dashboard was updating too fast, making it hard to read. **Solved:** Update only after major events (phase completion), not every sub-step.
-
----
-
-## 🎯 What I'd Change With More Time
-
-1. **Real HTTP Clients Instead of Mocks**
-   - Currently `data/mock_db.json` is static
-   - Ideal: Query actual GrabOn API and validate against Marketplace real-time
-   - Would test real 403/429 rate limiting, actual HTML parsing
-
-2. **Persistent State Across Runs**
-   - Currently each run is stateless
-   - Ideal: Cache scraped HTML, DB snapshots, merchant health scores
-   - Would enable "incremental audit" (only re-check merchants that changed)
-
-3. **User-Facing Web Dashboard**
-   - Currently only terminal UI
-   - Ideal: FastAPI server with WebSocket for live updates, chart history
-   - Would enable C-suite to track deal freshness over time
-
-4. **Advanced Fallback Logic**
-   - Currently fallback is linear (try A → try B → try C)
-   - Ideal: Probabilistic routing (use faster provider 80% of time, fallback 20%)
-   - Would optimize for cost vs. latency tradeoff
-
-5. **Deal Confidence Scoring**
-   - Currently just pass/fail
-   - Ideal: Confidence score based on:
-     - HTML parse confidence
-     - LLM extraction confidence
-     - Historical merchant reliability
-   - Would help prioritize GrabOn's manual verification effort
-
-6. **Merchant Clustering**
-   - Currently sequential merchant audit
-   - Ideal: Group merchants by category, parallel audit within group
-   - Would reduce total runtime by ~3-4x
-
----
-
-## 🚦 Setup Troubleshooting
-
-### `ModuleNotFoundError: No module named 'langchain_groq'`
-→ Run `pip install -r requirements.txt` again
-
-### `playwright: command not found`
-→ Run `playwright install chromium` (separate from `pip install`)
-
-### `.env not found` or `API key is empty`
-→ Copy `.env.example` to `.env` and fill in your actual API keys
-
-### `429 Too Many Requests` errors
-→ Increase `SCRAPE_DELAY_SECONDS` in `.env` or reduce `--merchants` count
-
-### LangSmith traces not appearing
-→ Verify `LANGCHAIN_TRACING_V2=true` in `.env` and API key is correct
-
----
-
-## 📞 Support
-
-For questions or issues:
-1. Check the evaluation suite: `python main.py --eval` (validates setup)
-2. Enable verbose logging: `python main.py --verbose`
-3. Review iteration logs in generated report
-4. Check LangSmith traces: https://smith.langchain.com
-
----
-
-## 📄 License
-
-Built for GrabOn assignment. See claude.md specification for detailed requirements.
-
----
-
-**Last Updated:** May 30, 2026  
-**Lines of Code:** ~4,500+ (excluding tests)  
-**Test Coverage:** 30 scenarios
+- Replace `data/mock_db.json` with a real internal deals API and schema validation.
+- Add persistent caching for scraped HTML and LLM extraction results to reduce cost and latency.
+- Build merchant-specific extraction rules for pages that lazy-load codes.
+- Improve matching with normalized coupon aliases, fuzzy discount matching, and confidence scores.
+- Add a small dashboard for trend history, failed merchants, and manual review queues.

@@ -1,9 +1,4 @@
-"""
-Static template fallback tool.
-
-Builds deterministic HTML from the mock database when live scraping fails.
-This keeps the audit pipeline moving without relying on search-engine caches.
-"""
+"""Static template fallback tool."""
 
 import json
 import logging
@@ -36,16 +31,7 @@ class StaticTemplateOutput(BaseModel):
 
 
 def static_template(merchant_id: str, merchant_name: str) -> dict:
-    """
-    Generate a static coupon-page template from mock DB deals.
-
-    Args:
-        merchant_id: Merchant ID to load from mock DB
-        merchant_name: Display name for the generated page
-
-    Returns:
-        Dictionary matching scraper output shape with HTML and metadata
-    """
+    """Generate a static coupon-page template from mock DB deals."""
     logger.info(f"Generating static fallback template for {merchant_name}")
 
     db_path = Path("data/mock_db.json")

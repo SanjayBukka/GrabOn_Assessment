@@ -1,13 +1,4 @@
-"""
-Rich terminal UI for live agent execution display.
-
-Displays real-time updates of agent progress with:
-- Session info and timing
-- Merchant progress
-- Token and tool call usage
-- Recent iteration log
-- Current phase and decision
-"""
+"""Rich terminal UI for live agent execution display."""
 
 import logging
 import sys
@@ -28,12 +19,7 @@ logger = logging.getLogger(__name__)
 
 
 class TerminalUI:
-    """
-    Rich terminal dashboard for live agent updates.
-    
-    Shows real-time progress, token usage, tool calls,
-    and recent iteration log.
-    """
+    """Rich terminal dashboard for live agent updates."""
     
     def __init__(self):
         """Initialize terminal UI."""
@@ -59,12 +45,7 @@ class TerminalUI:
             self.live = None
     
     def update(self, state: AgentState) -> None:
-        """
-        Update UI with current agent state.
-        
-        Args:
-            state: Current AgentState
-        """
+        """Update UI with current agent state."""
         self.state = state
         
         if not self.live:
@@ -215,12 +196,7 @@ class TerminalUI:
         return Panel(content, title="Recent Iterations", style="magenta")
     
     def print_summary(self, state: AgentState) -> None:
-        """
-        Print final summary after execution.
-        
-        Args:
-            state: Final agent state
-        """
+        """Print final summary after execution."""
         self.console.print("\n" + "="*70, style="bold")
         self.console.print("[*] AUDIT COMPLETE", style="bold green")
         self.console.print("="*70 + "\n")
@@ -263,19 +239,9 @@ class TerminalUI:
         self.console.print()
     
     def print_error(self, message: str) -> None:
-        """
-        Print error message.
-        
-        Args:
-            message: Error message
-        """
+        """Print error message."""
         self.console.print(f"[bold red][X] ERROR:[/bold red] {message}")
     
     def print_info(self, message: str) -> None:
-        """
-        Print info message.
-        
-        Args:
-            message: Info message
-        """
+        """Print info message."""
         self.console.print(f"[bold cyan]ℹ️  INFO:[/bold cyan] {message}")

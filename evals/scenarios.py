@@ -1,30 +1,8 @@
-"""
-Test scenarios for GrabOn audit agent evaluation suite.
-
-Defines 15 essential test cases covering:
-- Happy path scenarios (exact match, extra deals, empty merchant)
-- Failure and recovery (HTTP 403, timeouts, retries)
-- Budget enforcement (token limits, time limits)
-- Edge cases (404 pages, zero deals)
-- Multi-LLM routing (provider fallbacks and cost tracking)
-
-Each scenario is a dict with:
-- id: Unique test case ID
-- name: Descriptive test name
-- category: One of [happy_path, failure_recovery, budget_exceeded, edge_cases, multi_llm]
-- merchant_id: Merchant to test
-- description: What this tests
-- mock_responses: Dict with 'scraper', 'db', 'extractor' responses (or None for real)
-- expected_decision: Expected agent decision
-- expected_outcome: Expected final status
-- should_retry: Whether agent should retry on failure
-"""
-
 from typing import Dict, List, Any, Optional
 
 
 SCENARIOS: List[Dict[str, Any]] = [
-    # ==================== HAPPY PATH (5 scenarios: TC001, TC002, TC006, TC007, TC010) ====================
+    # Happy path scenarios.
     {
         "id": "TC001",
         "name": "Amazon - Exact match fresh deal",
@@ -233,7 +211,7 @@ SCENARIOS: List[Dict[str, Any]] = [
         "expected_outcome": "completed",
         "should_retry": False,
     },
-    # ==================== FAILURE & RECOVERY (4 scenarios: TC011, TC012, TC014, TC015) ====================
+    # Failure and recovery scenarios.
     {
         "id": "TC011",
         "name": "Myntra - HTTP 403 fallback to google_cache",
@@ -401,7 +379,7 @@ SCENARIOS: List[Dict[str, Any]] = [
         "should_retry": True,
     },
 
-    # ==================== BUDGET EXCEEDED (2 scenarios: TC020, TC022) ====================
+    # Budget limit scenarios.
 
     {
         "id": "TC020",
@@ -443,7 +421,7 @@ SCENARIOS: List[Dict[str, Any]] = [
             "max_consecutive_failures": 2,
         },
     },
-    # ==================== EDGE CASES / IMPOSSIBLE (2 scenarios: TC023, TC025) ====================
+    # Edge and impossible-state scenarios.
     {
         "id": "TC023",
         "name": "Edge - Page permanently 404",
@@ -505,7 +483,7 @@ SCENARIOS: List[Dict[str, Any]] = [
         "should_retry": False,
     },
 
-    # ==================== MULTI-LLM ROUTING (2 scenarios: TC028, TC030) ====================
+    # Multi-LLM routing scenarios.
     {
         "id": "TC028",
         "name": "Multi-LLM - Gemini timeout → Groq fallback",
@@ -559,15 +537,7 @@ SCENARIOS: List[Dict[str, Any]] = [
 
 
 def get_scenario(scenario_id: str) -> Optional[Dict[str, Any]]:
-    """
-    Get a single scenario by ID.
-    
-    Args:
-        scenario_id: Scenario ID like "TC001"
-        
-    Returns:
-        Scenario dict or None if not found
-    """
+    """Get a single scenario by ID."""
     for scenario in SCENARIOS:
         if scenario["id"] == scenario_id:
             return scenario
@@ -575,15 +545,7 @@ def get_scenario(scenario_id: str) -> Optional[Dict[str, Any]]:
 
 
 def get_scenarios_by_category(category: str) -> List[Dict[str, Any]]:
-    """
-    Get all scenarios in a category.
-    
-    Args:
-        category: Category name (happy_path, failure_recovery, etc.)
-        
-    Returns:
-        List of scenario dicts
-    """
+    """Get all scenarios in a category."""
     return [s for s in SCENARIOS if s["category"] == category]
 
 

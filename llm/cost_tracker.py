@@ -1,9 +1,4 @@
-"""
-Cost tracking and billing for LLM provider calls.
-
-Tracks token consumption and costs across all LLM providers
-(Groq, Gemini, OpenRouter).
-"""
+"""Cost tracking and billing for LLM provider calls."""
 
 import os
 from typing import Optional
@@ -28,11 +23,7 @@ class CallCost(BaseModel):
 
 
 class CostTracker:
-    """
-    Tracks token consumption and costs across LLM providers.
-    
-    Costs are configured in .env as per-1M-token rates.
-    """
+    """Tracks token consumption and costs across LLM providers."""
     
     def __init__(self):
         """Initialize cost tracker with provider configs from .env."""
@@ -87,17 +78,7 @@ class CostTracker:
         output_tokens: int,
         task_type: str = "unknown",
     ) -> CallCost:
-        """
-        Calculate cost for a single LLM call.
-        
-        Args:
-            provider: Name of LLM provider (groq, gemini_flash, openrouter)
-            input_tokens: Number of input tokens
-            output_tokens: Number of output tokens
-        
-        Returns:
-            CallCost with breakdown
-        """
+        """Calculate cost for a single LLM call."""
         if provider not in self.providers:
             raise ValueError(f"Unknown provider: {provider}")
         
@@ -127,17 +108,7 @@ class CostTracker:
         output_tokens: int,
         task_type: str = "unknown",
     ) -> CallCost:
-        """
-        Record a single LLM call and update totals.
-        
-        Args:
-            provider: Name of LLM provider
-            input_tokens: Number of input tokens
-            output_tokens: Number of output tokens
-        
-        Returns:
-            CallCost with updated totals
-        """
+        """Record a single LLM call and update totals."""
         call_cost = self.calculate_cost(provider, input_tokens, output_tokens, task_type)
         
         # Update tracking
@@ -156,12 +127,7 @@ class CostTracker:
         return call_cost
     
     def get_summary(self) -> dict:
-        """
-        Get cost summary across all providers.
-        
-        Returns:
-            Dictionary with total costs and per-provider breakdown
-        """
+        """Get cost summary across all providers."""
         return {
             "total_calls": self.call_count,
             "total_tokens": self.total_tokens_all,

@@ -1,9 +1,4 @@
-"""
-Agent state management and Pydantic models.
-
-Defines all data models for the GrabOn Merchant Deal Audit Agent,
-including deal classifications, merchant results, iterations, and overall agent state.
-"""
+"""Agent state management and Pydantic models."""
 
 from datetime import datetime
 from enum import Enum

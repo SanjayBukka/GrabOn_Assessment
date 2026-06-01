@@ -1,9 +1,4 @@
-"""
-HTML scraper tool for GrabOn deal pages.
-
-Scrapes raw HTML using httpx with User-Agent rotation and delay.
-Implements fallback on rate limiting and not found.
-"""
+"""HTML scraper tool for GrabOn deal pages."""
 
 import asyncio
 import logging
@@ -53,18 +48,7 @@ def scrape_html(
     delay_before: float = 2.0,
     merchant_id: Optional[str] = None,
 ) -> dict:
-    """
-    Scrape HTML from a URL using httpx.
-    
-    Args:
-        url: URL to scrape
-        timeout_seconds: HTTP timeout in seconds
-        delay_before: Seconds to wait before making request
-        merchant_id: Optional merchant ID for file naming
-    
-    Returns:
-        Dictionary with html, page_title, status_code, saved_path, error_type
-    """
+    """Scrape HTML from a URL using httpx."""
     logger.info(f"Scraping {url} (delay={delay_before}s, timeout={timeout_seconds}s)")
     
     # Wait before scraping

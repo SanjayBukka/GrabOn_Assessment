@@ -1,9 +1,4 @@
-"""
-JavaScript-enabled scraper using Playwright.
-
-Scrapes JS-rendered content from pages that need JavaScript execution.
-Fallback when static HTML scraping fails (e.g., Cloudflare, dynamic content).
-"""
+"""JavaScript-enabled scraper using Playwright."""
 
 import asyncio
 import logging
@@ -47,18 +42,7 @@ def scrape_js(
     timeout_seconds: int = 30,
     merchant_id: Optional[str] = None,
 ) -> dict:
-    """
-    Scrape JavaScript-rendered content using Playwright.
-    
-    Args:
-        url: URL to scrape
-        wait_for_selector: CSS selector to wait for
-        timeout_seconds: Playwright timeout in seconds
-        merchant_id: Optional merchant ID for file naming
-    
-    Returns:
-        Dictionary with html, page_title, status_code, saved_path, error_type
-    """
+    """Scrape JavaScript-rendered content using Playwright."""
     logger.info(f"Scraping {url} with Playwright (waiting for '{wait_for_selector}')")
     
     try:
@@ -91,18 +75,7 @@ async def _scrape_js_async(
     timeout_seconds: int,
     merchant_id: Optional[str],
 ) -> dict:
-    """
-    Async implementation of JS scraping with Playwright.
-    
-    Args:
-        url: URL to scrape
-        wait_for_selector: CSS selector to wait for
-        timeout_seconds: Playwright timeout in seconds
-        merchant_id: Optional merchant ID for file naming
-    
-    Returns:
-        Result dictionary
-    """
+    """Async implementation of JS scraping with Playwright."""
     playwright = None
     browser = None
     page = None

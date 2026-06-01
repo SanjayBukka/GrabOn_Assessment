@@ -1,9 +1,4 @@
-"""
-Mock database lookup for GrabOn's internal deal database.
-
-Queries data/mock_db.json to fetch deals for a given merchant.
-Returns list of DealRecords with source="DB".
-"""
+"""Mock database lookup for GrabOn's internal deal database."""
 
 import json
 import logging
@@ -31,15 +26,7 @@ class DBLookupOutput(BaseModel):
 
 
 def db_lookup(merchant_id: str) -> dict:
-    """
-    Query mock database for a merchant's deals.
-    
-    Args:
-        merchant_id: ID of merchant to look up (e.g., "amazon")
-    
-    Returns:
-        Dictionary with deals list, merchant_found flag, deal_count
-    """
+    """Query mock database for a merchant's deals."""
     logger.info(f"Looking up deals for merchant: {merchant_id}")
     
     try:

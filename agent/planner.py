@@ -1,10 +1,4 @@
-"""
-Agent planner that creates step-by-step execution plans using LLM.
-
-Uses LLMRouter to call Groq for planning based on merchant info,
-available tools, and current budget status.
-Supports re-planning when tools fail.
-"""
+"""Agent planner that creates step-by-step execution plans using LLM."""
 
 import json
 import logging
@@ -33,12 +27,7 @@ class Plan(BaseModel):
 
 
 class AgentPlanner:
-    """
-    LLM-based planner for merchant audit strategy.
-    
-    Creates detailed plans for each merchant with tool sequence,
-    fallback strategies, and handles re-planning on failures.
-    """
+    """LLM-based planner for merchant audit strategy."""
     
     def __init__(self):
         """Initialize planner with LLM router."""
@@ -57,21 +46,7 @@ class AgentPlanner:
         tool_calls_used: int,
         max_tool_calls: int,
     ) -> Plan:
-        """
-        Create execution plan for a merchant.
-        
-        Args:
-            merchant_id: Merchant ID
-            merchant_name: Human-readable merchant name
-            merchant_url: URL to audit
-            tokens_used: Tokens consumed so far
-            max_tokens: Token limit
-            tool_calls_used: Tool calls made so far
-            max_tool_calls: Tool call limit
-        
-        Returns:
-            Plan object with steps and strategy
-        """
+        """Create execution plan for a merchant."""
         logger.info(f"Creating plan for {merchant_name}")
         self._reset_last_usage()
         
@@ -153,23 +128,7 @@ Return ONLY the JSON, no other text."""
         tool_calls_used: int,
         max_tool_calls: int,
     ) -> Plan:
-        """
-        Create alternative plan when a tool fails.
-        
-        Args:
-            merchant_id: Merchant ID
-            merchant_name: Merchant name
-            merchant_url: URL
-            failed_tool: Tool that failed
-            error_type: Type of error (TRANSIENT, PERMANENT, RATE_LIMIT, etc.)
-            tokens_used: Tokens consumed
-            max_tokens: Token limit
-            tool_calls_used: Tool calls used
-            max_tool_calls: Tool call limit
-        
-        Returns:
-            Alternative Plan
-        """
+        """Create alternative plan when a tool fails."""
         logger.info(f"Re-planning for {merchant_name} after {failed_tool} failure ({error_type})")
         self._reset_last_usage()
         
@@ -247,18 +206,7 @@ Return ONLY the JSON, no other text."""
         self.last_provider = provider
     
     def _parse_plan_response(self, response_text: str) -> Plan:
-        """
-        Parse LLM response into Plan object.
-        
-        Args:
-            response_text: LLM response text
-        
-        Returns:
-            Plan object
-        
-        Raises:
-            ValueError: If response cannot be parsed
-        """
+        """Parse LLM response into Plan object."""
         try:
             # Extract JSON from response
             json_start = response_text.find('{')
@@ -306,15 +254,7 @@ Return ONLY the JSON, no other text."""
         )
     
     def _get_error_strategy(self, error_type: str) -> str:
-        """
-        Get recovery strategy for error type.
-        
-        Args:
-            error_type: Type of error
-        
-        Returns:
-            Strategy description
-        """
+        """Get recovery strategy for error type."""
         strategies = {
             "TRANSIENT": "Retry with exponential backoff or use alternative tool",
             "RATE_LIMIT": "Try scrape_js, then static_template if scraping remains blocked",

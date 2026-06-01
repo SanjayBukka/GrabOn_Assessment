@@ -1,9 +1,4 @@
-"""
-Tool registry with dynamic discovery and execution.
-
-Manages tool registration, execution with timeout enforcement,
-and tracks per-tool statistics (call counts, failures).
-"""
+"""Tool registry with dynamic discovery and execution."""
 
 import asyncio
 import inspect
@@ -44,12 +39,7 @@ class ToolResult(BaseModel):
 
 
 class ToolRegistry:
-    """
-    Manages tool registration, discovery, and execution.
-    
-    Tools are registered via @registry.register() decorator.
-    Supports dynamic discovery and enforces timeouts.
-    """
+    """Manages tool registration, discovery, and execution."""
     
     def __init__(self):
         """Initialize empty tool registry."""
@@ -64,21 +54,7 @@ class ToolRegistry:
         cost_annotation: str = "",
         schema: Optional[type] = None,
     ):
-        """
-        Decorator to register a tool.
-        
-        Args:
-            name: Unique tool name
-            description: What the tool does
-            timeout_seconds: Max execution time
-            cost_annotation: e.g., "HIGH", "LOW", "FREE"
-            schema: Pydantic schema for input validation
-        
-        Example:
-            @registry.register("scrape_html", "Scrapes HTML from URL", timeout_seconds=30)
-            def scrape_html(url: str) -> dict:
-                ...
-        """
+        """Decorator to register a tool."""
         def decorator(func: Callable) -> Callable:
             self._tools[name] = func
             self._metadata[name] = ToolMetadata(
@@ -94,24 +70,11 @@ class ToolRegistry:
         return decorator
     
     def get_tool(self, name: str) -> Optional[Callable]:
-        """
-        Get a registered tool by name.
-        
-        Args:
-            name: Tool name
-        
-        Returns:
-            Tool function or None if not found
-        """
+        """Get a registered tool by name."""
         return self._tools.get(name)
     
     def list_tools(self) -> list[ToolMetadata]:
-        """
-        Get metadata for all registered tools.
-        
-        Returns:
-            List of ToolMetadata
-        """
+        """Get metadata for all registered tools."""
         return list(self._metadata.values())
     
     async def execute(
@@ -119,16 +82,7 @@ class ToolRegistry:
         name: str,
         **kwargs,
     ) -> ToolResult:
-        """
-        Execute a tool with timeout enforcement.
-        
-        Args:
-            name: Tool name
-            **kwargs: Arguments to pass to tool
-        
-        Returns:
-            ToolResult with success/error info
-        """
+        """Execute a tool with timeout enforcement."""
         if name not in self._tools:
             return ToolResult(
                 success=False,
@@ -218,20 +172,7 @@ class ToolRegistry:
         metadata: ToolMetadata,
         kwargs: dict,
     ) -> Any:
-        """
-        Execute async tool with timeout.
-        
-        Args:
-            func: Async tool function
-            metadata: Tool metadata (contains timeout)
-            kwargs: Arguments
-        
-        Returns:
-            Tool result
-        
-        Raises:
-            TimeoutError: If execution exceeds timeout
-        """
+        """Execute async tool with timeout."""
         try:
             result = await asyncio.wait_for(
                 func(**kwargs),
@@ -242,12 +183,7 @@ class ToolRegistry:
             raise
     
     def get_stats(self) -> dict:
-        """
-        Get statistics for all tools.
-        
-        Returns:
-            Dictionary with per-tool stats
-        """
+        """Get statistics for all tools."""
         stats = {}
         for name, metadata in self._metadata.items():
             avg_latency = (
@@ -296,14 +232,7 @@ def register(
     cost_annotation: str = "",
     schema: Optional[type] = None,
 ):
-    """
-    Module-level register function for convenient decorator use.
-    
-    Usage:
-        @register("tool_name", "Description here")
-        def my_tool(arg: str) -> dict:
-            ...
-    """
+    """Module-level register function for convenient decorator use."""
     return _global_registry.register(
         name=name,
         description=description,
