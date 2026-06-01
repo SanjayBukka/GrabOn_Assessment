@@ -34,7 +34,7 @@ A production-grade autonomous agent that audits GrabOn's merchant deal pages usi
 │ • scrape_html            │    │ PLAN → Groq 70b       │
 │ • google_cache           │    │ EXTRACT → Gemini       │
 │ • scrape_js              │    │ CLASSIFY → Groq 8b     │
-│ • extract_deals          │    │ VERIFY → Nvidia        │
+│ • extract_deals          │    │ DETECT → Nvidia        │
 │ • db_lookup              │    │ (with fallback chains) │
 │ • classify_deals         │    │                        │
 │ • verify_coupon          │    │ COST TRACKER           │
@@ -59,7 +59,7 @@ The core `AgentLoop` class (`agent/loop.py`) implements an explicit 4-phase deci
 - LLM planner creates a step-by-step strategy for the merchant
 - Considers available tools, budget constraints, and merchant characteristics
 - Returns ordered list of tool execution steps
-- **Provider:** Groq llama-3.1-70b-versatile (fast reasoning)
+- **Provider:** Groq llama-3.3-70b-versatile (fast reasoning)
 
 #### 2. **ACT Phase**
 - Execute the next planned tool via the registry
@@ -114,22 +114,22 @@ Task-aware provider selection with fallback chains:
 
 ```
 PLANNING task
-  ├─ Primary: Groq llama-3.1-70b-versatile
-  ├─ Fallback 1: OpenRouter meta-llama/llama-3.2-3b
-  └─ Fallback 2: Nvidia meta/llama-3.1-70b
+  ├─ Primary: Groq llama-3.3-70b-versatile
+  ├─ Fallback 1: Gemini gemini-2.0-flash
+  ├─ Fallback 2: OpenRouter meta-llama/llama-3.2-3b
+  └─ Fallback 3: Groq llama-3.1-8b-instant
 
 DEAL_EXTRACTION task
-  ├─ Primary: Gemini gemini-1.5-flash
-  ├─ Fallback 1: Groq llama-3.1-70b-versatile
-  └─ Fallback 2: OpenRouter free tier
+  ├─ Primary: Gemini gemini-2.0-flash
+  └─ Fallback: Groq llama-3.1-8b-instant
 
 CLASSIFICATION task
   ├─ Primary: Groq llama-3.1-8b-instant (cheap!)
-  └─ Fallback: Groq llama-3.1-70b-versatile
+  └─ Fallback: Groq llama-3.3-70b-versatile
 
-VERIFICATION task
+IMPOSSIBLE_DETECTION task
   ├─ Primary: Nvidia meta/llama-3.1-70b-instruct
-  └─ Fallback: OpenRouter
+  └─ Fallback: Groq llama-3.3-70b-versatile
 ```
 
 **Cost Tracking:** Per-provider, per-task-type, with configurable rates from `.env`

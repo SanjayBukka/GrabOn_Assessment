@@ -20,6 +20,7 @@ class ProviderCost(BaseModel):
 class CallCost(BaseModel):
     """Cost of a single LLM call."""
     provider: str
+    task_type: str = "unknown"
     input_tokens: int
     output_tokens: int
     total_tokens: int
@@ -81,6 +82,8 @@ class CostTracker:
         self.total_cost_by_provider: dict[str, float] = {
             p: 0.0 for p in self.providers.keys()
         }
+        self.total_cost_by_task: dict[str, float] = {}
+        self.total_tokens_by_task: dict[str, int] = {}
         self.total_tokens_all: int = 0
         self.total_cost_all: float = 0.0
         self.call_count: int = 0
@@ -91,6 +94,7 @@ class CostTracker:
         provider: str,
         input_tokens: int,
         output_tokens: int,
+        task_type: str = "unknown",
     ) -> CallCost:
         """
         Calculate cost for a single LLM call.
@@ -116,6 +120,7 @@ class CostTracker:
         
         call = CallCost(
             provider=provider,
+            task_type=task_type,
             input_tokens=input_tokens,
             output_tokens=output_tokens,
             total_tokens=total_tokens,
@@ -129,6 +134,7 @@ class CostTracker:
         provider: str,
         input_tokens: int,
         output_tokens: int,
+        task_type: str = "unknown",
     ) -> CallCost:
         """
         Record a single LLM call and update totals.
@@ -141,11 +147,16 @@ class CostTracker:
         Returns:
             CallCost with updated totals
         """
-        call_cost = self.calculate_cost(provider, input_tokens, output_tokens)
+        call_cost = self.calculate_cost(provider, input_tokens, output_tokens, task_type)
         
         # Update tracking
         self.total_tokens_by_provider[provider] += call_cost.total_tokens
         self.total_cost_by_provider[provider] += call_cost.cost_usd
+        if task_type not in self.total_cost_by_task:
+            self.total_cost_by_task[task_type] = 0.0
+            self.total_tokens_by_task[task_type] = 0
+        self.total_cost_by_task[task_type] += call_cost.cost_usd
+        self.total_tokens_by_task[task_type] += call_cost.total_tokens
         self.total_tokens_all += call_cost.total_tokens
         self.total_cost_all += call_cost.cost_usd
         self.call_count += 1
@@ -171,6 +182,13 @@ class CostTracker:
                 }
                 for provider in self.providers.keys()
             },
+            "by_task_type": {
+                task_type: {
+                    "tokens": self.total_tokens_by_task[task_type],
+                    "cost_usd": round(self.total_cost_by_task[task_type], 6),
+                }
+                for task_type in sorted(self.total_cost_by_task.keys())
+            },
             "providers_used": [
                 p for p in self.providers.keys()
                 if self.total_tokens_by_provider[p] > 0
@@ -182,6 +200,8 @@ class CostTracker:
         for provider in self.providers.keys():
             self.total_tokens_by_provider[provider] = 0
             self.total_cost_by_provider[provider] = 0.0
+        self.total_cost_by_task = {}
+        self.total_tokens_by_task = {}
         self.total_tokens_all = 0
         self.total_cost_all = 0.0
         self.call_count = 0

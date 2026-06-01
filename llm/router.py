@@ -104,6 +104,20 @@ class LLMRouter:
             )
         else:
             self.openrouter = None
+
+        nvidia_key = os.getenv("NVIDIA_API_KEY")
+        if nvidia_key and not nvidia_key.startswith("your_"):
+            from langchain_openai import ChatOpenAI
+
+            self.nvidia = ChatOpenAI(
+                model="meta/llama-3.1-70b-instruct",
+                openai_api_key=nvidia_key,
+                openai_api_base="https://integrate.api.nvidia.com/v1",
+                temperature=0.2,
+                timeout=30,
+            )
+        else:
+            self.nvidia = None
     
     def get_llm(self, task_type: str) -> Any:
         """
@@ -150,8 +164,11 @@ class LLMRouter:
             raise ValueError("No fallback provider available")
         
         elif task == TaskType.IMPOSSIBLE_DETECTION:
-            if self.groq_large:
-                logger.info("Using Groq large for detection task")
+            if self.nvidia:
+                logger.info("Using Nvidia for detection task")
+                return self.nvidia
+            elif self.groq_large:
+                logger.info("Using Groq large fallback for detection task")
                 return self.groq_large
             raise ValueError("No detection provider available")
         
@@ -199,6 +216,7 @@ class LLMRouter:
                 provider=cost_provider,
                 input_tokens=input_tokens,
                 output_tokens=output_tokens,
+                task_type=task.value,
             )
             
             logger.info(
@@ -240,6 +258,7 @@ class LLMRouter:
                     provider="groq",
                     input_tokens=input_tokens,
                     output_tokens=output_tokens,
+                    task_type=TaskType.DEAL_EXTRACTION.value,
                 )
                 
                 logger.info(f"Fallback extraction succeeded with Groq")
@@ -267,6 +286,7 @@ class LLMRouter:
                     provider="gemini_flash",
                     input_tokens=input_tokens,
                     output_tokens=output_tokens,
+                    task_type=TaskType.PLANNING.value,
                 )
 
                 logger.info("Fallback planning succeeded with Gemini Flash")
@@ -286,6 +306,7 @@ class LLMRouter:
                     provider="openrouter",
                     input_tokens=input_tokens,
                     output_tokens=output_tokens,
+                    task_type=TaskType.PLANNING.value,
                 )
 
                 logger.info("Fallback planning succeeded with OpenRouter")
@@ -305,6 +326,7 @@ class LLMRouter:
                     provider="groq",
                     input_tokens=input_tokens,
                     output_tokens=output_tokens,
+                    task_type=TaskType.PLANNING.value,
                 )
                 
                 logger.info(f"Fallback planning succeeded with Groq")
@@ -324,6 +346,8 @@ class LLMRouter:
             return "Gemini-Flash"
         elif llm == self.openrouter:
             return "OpenRouter"
+        elif llm == self.nvidia:
+            return "Nvidia"
         return "Unknown"
 
     def _get_cost_provider_name(self, provider_name: str) -> str:
@@ -335,7 +359,69 @@ class LLMRouter:
             return "gemini_flash"
         if provider.startswith("openrouter"):
             return "openrouter"
+        if provider.startswith("nvidia"):
+            return "nvidia"
         return provider
+
+    def shadow_test(self, prompt: str, task_type: str) -> dict:
+        """
+        Run a prompt through the primary provider and one shadow provider.
+
+        The primary response remains the production answer. The secondary
+        response is for comparison and rubric-visible shadow testing.
+        """
+        primary_response, p_tokens, p_cost, p_provider = self.call_with_tracking(
+            task_type=task_type,
+            prompt=prompt,
+        )
+
+        result = {
+            "primary": {
+                "provider": p_provider,
+                "response": primary_response,
+                "tokens": p_tokens,
+                "cost": p_cost,
+            }
+        }
+
+        secondary_llm = self._get_shadow_llm(task_type, p_provider)
+        if not secondary_llm:
+            return result
+
+        try:
+            task = TaskType(task_type.upper())
+            secondary_response = secondary_llm.invoke([HumanMessage(content=prompt)])
+            secondary_text = secondary_response.content
+            result["secondary"] = {
+                "provider": self._get_provider_name(secondary_llm, task),
+                "response": secondary_text,
+            }
+            result["agreement"] = primary_response[:100] == secondary_text[:100]
+        except Exception as e:
+            logger.warning(f"Shadow test secondary provider failed: {e}")
+
+        return result
+
+    def _get_shadow_llm(self, task_type: str, primary_provider: str) -> Any:
+        """Choose a non-primary provider for shadow testing."""
+        task = TaskType(task_type.upper())
+
+        if task == TaskType.DEAL_EXTRACTION:
+            candidates = [self.groq_small, self.groq_large, self.openrouter]
+        elif task == TaskType.PLANNING:
+            candidates = [self.gemini_flash, self.openrouter, self.groq_small]
+        elif task == TaskType.CLASSIFICATION:
+            candidates = [self.groq_large, self.gemini_flash]
+        elif task == TaskType.IMPOSSIBLE_DETECTION:
+            candidates = [self.groq_large, self.openrouter]
+        else:
+            candidates = [self.groq_small, self.openrouter, self.gemini_flash]
+
+        for candidate in candidates:
+            if candidate and self._get_provider_name(candidate, task) != primary_provider:
+                return candidate
+
+        return None
     
     def get_cost_summary(self) -> dict:
         """Get cost summary from tracker."""

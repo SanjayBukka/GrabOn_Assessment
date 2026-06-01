@@ -439,6 +439,9 @@ class AgentLoop:
         self.state.total_tool_calls += 1
         self.budget_enforcer.record_tool_call(tool_name, tool_result.success)
         result.tool_calls_used = self.state.total_tool_calls
+        llm_tokens_used = 0
+        llm_provider = ""
+        llm_cost_usd = 0.0
         
         # Update result tracking based on tool outcome
         if tool_result.success:
@@ -447,6 +450,9 @@ class AgentLoop:
                 tokens_used = tool_result.data.get("tokens_used", 0)
                 provider = tool_result.data.get("llm_provider_used", "unknown")
                 cost_usd = tool_result.data.get("cost_usd", 0.0)
+                llm_tokens_used = tokens_used
+                llm_provider = provider
+                llm_cost_usd = cost_usd
                 if tokens_used:
                     self.budget_enforcer.record_tokens(tokens_used, provider)
                     self.state.total_tokens = self.budget_enforcer.tokens_used
@@ -468,10 +474,10 @@ class AgentLoop:
             tool_called=tool_name,
             observation="Awaiting result",
             decision="Analyze in OBSERVE phase",
-            tokens_consumed=0,
+            tokens_consumed=llm_tokens_used,
             wall_clock_time=time.time() - phase_start,
-            llm_provider="",
-            cost_usd=0.0,
+            llm_provider=llm_provider,
+            cost_usd=llm_cost_usd,
         )
         self.state.iterations.append(iteration)
         
@@ -687,6 +693,7 @@ class AgentLoop:
             "cost_breakdown": {
                 "total_usd": self.state.total_cost_usd,
                 "by_provider": self._calculate_cost_breakdown(),
+                "by_task_type": self._calculate_task_cost_breakdown(),
             },
             "tool_call_stats": self.registry.get_stats(),
             "merchants": [],
@@ -786,6 +793,37 @@ class AgentLoop:
                 }
         
         return by_provider
+
+    def _calculate_task_cost_breakdown(self) -> dict:
+        """Calculate token and cost breakdown by high-level task type."""
+        by_task_type = {}
+
+        for iteration in self.state.iterations:
+            if iteration.cost_usd <= 0 and iteration.tokens_consumed <= 0:
+                continue
+
+            if iteration.phase == Phase.PLAN:
+                task_type = "PLANNING"
+            elif iteration.tool_called == "extract_deals":
+                task_type = "DEAL_EXTRACTION"
+            elif iteration.tool_called == "classify_deals":
+                task_type = "CLASSIFICATION"
+            else:
+                task_type = iteration.tool_called or iteration.phase.value
+
+            if task_type not in by_task_type:
+                by_task_type[task_type] = {
+                    "tokens": 0,
+                    "cost_usd": 0.0,
+                }
+
+            by_task_type[task_type]["tokens"] += iteration.tokens_consumed
+            by_task_type[task_type]["cost_usd"] += iteration.cost_usd
+
+        for task_data in by_task_type.values():
+            task_data["cost_usd"] = round(task_data["cost_usd"], 6)
+
+        return by_task_type
     
     def _save_report(self) -> None:
         """
